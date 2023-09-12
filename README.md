@@ -1,5 +1,5 @@
 # Team <write your team name here>:
-1. <team member name 1>
+1. Artjom Shishkov
 2. <team member name 2>
 3. <team member name 3>
 
