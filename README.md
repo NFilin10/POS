@@ -1,6 +1,6 @@
 # Team <write your team name here>:
 1. Artjom Shishkov
-2. <team member name 2>
+2. Kaisa Kumpas
 3. <team member name 3>
 
 ## Homework 1:
