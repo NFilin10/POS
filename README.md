@@ -1,7 +1,8 @@
 # Team <write your team name here>:
 1. Artjom Shishkov
 2. Kaisa Kumpas
-3. <team member name 3>
+3. Nikita Filin
+4. <team member name 4>
 
 ## Homework 1:
 <When you finish your homework, add a link pointing to the solution here (for example, a link to a page on the wiki)> 
