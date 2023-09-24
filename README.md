@@ -2,10 +2,9 @@
 1. Artjom Shishkov
 2. Kaisa Kumpas
 3. Nikita Filin
-4. <team member name 4>
 
 ## Homework 1:
-<When you finish your homework, add a link pointing to the solution here (for example, a link to a page on the wiki)> 
+https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%201%20-%20Requirements%20Gathering 
 
 ## Homework 2:
 <Links to the solution>
