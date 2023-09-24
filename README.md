@@ -2,6 +2,7 @@
 1. Artjom Shishkov
 2. Kaisa Kumpas
 3. Nikita Filin
+4. Alina Gudkova
 
 ## Homework 1:
 https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%201%20-%20Requirements%20Gathering 
