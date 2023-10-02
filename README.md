@@ -8,7 +8,7 @@
 https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%201%20-%20Requirements%20Gathering 
 
 ## Homework 2:
-<Links to the solution>
+https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%202%20-%20Requirements%20specification,%20System%20modelling,%20Project%20planning
 
 ## Homework 3:
 <Links to the solution>
