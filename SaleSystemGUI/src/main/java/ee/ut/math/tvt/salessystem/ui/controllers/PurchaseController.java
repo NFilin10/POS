@@ -79,6 +79,7 @@ public class PurchaseController implements Initializable {
         try {
             enableInputs();
         } catch (SalesSystemException e) {
+            log.error("There is an error in new sale proccess beginning");
             log.error(e.getMessage(), e);
         }
     }
@@ -88,7 +89,7 @@ public class PurchaseController implements Initializable {
      */
     @FXML
     protected void cancelPurchaseButtonClicked() {
-        log.info("Sale cancelled");
+        log.info("Cancelling purchase");
         try {
             shoppingCart.cancelCurrentPurchase();
             disableInputs();
@@ -103,7 +104,7 @@ public class PurchaseController implements Initializable {
      */
     @FXML
     protected void submitPurchaseButtonClicked() {
-        log.info("Sale complete");
+        log.info("Sale was completed!");
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
             shoppingCart.submitCurrentPurchase();
