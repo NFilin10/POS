@@ -79,6 +79,7 @@ public class PurchaseController implements Initializable {
         try {
             enableInputs();
         } catch (SalesSystemException e) {
+            log.error("Error appeared when trying to start a new purchase.");
             log.error(e.getMessage(), e);
         }
     }
@@ -103,7 +104,7 @@ public class PurchaseController implements Initializable {
      */
     @FXML
     protected void submitPurchaseButtonClicked() {
-        log.info("Sale complete");
+        log.info("Sale complete, have a nice day!");
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
             shoppingCart.submitCurrentPurchase();
