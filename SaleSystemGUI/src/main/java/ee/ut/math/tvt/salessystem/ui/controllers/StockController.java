@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -81,16 +82,25 @@ public class StockController implements Initializable {
         addItemButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                log.info("It works");
                 long barcode = Integer.parseInt(barCodeField.getText());
-                int amout = Integer.parseInt(quantityField.getText());
-                String name = nameField.getText();
-                double price = Double.parseDouble(priceField.getText());
+                if (dao.findStockItem(barcode) == null){
+                    int amout = Integer.parseInt(quantityField.getText());
+                    String name = nameField.getText();
+                    double price = Double.parseDouble(priceField.getText());
 
-                log.info(name);
-                StockItem addedItem = new StockItem(barcode, name, "", price, amout);
-                dao.saveStockItem(addedItem);
+                    log.info(name);
+                    StockItem addedItem = new StockItem(barcode, name, "", price, amout);
+                    dao.saveStockItem(addedItem);
+                }
 
+                else{
+                    log.error("barcode already exists");
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Barcode already exists");
+                    errorAlert.setContentText("The barcode you entered already exists in the database. Please enter a new barcode.");
+                    errorAlert.showAndWait();
+                }
             }
         });
     }
