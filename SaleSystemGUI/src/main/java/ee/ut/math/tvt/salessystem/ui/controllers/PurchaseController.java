@@ -104,7 +104,7 @@ public class PurchaseController implements Initializable {
      */
     @FXML
     protected void submitPurchaseButtonClicked() {
-        log.info("Sale was completed!");
+        log.info("Sale complete, have a nice day!");
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
             shoppingCart.submitCurrentPurchase();
