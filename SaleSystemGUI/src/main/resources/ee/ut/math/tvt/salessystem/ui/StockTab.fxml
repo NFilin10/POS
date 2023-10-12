@@ -73,7 +73,7 @@
                 </TableView>
             </center>
             <top>
-                <Button onMouseClicked="#refreshButtonClicked" text="Refresh warehouse" BorderPane.alignment="TOP_LEFT" />
+                <Button fx:id="refresh" text="Refresh warehouse" BorderPane.alignment="TOP_LEFT" />
             </top>
         </BorderPane>
     </TitledPane>
