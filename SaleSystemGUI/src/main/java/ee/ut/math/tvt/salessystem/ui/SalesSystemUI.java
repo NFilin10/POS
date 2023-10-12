@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
+import ee.ut.math.tvt.salessystem.ui.controllers.HistoryController;
 import ee.ut.math.tvt.salessystem.ui.controllers.PurchaseController;
 import ee.ut.math.tvt.salessystem.ui.controllers.StockController;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
@@ -54,7 +55,13 @@ public class SalesSystemUI extends Application {
         Tab historyTab = new Tab();
         historyTab.setText("History");
         historyTab.setClosable(false);
-        //historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController()));
+        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController()));
+
+        Tab teamTab = new Tab();
+        teamTab.setText("Team");
+        teamTab.setClosable(false);
+//        teamTab.setContent(loadControls("TeamTab.fxml", new HistoryController()));
+
 
         Group root = new Group();
         Scene scene = new Scene(root, 600, 500, Color.WHITE);
@@ -63,7 +70,7 @@ public class SalesSystemUI extends Application {
         BorderPane borderPane = new BorderPane();
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
-        borderPane.setCenter(new TabPane(purchaseTab, stockTab, historyTab));
+        borderPane.setCenter(new TabPane(purchaseTab, stockTab, historyTab, teamTab));
         root.getChildren().add(borderPane);
 
         primaryStage.setTitle("Sales system");
