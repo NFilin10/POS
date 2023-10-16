@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Graphical user interface of the sales system.
@@ -60,12 +61,12 @@ public class SalesSystemUI extends Application {
         Tab teamTab = new Tab();
         teamTab.setText("Team");
         teamTab.setClosable(false);
-//        teamTab.setContent(loadControls("TeamTab.fxml", new HistoryController()));
+        teamTab.setContent(loadControls("TeamTab.fxml", new HistoryController()));
 
 
         Group root = new Group();
         Scene scene = new Scene(root, 600, 500, Color.WHITE);
-        //scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("DefaultTheme.css")).toExternalForm());
 
         scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
 

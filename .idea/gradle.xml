@@ -6,7 +6,11 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
         <option name="gradleHome" value="$PROJECT_DIR$/../../../../Gradle/gradle-8.4" />
+=======
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../Gradle/gradle-8.4" />
+>>>>>>> 355c643ea21a02fdd8a9955ade8d912523098e51
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
