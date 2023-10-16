@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92" >
+    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+        <GridPane alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints  />
+                <ColumnConstraints prefWidth="200" />
+            </columnConstraints>
+
+            <Button text="Show between dates" GridPane.columnIndex="0" GridPane.rowIndex="0" translateX="-50" prefWidth="140"/>
+            <Button text="Show last 10" GridPane.columnIndex="0" GridPane.rowIndex="2" translateX="-50" prefWidth="140"/>
+            <Button text="Show all" GridPane.columnIndex="0" GridPane.rowIndex="3" translateX="-50" prefWidth="140"/>
+
+            <Label text="Start date" GridPane.columnIndex="1" GridPane.rowIndex="0" translateX="15"/>
+            <Label text="End date" GridPane.columnIndex="1" GridPane.rowIndex="1"  translateX="15"/>
+            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0" translateX="25"/>
+            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1" translateX="25"/>
+        </GridPane>
+
+        <Region prefHeight="20" />
+
+        <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1"></TitledPane>
+        <BorderPane>
+            <center>
+                <TableView fx:id="warehouseTableView" styleClass="blue_style" BorderPane.alignment="CENTER">
+                    <columns>
+                        <TableColumn text="Id">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="Date" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="Time" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Price">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="Total" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </center>
+        </BorderPane>
+    </VBox>
+
+
+
+
+
+</AnchorPane>
+
+
+
+
+
+
