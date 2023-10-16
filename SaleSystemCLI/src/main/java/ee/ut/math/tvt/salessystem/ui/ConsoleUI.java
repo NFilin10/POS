@@ -11,9 +11,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 
 /**
  * A simple CLI (limited functionality).
@@ -83,6 +85,7 @@ public class ConsoleUI {
         System.out.println("a IDX NR \tAdd NR of stock item with index IDX to the cart");
         System.out.println("p\t\tPurchase the shopping cart");
         System.out.println("r\t\tReset the shopping cart");
+        System.out.println("t\t\tShow team info");
         System.out.println("-------------------------");
     }
 
@@ -101,6 +104,8 @@ public class ConsoleUI {
             cart.submitCurrentPurchase();
         else if (c[0].equals("r"))
             cart.cancelCurrentPurchase();
+        else if (c[0].equals("t"))
+            printTeamInfo();
         else if (c[0].equals("a") && c.length == 3) {
             try {
                 long idx = Long.parseLong(c[1]);
@@ -116,6 +121,19 @@ public class ConsoleUI {
             }
         } else {
             System.out.println("unknown command");
+        }
+    }
+
+    private void printTeamInfo(){
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            System.out.println("Team name: " + properties.getProperty("name"));
+            System.out.println("Team leader: " + properties.getProperty("contactPerson"));
+            System.out.println("Team leader email: " + properties.getProperty("contact"));
+            System.out.println("Team members: " + properties.getProperty("members"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
