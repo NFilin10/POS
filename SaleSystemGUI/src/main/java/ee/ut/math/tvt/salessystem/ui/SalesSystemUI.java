@@ -69,6 +69,8 @@ public class SalesSystemUI extends Application {
         Scene scene = new Scene(root, 600, 500, Color.WHITE);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("DefaultTheme.css")).toExternalForm());
 
+        scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
+
         BorderPane borderPane = new BorderPane();
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
