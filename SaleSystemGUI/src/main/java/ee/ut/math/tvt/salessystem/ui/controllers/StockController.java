@@ -1,7 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
-import com.sun.javafx.collections.ObservableListWrapper;
-import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import javafx.collections.FXCollections;
@@ -48,6 +46,9 @@ public class StockController implements Initializable {
     @FXML
     private Button refresh;
 
+    @FXML
+    private Button delete;
+
     public StockController(SalesSystemDAO dao) {
         this.dao = dao;
     }
@@ -56,6 +57,7 @@ public class StockController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         addNewProduct();
         refreshButtonClicked();
+        deleteButtonClicked();
         // TODO refresh view after adding new items
     }
 
@@ -73,6 +75,26 @@ public class StockController implements Initializable {
         });
     }
 
+    public void deleteButtonClicked() {
+        delete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                long barcode = Integer.parseInt(barCodeField.getText());
+                if (dao.findStockItem(barcode) != null) {
+                    StockItem item = dao.findStockItem(barcode);
+                    dao.deleteStockItem(item);
+                } else {
+                    log.error("Barcode field is empty or mentioned product doesn't exist");
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Barcode field is empty or mentioned product doesn't exist");
+                    errorAlert.setContentText("The barcode you entered doesn't present in the database. Please enter a valid barcode.");
+                    errorAlert.showAndWait();
+                }
+            }
+        });
+    }
+
     private void refreshStockItems() {
         warehouseTableView.setItems(FXCollections.observableList(dao.findStockItems()));
         warehouseTableView.refresh();
@@ -84,12 +106,12 @@ public class StockController implements Initializable {
             public void handle(ActionEvent event) {
                 long barcode = Integer.parseInt(barCodeField.getText());
                 if (dao.findStockItem(barcode) == null){
-                    int amout = Integer.parseInt(quantityField.getText());
+                    int amount = Integer.parseInt(quantityField.getText());
                     String name = nameField.getText();
                     double price = Double.parseDouble(priceField.getText());
 
                     log.info(name);
-                    StockItem addedItem = new StockItem(barcode, name, "", price, amout);
+                    StockItem addedItem = new StockItem(barcode, name, "", price, amount);
                     dao.saveStockItem(addedItem);
                 }
 

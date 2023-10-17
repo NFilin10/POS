@@ -46,6 +46,11 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
+    public void deleteStockItem(StockItem stockItem) {
+        stockItemList.remove(stockItem);
+    }
+
+    @Override
     public void beginTransaction() {
     }
 

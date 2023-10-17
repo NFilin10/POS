@@ -34,6 +34,8 @@ public interface SalesSystemDAO {
 
     void saveStockItem(StockItem stockItem);
 
+    void deleteStockItem(StockItem stockItem);
+
     void saveSoldItem(SoldItem item);
 
     void beginTransaction();

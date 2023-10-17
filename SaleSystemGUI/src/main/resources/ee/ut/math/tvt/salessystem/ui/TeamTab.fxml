@@ -15,7 +15,7 @@
                   <children>
                      <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="1" text="Team name"/>
                      <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="2" text="Team leader"/>
-                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="3" text="Team eader email"/>
+                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="3" text="Team leader email"/>
                      <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="4" text="Team Members"/>
 
                      <Label fx:id="teamName" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
