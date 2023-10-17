@@ -7,35 +7,39 @@
 
 <?import javafx.scene.text.Text?>
 <TitledPane collapsible="false" alignment="CENTER" text="Team info" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92">
-   <AnchorPane fx:id="teamContainer" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92" >
-      <HBox spacing="10">
-         <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
-            <GridPane hgap="40" vgap="5" translateX="10">
-               <children>
-                  <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="1" text="Team name"/>
-                  <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="2" text="Team leader"/>
-                  <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="3" text="Team eader email"/>
-                  <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="4" text="Team Members"/>
+   <AnchorPane fx:id="teamContainer" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92" prefHeight="200">
+      <VBox>
+         <HBox spacing="10">
+            <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+               <GridPane hgap="40" vgap="5" translateX="10">
+                  <children>
+                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="1" text="Team name"/>
+                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="2" text="Team leader"/>
+                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="3" text="Team leader email"/>
+                     <Label prefHeight="37.0" prefWidth="100" GridPane.rowIndex="4" text="Team Members"/>
 
-                  <Label fx:id="teamName" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="teamLeader" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="teamLeaderMail" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                  <Text fx:id="teamMembers" wrappingWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                     <Label fx:id="teamName" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <Label fx:id="teamLeader" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <Label fx:id="teamLeaderMail" prefHeight="37.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                     <Text fx:id="teamMembers" wrappingWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-               </children>
-            </GridPane>
-         </VBox>
-
-         <ImageView fx:id="logo" fitHeight="200">
-         </ImageView>
-         <Separator orientation="HORIZONTAL"/>
-
-
-
-      </HBox>
+                  </children>
+               </GridPane>
+            </VBox>
+            <ImageView fx:id="logo" fitHeight="200">
+            </ImageView>
+            <Separator orientation="HORIZONTAL"/>
+         </HBox>
+         <HBox alignment="CENTER" translateY="10" spacing="5">
+            <Button text="Add Member" onAction="#addMember"/>
+            <Button text="Remove Member" onAction="#removeMember"/>
+         </HBox>
+      </VBox>
 
 
    </AnchorPane>
+
+
 </TitledPane>
 
 
