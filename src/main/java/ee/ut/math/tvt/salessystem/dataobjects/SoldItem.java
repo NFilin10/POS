@@ -18,7 +18,7 @@ public class SoldItem {
     public SoldItem(StockItem stockItem, int quantity) {
         this.stockItem = stockItem;
         this.name = stockItem.getName();
-        this.price = stockItem.getPrice();
+        this.price = stockItem.getPrice() * quantity;
         this.quantity = quantity;
     }
 

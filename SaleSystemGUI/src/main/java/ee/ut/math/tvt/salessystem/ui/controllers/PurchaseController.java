@@ -17,6 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
+import java.util.EmptyStackException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -63,6 +65,14 @@ public class PurchaseController implements Initializable {
         disableProductField(true);
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (!newPropertyValue) {
+                    fillInputsBySelectedStockItem();
+                }
+            }
+        });
+        this.nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (!newPropertyValue) {
@@ -134,12 +144,24 @@ public class PurchaseController implements Initializable {
     }
 
     private void fillInputsBySelectedStockItem() {
-        StockItem stockItem = getStockItemByBarcode();
-        if (stockItem != null) {
-            nameField.setText(stockItem.getName());
-            priceField.setText(String.valueOf(stockItem.getPrice()));
-        } else {
-            resetProductField();
+
+        if (!Objects.equals(barCodeField.getText(), "")) {
+            StockItem stockItem = getStockItemByBarcode();
+            if (stockItem != null) {
+                nameField.setText(stockItem.getName());
+                priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
+            } else {
+                resetProductField();
+            }
+        }
+        if (!Objects.equals(nameField.getText(), "")) {
+            StockItem stockItem = getStockItemByName();
+            if (stockItem != null) {
+                barCodeField.setText(String.valueOf(stockItem.getId()));
+                priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
+            } else {
+                resetProductField();
+            }
         }
     }
 
@@ -154,22 +176,45 @@ public class PurchaseController implements Initializable {
         }
     }
 
+    private StockItem getStockItemByName() {
+        try {
+            String name = nameField.getText();
+            return dao.findStockItem(name);
+        } catch (EmptyStackException e) {
+            return null;
+        }
+    }
+
     /**
      * Add new item to the cart.
      */
     @FXML
     public void addItemEventHandler() {
         // add chosen item to the shopping cart.
-        StockItem stockItem = getStockItemByBarcode();
-        if (stockItem != null) {
-            int quantity;
-            try {
-                quantity = Integer.parseInt(quantityField.getText());
-            } catch (NumberFormatException e) {
-                quantity = 1;
+        if (!Objects.equals(barCodeField.getText(), "")) {
+            StockItem stockItem = getStockItemByBarcode();
+            if (stockItem != null) {
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(quantityField.getText());
+                } catch (NumberFormatException e) {
+                    quantity = 1;
+                }
+                shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                purchaseTableView.refresh();
             }
-            shoppingCart.addItem(new SoldItem(stockItem, quantity));
-            purchaseTableView.refresh();
+        } else if (!Objects.equals(nameField.getText(), "")) {
+            StockItem stockItem = getStockItemByName();
+            if (stockItem != null) {
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(quantityField.getText());
+                } catch (NumberFormatException e) {
+                    quantity = 1;
+                }
+                shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                purchaseTableView.refresh();
+            }
         }
     }
 
