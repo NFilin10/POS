@@ -149,7 +149,7 @@ public class PurchaseController implements Initializable {
             StockItem stockItem = getStockItemByBarcode();
             if (stockItem != null) {
                 nameField.setText(stockItem.getName());
-                priceField.setText(String.valueOf(stockItem.getPrice()));
+                priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
             } else {
                 resetProductField();
             }
@@ -158,7 +158,7 @@ public class PurchaseController implements Initializable {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
                 barCodeField.setText(String.valueOf(stockItem.getId()));
-                priceField.setText(String.valueOf(stockItem.getPrice()));
+                priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
             } else {
                 resetProductField();
             }
