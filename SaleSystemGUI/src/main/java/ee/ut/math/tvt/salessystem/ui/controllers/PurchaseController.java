@@ -79,6 +79,15 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
+
+        this.quantityField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (!newPropertyValue) {
+                    fillInputsBySelectedStockItem();
+                }
+            }
+        });
     }
 
     /** Event handler for the <code>new purchase</code> event. */
