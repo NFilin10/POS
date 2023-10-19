@@ -1,7 +1,9 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +23,14 @@ import java.util.ResourceBundle;
 public class StockController implements Initializable {
 
     private static final Logger log = LogManager.getLogger(StockController.class);
+
+    private final ShoppingCart shoppingCart;
+
+    @FXML
+    private TableView<SoldItem> cartTableView;
+
+    @FXML
+    private Button refreshCartButton;
 
 
     private final SalesSystemDAO dao;
@@ -49,7 +59,8 @@ public class StockController implements Initializable {
     @FXML
     private Button delete;
 
-    public StockController(SalesSystemDAO dao) {
+    public StockController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
         this.dao = dao;
     }
 
@@ -58,6 +69,8 @@ public class StockController implements Initializable {
         addNewProduct();
         refreshButtonClicked();
         deleteButtonClicked();
+        refreshCartButtonClicked();
+        cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         // TODO refresh view after adding new items
     }
 
@@ -98,6 +111,12 @@ public class StockController implements Initializable {
     private void refreshStockItems() {
         warehouseTableView.setItems(FXCollections.observableList(dao.findStockItems()));
         warehouseTableView.refresh();
+    }
+
+    @FXML
+    protected void refreshCartButtonClicked() {
+        cartTableView.setItems(FXCollections.observableList(dao.getSoldItemList()));
+        cartTableView.refresh();
     }
 
     private void addNewProduct(){

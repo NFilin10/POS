@@ -52,12 +52,12 @@ public class SalesSystemUI extends Application {
         Tab stockTab = new Tab();
         stockTab.setText("Warehouse");
         stockTab.setClosable(false);
-        stockTab.setContent(loadControls("StockTab.fxml", new StockController(dao)));
+        stockTab.setContent(loadControls("StockTab.fxml", new StockController(dao, shoppingCart)));
 
         Tab historyTab = new Tab();
         historyTab.setText("History");
         historyTab.setClosable(false);
-        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController()));
+        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController(dao, shoppingCart)));
 
         Tab teamTab = new Tab();
         teamTab.setText("Team");
