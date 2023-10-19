@@ -8,18 +8,18 @@ import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
-import java.util.EmptyStackException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -51,6 +51,9 @@ public class PurchaseController implements Initializable {
     private Button addItemButton;
     @FXML
     private TableView<SoldItem> purchaseTableView;
+    @FXML
+    private ChoiceBox<String> chooseItemFromList;
+
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;
@@ -62,6 +65,21 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
+        chooseItemFromList.setDisable(true);
+
+        for (String s : chooseItemFromList.getItems()) {
+            chooseItemFromList.getItems().remove(s);
+        }
+        for (StockItem stockItem : dao.findStockItems()) {
+            chooseItemFromList.getItems().add(stockItem.getName());
+        }
+
+        chooseItemFromList.setOnAction(event -> {
+            resetProductField();
+            String selectedOption = chooseItemFromList.getValue();
+            nameField.setText(selectedOption);
+            fillInputsBySelectedStockItem();
+        });
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -140,6 +158,7 @@ public class PurchaseController implements Initializable {
         cancelPurchase.setDisable(false);
         submitPurchase.setDisable(false);
         newPurchase.setDisable(true);
+        chooseItemFromList.setDisable(false);
     }
 
     // switch UI to the state that allows to initiate new purchase
