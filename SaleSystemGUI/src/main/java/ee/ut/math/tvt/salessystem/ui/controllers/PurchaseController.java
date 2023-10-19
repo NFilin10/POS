@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.*;
 
@@ -49,6 +50,8 @@ public class PurchaseController implements Initializable {
     private TextField priceField;
     @FXML
     private Button addItemButton;
+    @FXML
+    private Button deleteButton;
     @FXML
     private TableView<SoldItem> purchaseTableView;
     @FXML
@@ -266,5 +269,13 @@ public class PurchaseController implements Initializable {
         quantityField.setText("1");
         nameField.setText("");
         priceField.setText("");
+    }
+
+    @FXML
+    private void deleteButtonClicked() {
+        ObservableList<SoldItem> selectedProducts = purchaseTableView.getSelectionModel().getSelectedItems();
+        purchaseTableView.getItems().removeAll(selectedProducts);
+        purchaseTableView.refresh();
+        purchaseTableView.getSelectionModel().clearSelection();
     }
 }
