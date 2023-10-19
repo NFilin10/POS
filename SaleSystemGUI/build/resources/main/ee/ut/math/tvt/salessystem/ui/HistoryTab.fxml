@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92" >
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
         <GridPane alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints />
-                <ColumnConstraints  />
+                <ColumnConstraints />
                 <ColumnConstraints prefWidth="200" />
             </columnConstraints>
 
-            <Button text="Show between dates" GridPane.columnIndex="0" GridPane.rowIndex="0" translateX="-50" prefWidth="140"/>
-            <Button text="Show last 10" GridPane.columnIndex="0" GridPane.rowIndex="2" translateX="-50" prefWidth="140"/>
-            <Button text="Show all" GridPane.columnIndex="0" GridPane.rowIndex="3" translateX="-50" prefWidth="140"/>
+            <Button prefWidth="140" text="Show between dates" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Button prefWidth="140" text="Show last 10" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Button prefWidth="140" text="Show all" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
-            <Label text="Start date" GridPane.columnIndex="1" GridPane.rowIndex="0" translateX="15"/>
-            <Label text="End date" GridPane.columnIndex="1" GridPane.rowIndex="1"  translateX="15"/>
-            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0" translateX="25"/>
-            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1" translateX="25"/>
+            <Label text="Start date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="End date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <DatePicker translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
 
         <Region prefHeight="20" />
 
-        <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1"></TitledPane>
+        <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" />
         <BorderPane>
             <center>
                 <TableView fx:id="warehouseTableView" styleClass="blue_style" BorderPane.alignment="CENTER">
@@ -56,15 +59,37 @@
             </center>
         </BorderPane>
     </VBox>
+   <TitledPane animated="false" layoutX="-2.0" prefHeight="190.0" prefWidth="191.0" text="Your cart" textAlignment="CENTER" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="0.0">
+     <content>
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="181.0">
+             <TableView fx:id="cartTableView" prefHeight="163.0" prefWidth="200.0" styleClass="blue_style">
+               <columns>
+                   <TableColumn minWidth="0.0" prefWidth="82.66666662693024" text="Name">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="name" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn minWidth="0.0" prefWidth="40.66667938232422" text="Price">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="price" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="66.00001525878906" text="Quantity">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="quantity" />
+                       </cellValueFactory>
+                   </TableColumn>
+               </columns>
+             </TableView>
+         </AnchorPane>
+     </content>
+      <graphic>
+         <Button fx:id="refreshCartButton" mnemonicParsing="false" text="Refresh" />
+      </graphic>
+   </TitledPane>
 
 
 
 
 
 </AnchorPane>
-
-
-
-
-
-

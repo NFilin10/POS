@@ -34,6 +34,8 @@ public interface SalesSystemDAO {
 
     StockItem findStockItem(String name);
 
+    List<SoldItem> getSoldItemList();
+
     void saveStockItem(StockItem stockItem);
 
     void deleteStockItem(StockItem stockItem);

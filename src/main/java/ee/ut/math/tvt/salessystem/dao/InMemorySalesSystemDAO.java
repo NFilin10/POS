@@ -45,6 +45,10 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
         return null;
     }
 
+    public List<SoldItem> getSoldItemList() {
+        return soldItemList;
+    }
+
     @Override
     public void saveSoldItem(SoldItem item) {
         soldItemList.add(item);

@@ -51,7 +51,6 @@ public class PurchaseController implements Initializable {
     private Button addItemButton;
     @FXML
     private TableView<SoldItem> purchaseTableView;
-
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;
@@ -201,6 +200,7 @@ public class PurchaseController implements Initializable {
                     quantity = 1;
                 }
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
                 purchaseTableView.refresh();
             }
         } else if (!Objects.equals(nameField.getText(), "")) {
@@ -213,6 +213,7 @@ public class PurchaseController implements Initializable {
                     quantity = 1;
                 }
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
                 purchaseTableView.refresh();
             }
         }
