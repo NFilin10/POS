@@ -74,8 +74,10 @@
           </content>
         </TitledPane>
       </AnchorPane>
+      <Button fx:id="deleteButton" onAction="#deleteButtonClicked" text="Delete product" />
+
       <AnchorPane>
-        <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Shopping Cart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Shopping Cart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
           <content>
             <TableView fx:id="purchaseTableView" styleClass="blue_style">
               <columns>

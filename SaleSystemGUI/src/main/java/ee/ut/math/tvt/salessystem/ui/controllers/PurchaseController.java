@@ -8,6 +8,8 @@ import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -49,6 +52,9 @@ public class PurchaseController implements Initializable {
     private TextField priceField;
     @FXML
     private Button addItemButton;
+
+    @FXML
+    private Button deleteItemBtn;
     @FXML
     private TableView<SoldItem> purchaseTableView;
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
@@ -247,5 +253,18 @@ public class PurchaseController implements Initializable {
         quantityField.setText("1");
         nameField.setText("");
         priceField.setText("");
+    }
+
+
+    @FXML
+    private void deleteButtonClicked(ActionEvent event) {
+        ObservableList<SoldItem> selectedProducts = purchaseTableView.getSelectionModel().getSelectedItems();
+        purchaseTableView.getItems().removeAll(selectedProducts);
+        purchaseTableView.refresh();
+        purchaseTableView.getSelectionModel().clearSelection();
+
+
+
+
     }
 }
