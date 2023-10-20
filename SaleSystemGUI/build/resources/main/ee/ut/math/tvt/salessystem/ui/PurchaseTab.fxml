@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.92">
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
   <SplitPane dividerPositions="0.4" orientation="VERTICAL" prefHeight="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <items>
@@ -43,6 +35,15 @@
                         <ColumnConstraints />
                         <ColumnConstraints />
                         <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,6 +59,15 @@
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
               </rowConstraints>
               <children>
                 <Label text="Bar Code:" />
@@ -69,6 +79,7 @@
                 <TextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <ChoiceBox fx:id="chooseItemFromList" GridPane.Halignment="CENTER" GridPane.Valignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="2" />
               </children>
             </GridPane>
           </content>

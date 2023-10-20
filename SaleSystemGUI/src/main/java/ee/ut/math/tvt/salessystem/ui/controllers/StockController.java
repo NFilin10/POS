@@ -71,6 +71,7 @@ public class StockController implements Initializable {
         deleteButtonClicked();
         refreshCartButtonClicked();
         cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
+        cartTableView.refresh();
         // TODO refresh view after adding new items
     }
 

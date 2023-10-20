@@ -9,20 +9,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -52,11 +50,17 @@ public class PurchaseController implements Initializable {
     private TextField priceField;
     @FXML
     private Button addItemButton;
-
     @FXML
-    private Button deleteItemBtn;
+    private Button deleteButton;
     @FXML
     private TableView<SoldItem> purchaseTableView;
+    @FXML
+    private ChoiceBox<String> chooseItemFromList;
+    @FXML
+    private Button plusButton;
+    @FXML
+    private Button minusButton;
+
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;
@@ -68,7 +72,21 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
+        chooseItemFromList.setDisable(true);
 
+        for (String s : chooseItemFromList.getItems()) {
+            chooseItemFromList.getItems().remove(s);
+        }
+        for (StockItem stockItem : dao.findStockItems()) {
+            chooseItemFromList.getItems().add(stockItem.getName());
+        }
+
+        chooseItemFromList.setOnAction(event -> {
+            resetProductField();
+            String selectedOption = chooseItemFromList.getValue();
+            nameField.setText(selectedOption);
+            fillInputsBySelectedStockItem();
+        });
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -146,6 +164,7 @@ public class PurchaseController implements Initializable {
         cancelPurchase.setDisable(false);
         submitPurchase.setDisable(false);
         newPurchase.setDisable(true);
+        chooseItemFromList.setDisable(false);
     }
 
     // switch UI to the state that allows to initiate new purchase
@@ -243,6 +262,8 @@ public class PurchaseController implements Initializable {
         this.quantityField.setDisable(disable);
         this.nameField.setDisable(disable);
         this.priceField.setDisable(disable);
+        this.plusButton.setDisable(disable);
+        this.minusButton.setDisable(disable);
     }
 
     /**
@@ -255,16 +276,22 @@ public class PurchaseController implements Initializable {
         priceField.setText("");
     }
 
-
     @FXML
-    private void deleteButtonClicked(ActionEvent event) {
+    private void deleteButtonClicked() {
         ObservableList<SoldItem> selectedProducts = purchaseTableView.getSelectionModel().getSelectedItems();
         purchaseTableView.getItems().removeAll(selectedProducts);
         purchaseTableView.refresh();
         purchaseTableView.getSelectionModel().clearSelection();
+    }
 
-
-
-
+    @FXML
+    private void addOne() {
+        quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) + 1));
+    }
+    @FXML
+    private void removeOne() {
+        if (Integer.parseInt(quantityField.getText()) > 0) {
+            quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) - 1));
+        }
     }
 }
