@@ -56,6 +56,10 @@ public class PurchaseController implements Initializable {
     private TableView<SoldItem> purchaseTableView;
     @FXML
     private ChoiceBox<String> chooseItemFromList;
+    @FXML
+    private Button plusButton;
+    @FXML
+    private Button minusButton;
 
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
@@ -83,7 +87,6 @@ public class PurchaseController implements Initializable {
             nameField.setText(selectedOption);
             fillInputsBySelectedStockItem();
         });
-
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -259,6 +262,8 @@ public class PurchaseController implements Initializable {
         this.quantityField.setDisable(disable);
         this.nameField.setDisable(disable);
         this.priceField.setDisable(disable);
+        this.plusButton.setDisable(disable);
+        this.minusButton.setDisable(disable);
     }
 
     /**
@@ -277,5 +282,16 @@ public class PurchaseController implements Initializable {
         purchaseTableView.getItems().removeAll(selectedProducts);
         purchaseTableView.refresh();
         purchaseTableView.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void addOne() {
+        quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) + 1));
+    }
+    @FXML
+    private void removeOne() {
+        if (Integer.parseInt(quantityField.getText()) > 0) {
+            quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) - 1));
+        }
     }
 }
