@@ -287,11 +287,13 @@ public class PurchaseController implements Initializable {
     @FXML
     private void addOne() {
         quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) + 1));
+        fillInputsBySelectedStockItem();
     }
     @FXML
     private void removeOne() {
         if (Integer.parseInt(quantityField.getText()) > 0) {
             quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) - 1));
+            fillInputsBySelectedStockItem();
         }
     }
 }

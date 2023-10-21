@@ -29,8 +29,6 @@ public class StockController implements Initializable {
     @FXML
     private TableView<SoldItem> cartTableView;
 
-    @FXML
-    private Button refreshCartButton;
 
 
     private final SalesSystemDAO dao;
@@ -69,7 +67,6 @@ public class StockController implements Initializable {
         addNewProduct();
         refreshButtonClicked();
         deleteButtonClicked();
-        refreshCartButtonClicked();
         cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         cartTableView.refresh();
         // TODO refresh view after adding new items
@@ -114,11 +111,6 @@ public class StockController implements Initializable {
         warehouseTableView.refresh();
     }
 
-    @FXML
-    protected void refreshCartButtonClicked() {
-        cartTableView.setItems(FXCollections.observableList(dao.getSoldItemList()));
-        cartTableView.refresh();
-    }
 
     private void addNewProduct(){
         addItemButton.setOnAction(new EventHandler<ActionEvent>() {
