@@ -34,7 +34,7 @@
         <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" />
         <BorderPane>
             <center>
-                <TableView fx:id="warehouseTableView" styleClass="blue_style" BorderPane.alignment="CENTER">
+                <TableView fx:id="warehouseTableView" styleClass="blue_style" prefHeight="200" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn text="Id">
                             <cellValueFactory>
@@ -58,35 +58,42 @@
                 </TableView>
             </center>
         </BorderPane>
+
+        <Button onAction="#refreshCart" text="Refresh cart" />
+        <TitledPane alignment="CENTER" animated="false" collapsible="true" text="Shopping Cart" >
+            <content>
+                <TableView fx:id="cartTableView" styleClass="blue_style" prefHeight="150">
+                    <columns>
+                        <TableColumn text="Id">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="id" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Price">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="price" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Quantity">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="quantity" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </content>
+        </TitledPane>
+
     </VBox>
-   <TitledPane animated="false" layoutX="-2.0" prefHeight="190.0" prefWidth="191.0" text="Your cart" textAlignment="CENTER" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="0.0">
-     <content>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="181.0">
-             <TableView fx:id="cartTableView" prefHeight="163.0" prefWidth="200.0" styleClass="blue_style">
-               <columns>
-                   <TableColumn minWidth="0.0" prefWidth="82.66666662693024" text="Name">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="name" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn minWidth="0.0" prefWidth="40.66667938232422" text="Price">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="price" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn prefWidth="66.00001525878906" text="Quantity">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="quantity" />
-                       </cellValueFactory>
-                   </TableColumn>
-               </columns>
-             </TableView>
-         </AnchorPane>
-     </content>
-      <graphic>
-         <Button fx:id="refreshCartButton" mnemonicParsing="false" text="Refresh" />
-      </graphic>
-   </TitledPane>
+
 
 
 

@@ -25,26 +25,21 @@ public class HistoryController implements Initializable {
     @FXML
     private TableView<SoldItem> cartTableView;
 
-    @FXML
-    private Button refreshCartButton;
 
     public HistoryController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;
     }
 
-    @FXML
-    protected void refreshCartButtonClicked() {
-        cartTableView.setItems(FXCollections.observableList(dao.getSoldItemList()));
-        cartTableView.refresh();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // TODO: implement
         cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
-        refreshCartButtonClicked();
     }
 
+    @FXML
+    private void refreshCart(){
+        cartTableView.refresh();
+    }
 
 }
