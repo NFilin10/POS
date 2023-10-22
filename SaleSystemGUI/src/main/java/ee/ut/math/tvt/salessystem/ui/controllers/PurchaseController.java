@@ -44,8 +44,8 @@ public class PurchaseController implements Initializable {
     private TextField barCodeField;
     @FXML
     private TextField quantityField;
-    @FXML
-    private TextField nameField;
+//    @FXML
+//    private TextField nameField;
     @FXML
     private TextField priceField;
     @FXML
@@ -60,6 +60,9 @@ public class PurchaseController implements Initializable {
     private Button plusButton;
     @FXML
     private Button minusButton;
+
+
+
 
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
@@ -84,7 +87,7 @@ public class PurchaseController implements Initializable {
         chooseItemFromList.setOnAction(event -> {
             resetProductField();
             String selectedOption = chooseItemFromList.getValue();
-            nameField.setText(selectedOption);
+//            nameField.setText(selectedOption);
             fillInputsBySelectedStockItem();
         });
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -95,7 +98,7 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
-        this.nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+        this.chooseItemFromList.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (!newPropertyValue) {
@@ -181,13 +184,13 @@ public class PurchaseController implements Initializable {
         if (!Objects.equals(barCodeField.getText(), "")) {
             StockItem stockItem = getStockItemByBarcode();
             if (stockItem != null) {
-                nameField.setText(stockItem.getName());
+//                nameField.setText(stockItem.getName());
                 priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
             } else {
                 resetProductField();
             }
         }
-        if (!Objects.equals(nameField.getText(), "")) {
+        if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
                 barCodeField.setText(String.valueOf(stockItem.getId()));
@@ -211,7 +214,7 @@ public class PurchaseController implements Initializable {
 
     private StockItem getStockItemByName() {
         try {
-            String name = nameField.getText();
+            String name = chooseItemFromList.getValue();
             return dao.findStockItem(name);
         } catch (EmptyStackException e) {
             return null;
@@ -237,7 +240,7 @@ public class PurchaseController implements Initializable {
                 dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
                 purchaseTableView.refresh();
             }
-        } else if (!Objects.equals(nameField.getText(), "")) {
+        } else if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
                 int quantity;
@@ -260,7 +263,7 @@ public class PurchaseController implements Initializable {
         this.addItemButton.setDisable(disable);
         this.barCodeField.setDisable(disable);
         this.quantityField.setDisable(disable);
-        this.nameField.setDisable(disable);
+        this.chooseItemFromList.setDisable(disable);
         this.priceField.setDisable(disable);
         this.plusButton.setDisable(disable);
         this.minusButton.setDisable(disable);
@@ -272,7 +275,7 @@ public class PurchaseController implements Initializable {
     private void resetProductField() {
         barCodeField.setText("");
         quantityField.setText("1");
-        nameField.setText("");
+//        nameField.setText("");
         priceField.setText("");
     }
 
