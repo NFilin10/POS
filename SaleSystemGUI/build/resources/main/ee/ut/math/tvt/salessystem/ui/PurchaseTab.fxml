@@ -147,7 +147,7 @@
 <!--                  <TextField fx:id="nameField" GridPane.columnIndex="2" GridPane.rowIndex="2" />-->
                 <TextField fx:id="priceField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <Button fx:id="plusButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addOne" prefHeight="30.0" prefWidth="29.0" text="+" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button fx:id="minusButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#removeOne" prefHeight="34.0" prefWidth="29.0" text="-" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Button fx:id="minusButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#removeOne" prefHeight="30.0" prefWidth="29.0" text="-" textAlignment="CENTER" translateX="15" GridPane.columnIndex="3" GridPane.rowIndex="1" />
               </children>
             </GridPane>
           </content>
