@@ -76,10 +76,6 @@ public class StockController implements Initializable {
         refresh.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                barCodeField.clear();
-                quantityField.clear();
-                nameField.clear();
-                priceField.clear();
                 refreshStockItems();
             }
         });
@@ -115,15 +111,28 @@ public class StockController implements Initializable {
         addItemButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                long barcode = Integer.parseInt(barCodeField.getText());
-                if (dao.findStockItem(barcode) == null){
+                String barcode = barCodeField.getText();
+
+                if (barcode.isEmpty()){
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Empty barcode");
+                    errorAlert.setContentText("The barcode field can not be empty!");
+                    errorAlert.showAndWait();
+                }
+
+                if (dao.findStockItem(Long.parseLong(barcode)) == null){
                     int amount = Integer.parseInt(quantityField.getText());
                     String name = nameField.getText();
                     double price = Double.parseDouble(priceField.getText());
 
                     log.info(name);
-                    StockItem addedItem = new StockItem(barcode, name, "", price, amount);
+                    StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, amount);
                     dao.saveStockItem(addedItem);
+                    barCodeField.clear();
+                    quantityField.clear();
+                    nameField.clear();
+                    priceField.clear();
                 }
 
                 else{
