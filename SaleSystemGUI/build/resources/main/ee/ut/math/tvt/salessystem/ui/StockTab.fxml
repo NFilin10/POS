@@ -108,6 +108,7 @@
         </content>
         <graphic>
             <Button fx:id="refreshCartButton" mnemonicParsing="false" text="Refresh" />
+            <Button onAction="#updateButtonClicked" text="Update"/>
         </graphic>
     </TitledPane>
 </AnchorPane>
