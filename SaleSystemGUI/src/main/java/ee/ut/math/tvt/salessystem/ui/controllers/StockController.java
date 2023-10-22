@@ -112,6 +112,16 @@ public class StockController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 String barcode = barCodeField.getText();
+                int quantity = Integer.parseInt(quantityField.getText());
+
+                if (quantity == 0){
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Zero quantity");
+                    errorAlert.setContentText("The quantity can not be zero!");
+                    errorAlert.showAndWait();
+                }
+
 
                 if (barcode.isEmpty()){
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -121,7 +131,7 @@ public class StockController implements Initializable {
                     errorAlert.showAndWait();
                 }
 
-                if (dao.findStockItem(Long.parseLong(barcode)) == null){
+                else if (dao.findStockItem(Long.parseLong(barcode)) == null){
                     int amount = Integer.parseInt(quantityField.getText());
                     String name = nameField.getText();
                     double price = Double.parseDouble(priceField.getText());
