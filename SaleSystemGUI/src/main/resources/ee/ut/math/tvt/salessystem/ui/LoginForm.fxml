@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.ut.math.tvt.salessystem.ui.controllers.LoginController">
+   <children>
+      <TitledPane animated="false" layoutX="-2.0" prefHeight="400.0" prefWidth="611.0" text="Log in ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="173.0" layoutY="23.0" prefHeight="329.0" prefWidth="263.0" spacing="10.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="295.0" text="Login Form" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="63.0" prefHeight="3.0" prefWidth="288.0" text="Your role:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox prefWidth="150.0">
+                           <items>
+                              <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="Warehouse manager"/>
+                                 <String fx:value="Cashier"/>
+                                 <String fx:value="Customer"/>
+                              </FXCollections>
+                           </items>
+                        </ChoiceBox>
+                        <Label layoutX="10.0" layoutY="10.0" prefHeight="3.0" prefWidth="288.0" text="Username:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField />
+                        <Label layoutX="10.0" layoutY="63.0" prefHeight="3.0" prefWidth="288.0" text="Password:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <PasswordField />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="LOGIN">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin></Button>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets></VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>
