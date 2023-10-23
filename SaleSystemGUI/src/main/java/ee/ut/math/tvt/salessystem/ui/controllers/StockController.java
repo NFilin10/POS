@@ -68,6 +68,16 @@ public class StockController implements Initializable {
         addNewProduct();
         refreshButtonClicked();
         deleteButtonClicked();
+        warehouseTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StockItem>() {
+            public void changed(ObservableValue<? extends StockItem> observable, StockItem oldValue, StockItem newValue) {
+                if (newValue != null) {
+                    barCodeField.setText(String.valueOf(newValue.getId()));
+                    quantityField.setText(String.valueOf(newValue.getQuantity()));
+                    nameField.setText(newValue.getName());
+                    priceField.setText(String.valueOf(newValue.getPrice()));
+                }
+            }
+        });
         // TODO refresh view after adding new items
     }
 
@@ -79,6 +89,19 @@ public class StockController implements Initializable {
                 refreshStockItems();
             }
         });
+    }
+    @FXML
+    public void updateButtonClicked() {
+        // Retrieve data from the form fields and update the selected row in the table
+        int selectedIndex = warehouseTableView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            StockItem selectedItem = warehouseTableView.getItems().get(selectedIndex);
+            selectedItem.setId(Long.parseLong(barCodeField.getText()));
+            selectedItem.setQuantity(Integer.parseInt(quantityField.getText()));
+            selectedItem.setName(nameField.getText());
+            selectedItem.setPrice(Double.parseDouble(priceField.getText()));
+            warehouseTableView.refresh();
+        }
     }
 
     public void deleteButtonClicked() {

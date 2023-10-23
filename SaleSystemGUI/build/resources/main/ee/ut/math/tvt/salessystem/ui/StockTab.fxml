@@ -72,6 +72,7 @@
                 </center>
                 <top>
                     <Button fx:id="refresh" text="Refresh warehouse" BorderPane.alignment="TOP_LEFT" />
+                    <Button onAction="#updateButtonClicked" text="Update"/>
                 </top>
             </BorderPane>
         </TitledPane>
