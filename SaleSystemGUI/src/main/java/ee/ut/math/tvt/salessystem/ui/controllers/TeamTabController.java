@@ -13,8 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TeamTabController implements Initializable {
+    private static final Logger log = LogManager.getLogger(TeamTabController.class);
+
     @FXML
     private Label teamName;
 
@@ -55,8 +59,10 @@ public class TeamTabController implements Initializable {
 
             String logoPath = properties.getProperty("logo");
             logo.setImage(new Image(logoPath));
+            log.info("Team info is set");
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("Team info loading failed");
         }
     }
 
@@ -73,6 +79,7 @@ public class TeamTabController implements Initializable {
             membersList.add(name);
             updateTeamMembers();
         });
+        log.debug("New member is added");
     }
 
     @FXML
@@ -87,11 +94,13 @@ public class TeamTabController implements Initializable {
             membersList.remove(member);
             updateTeamMembers();
         });
+        log.debug("Member is removed");
     }
 
     private void updateTeamMembers() {
         String members = String.join(", ", membersList);
         teamMembers.setText(members);
+        log.debug("Team member tab is updated");
     }
 
 

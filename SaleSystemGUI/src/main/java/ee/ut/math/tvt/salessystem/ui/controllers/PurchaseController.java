@@ -71,6 +71,7 @@ public class PurchaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        log.info("PurchaseController initialises");
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
@@ -95,6 +96,7 @@ public class PurchaseController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (!newPropertyValue) {
                     fillInputsBySelectedStockItem();
+                    log.debug("Registered changes in barcode field");
                 }
             }
         });
@@ -103,6 +105,7 @@ public class PurchaseController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (!newPropertyValue) {
                     fillInputsBySelectedStockItem();
+                    log.debug("Registered changes in ItemList");
                 }
             }
         });
@@ -112,6 +115,7 @@ public class PurchaseController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (!newPropertyValue) {
                     fillInputsBySelectedStockItem();
+                    log.debug("Registered changes in quantity field");
                 }
             }
         });
@@ -124,7 +128,7 @@ public class PurchaseController implements Initializable {
         try {
             enableInputs();
         } catch (SalesSystemException e) {
-            log.error("There is an error in new sale proccess beginning");
+            log.error("There is an error in new sale process beginning");
             log.error(e.getMessage(), e);
         }
     }
@@ -168,6 +172,7 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(false);
         newPurchase.setDisable(true);
         chooseItemFromList.setDisable(false);
+        log.debug("Inputs are now enabled");
     }
 
     // switch UI to the state that allows to initiate new purchase
@@ -177,6 +182,7 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         newPurchase.setDisable(false);
         disableProductField(true);
+        log.debug("Inputs are now disabled");
     }
 
     private void fillInputsBySelectedStockItem() {
@@ -186,8 +192,10 @@ public class PurchaseController implements Initializable {
             if (stockItem != null) {
 //                nameField.setText(stockItem.getName());
                 priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
+                log.debug("Successfully input item using chooseItemFromList (barcode): " + barCodeField.getText());
             } else {
                 resetProductField();
+                log.debug("fillInputsBySelectedStockItem() method interrupted");
             }
         }
         if (!Objects.equals(chooseItemFromList.getValue(), "")) {
@@ -195,8 +203,10 @@ public class PurchaseController implements Initializable {
             if (stockItem != null) {
                 barCodeField.setText(String.valueOf(stockItem.getId()));
                 priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
+                log.debug("Successfully input item using chooseItemFromList: " + chooseItemFromList.getValue());
             } else {
                 resetProductField();
+                log.debug("fillInputsBySelectedStockItem() method interrupted");
             }
         }
     }
@@ -206,8 +216,10 @@ public class PurchaseController implements Initializable {
     private StockItem getStockItemByBarcode() {
         try {
             long code = Long.parseLong(barCodeField.getText());
+            log.debug("Got stock item by barcode: " + code);
             return dao.findStockItem(code);
         } catch (NumberFormatException e) {
+            log.error("Getting stock item by barcode failed");
             return null;
         }
     }
@@ -215,8 +227,10 @@ public class PurchaseController implements Initializable {
     private StockItem getStockItemByName() {
         try {
             String name = chooseItemFromList.getValue();
+            log.debug("Got stock item by name: " + name);
             return dao.findStockItem(name);
         } catch (EmptyStackException e) {
+            log.error("Getting stock item by name failed");
             return null;
         }
     }
@@ -239,6 +253,8 @@ public class PurchaseController implements Initializable {
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
                 purchaseTableView.refresh();
+                log.info("Item added");
+                log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
             }
         } else if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
@@ -252,6 +268,8 @@ public class PurchaseController implements Initializable {
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
                 purchaseTableView.refresh();
+                log.info("Item added");
+                log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
             }
         }
     }
@@ -294,7 +312,7 @@ public class PurchaseController implements Initializable {
     }
     @FXML
     private void removeOne() {
-        if (Integer.parseInt(quantityField.getText()) > 0) {
+        if (Integer.parseInt(quantityField.getText()) > 1) {
             quantityField.setText(String.valueOf(Integer.parseInt(quantityField.getText()) - 1));
             fillInputsBySelectedStockItem();
         }

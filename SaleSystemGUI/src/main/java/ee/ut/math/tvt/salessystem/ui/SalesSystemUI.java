@@ -86,11 +86,14 @@ public class SalesSystemUI extends Application {
 
     private Node loadControls(String fxml, Initializable controller) throws IOException {
         URL resource = getClass().getResource(fxml);
-        if (resource == null)
+        if (resource == null) {
+            log.error("FATAL: controller was not found for: " + fxml + " file");
             throw new IllegalArgumentException(fxml + " not found");
+        }
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
         fxmlLoader.setController(controller);
+        log.info("Controller successfully loaded");
         return fxmlLoader.load();
     }
 }

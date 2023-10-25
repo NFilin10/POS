@@ -64,7 +64,6 @@ public class StockController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         addNewProduct();
         refreshButtonClicked();
         deleteButtonClicked();
@@ -75,10 +74,12 @@ public class StockController implements Initializable {
                     quantityField.setText(String.valueOf(newValue.getQuantity()));
                     nameField.setText(newValue.getName());
                     priceField.setText(String.valueOf(newValue.getPrice()));
+                    log.debug("Registered change in the warehouseView");
                 }
             }
         });
         // TODO refresh view after adding new items
+        log.info("StockController initialised");
     }
 
     @FXML
@@ -87,7 +88,9 @@ public class StockController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 refreshStockItems();
+                log.debug("Refresh button clicked");
             }
+
         });
     }
     @FXML
@@ -102,6 +105,7 @@ public class StockController implements Initializable {
             selectedItem.setPrice(Double.parseDouble(priceField.getText()));
             warehouseTableView.refresh();
         }
+        log.debug("Update button clicked");
     }
 
     public void deleteButtonClicked() {
@@ -112,9 +116,11 @@ public class StockController implements Initializable {
                 if (dao.findStockItem(barcode) != null) {
                     StockItem item = dao.findStockItem(barcode);
                     dao.deleteStockItem(item);
+                    log.debug("Item successfully deleted");
                 } else {
                     log.error("Barcode field is empty or mentioned product doesn't exist");
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    log.error("Error occurred while trying to handle delete button");
                     errorAlert.setTitle("Error");
                     errorAlert.setHeaderText("Barcode field is empty or mentioned product doesn't exist");
                     errorAlert.setContentText("The barcode you entered doesn't present in the database. Please enter a valid barcode.");
@@ -122,11 +128,13 @@ public class StockController implements Initializable {
                 }
             }
         });
+        log.debug("Delete button clicked");
     }
 
     private void refreshStockItems() {
         warehouseTableView.setItems(FXCollections.observableList(dao.findStockItems()));
         warehouseTableView.refresh();
+        log.debug("Stock refreshed");
     }
 
 
@@ -139,6 +147,7 @@ public class StockController implements Initializable {
 
                 if (quantity == 0){
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    log.debug("Error occurred while handling addItemButton: quantity is zero");
                     errorAlert.setTitle("Error");
                     errorAlert.setHeaderText("Zero quantity");
                     errorAlert.setContentText("The quantity can not be zero!");
@@ -148,6 +157,7 @@ public class StockController implements Initializable {
 
                 if (barcode.isEmpty()){
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    log.debug("Error occurred while handling addItemButton: barcode is empty");
                     errorAlert.setTitle("Error");
                     errorAlert.setHeaderText("Empty barcode");
                     errorAlert.setContentText("The barcode field can not be empty!");
@@ -166,11 +176,13 @@ public class StockController implements Initializable {
                     quantityField.clear();
                     nameField.clear();
                     priceField.clear();
+                    log.debug("Successfully adde new item to the stock");
                 }
 
                 else{
                     log.error("barcode already exists");
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    log.debug("Error occurred while handling addItemButton: barcode already exists");
                     errorAlert.setTitle("Error");
                     errorAlert.setHeaderText("Barcode already exists");
                     errorAlert.setContentText("The barcode you entered already exists in the database. Please enter a new barcode.");

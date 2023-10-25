@@ -45,6 +45,7 @@ public class ConsoleUI {
         System.out.println("=       Sales System      =");
         System.out.println("===========================");
         printUsage();
+        log.info("Session started");
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             System.out.print("> ");
@@ -94,16 +95,22 @@ public class ConsoleUI {
 
         if (c[0].equals("h"))
             printUsage();
-        else if (c[0].equals("q"))
+        else if (c[0].equals("q")) {
+            log.info("Session ended");
             System.exit(0);
+        }
         else if (c[0].equals("w"))
             showStock();
         else if (c[0].equals("c"))
             showCart();
-        else if (c[0].equals("p"))
+        else if (c[0].equals("p")) {
             cart.submitCurrentPurchase();
-        else if (c[0].equals("r"))
+            log.debug("Purchase submitted");
+        }
+        else if (c[0].equals("r")) {
             cart.cancelCurrentPurchase();
+            log.debug("Purchase cancelled");
+        }
         else if (c[0].equals("t"))
             printTeamInfo();
         else if (c[0].equals("a") && c.length == 3) {
@@ -113,13 +120,16 @@ public class ConsoleUI {
                 StockItem item = dao.findStockItem(idx);
                 if (item != null) {
                     cart.addItem(new SoldItem(item, Math.min(amount, item.getQuantity())));
+                    log.info("Item added to the cart");
                 } else {
+                    log.error("Invalid id");
                     System.out.println("no stock item with id " + idx);
                 }
             } catch (SalesSystemException | NoSuchElementException e) {
                 log.error(e.getMessage(), e);
             }
         } else {
+            log.error("Unidentifiable command");
             System.out.println("unknown command");
         }
     }
@@ -132,7 +142,9 @@ public class ConsoleUI {
             System.out.println("Team leader: " + properties.getProperty("contactPerson"));
             System.out.println("Team leader email: " + properties.getProperty("contact"));
             System.out.println("Team members: " + properties.getProperty("members"));
+            log.info("Team info printed");
         } catch (IOException e) {
+            log.error("Failed to print team info: " + e.getMessage());
             e.printStackTrace();
         }
     }
