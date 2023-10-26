@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
+import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,9 +28,6 @@ public class StockController implements Initializable {
     private static final Logger log = LogManager.getLogger(StockController.class);
 
     private final ShoppingCart shoppingCart;
-
-
-
 
     private final SalesSystemDAO dao;
 
@@ -57,16 +55,19 @@ public class StockController implements Initializable {
     @FXML
     private Button delete;
 
+    private Warehouse warehouse;
+
     public StockController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
         this.dao = dao;
+        this.warehouse = new Warehouse(dao);
+
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        addNewProduct();
         refreshButtonClicked();
-        deleteButtonClicked();
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StockItem>() {
             public void changed(ObservableValue<? extends StockItem> observable, StockItem oldValue, StockItem newValue) {
                 if (newValue != null) {
@@ -95,41 +96,58 @@ public class StockController implements Initializable {
     }
     @FXML
     public void updateButtonClicked() {
-        // Retrieve data from the form fields and update the selected row in the table
         int selectedIndex = warehouseTableView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             StockItem selectedItem = warehouseTableView.getItems().get(selectedIndex);
-            selectedItem.setId(Long.parseLong(barCodeField.getText()));
-            selectedItem.setQuantity(Integer.parseInt(quantityField.getText()));
-            selectedItem.setName(nameField.getText());
-            selectedItem.setPrice(Double.parseDouble(priceField.getText()));
-            warehouseTableView.refresh();
+
+            String barcodeText = barCodeField.getText();
+            String quantityText = quantityField.getText();
+            String name = nameField.getText();
+            String priceText = priceField.getText();
+
+            String errorMessage = warehouse.updateItem(selectedItem, barcodeText, quantityText, name, priceText);
+
+            if (errorMessage != null) {
+                log.error("Error occurred while updating the item: " + errorMessage);
+                ErrorManager.showError(errorMessage);
+            } else {
+                warehouseTableView.refresh();
+                log.debug("Item successfully updated");
+            }
         }
-        log.debug("Update button clicked");
     }
 
-    public void deleteButtonClicked() {
-        delete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                long barcode = Integer.parseInt(barCodeField.getText());
-                if (dao.findStockItem(barcode) != null) {
-                    StockItem item = dao.findStockItem(barcode);
-                    dao.deleteStockItem(item);
-                    log.debug("Item successfully deleted");
-                } else {
-                    log.error("Barcode field is empty or mentioned product doesn't exist");
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    log.error("Error occurred while trying to handle delete button");
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Barcode field is empty or mentioned product doesn't exist");
-                    errorAlert.setContentText("The barcode you entered doesn't present in the database. Please enter a valid barcode.");
-                    errorAlert.showAndWait();
-                }
-            }
-        });
-        log.debug("Delete button clicked");
+
+    private boolean isBarcodeUnique(StockItem selectedItem, String newBarcodeText) {
+        long newBarcode = Long.parseLong(newBarcodeText);
+        if (selectedItem.getId() == newBarcode) {
+            return true; // The new barcode matches the selected item's barcode
+        }
+
+        // Check if the new barcode is already in use by another item
+        StockItem existingItem = dao.findStockItem(newBarcode);
+        return existingItem == null;
     }
+
+
+
+    public void deleteButtonClicked() {
+        String barcodeText = barCodeField.getText();
+        if (barcodeText.isEmpty()) {
+            log.error("Barcode field is empty");
+            ErrorManager.showError("The barcode field cannot be empty.");
+        } else {
+            long barcode = Long.parseLong(barcodeText);
+
+            if (warehouse.deleteItemFromWarehouse(barcode)) {
+                log.debug("Item successfully deleted");
+            } else {
+                log.error("Mentioned product doesn't exist");
+                ErrorManager.showError("The product with the given barcode doesn't exist in the database.");
+            }
+        }
+    }
+
 
     private void refreshStockItems() {
         warehouseTableView.setItems(FXCollections.observableList(dao.findStockItems()));
@@ -138,64 +156,28 @@ public class StockController implements Initializable {
     }
 
 
-    @FXML
-    public void addNewProduct(){
-        dao.beginTransaction();
-
+    public void addNewProduct() {
         String barcode = barCodeField.getText();
         int quantity = Integer.parseInt(quantityField.getText());
+        String name = nameField.getText();
+        double price = Double.parseDouble(priceField.getText());
 
-        if (quantity == 0){
+        String errorMessage = warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
+
+        if (errorMessage != null) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            log.debug("Error occurred while handling addItemButton: quantity is zero");
             errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Zero quantity");
-            errorAlert.setContentText("The quantity can not be zero!");
+            errorAlert.setHeaderText("Input Error");
+            errorAlert.setContentText(errorMessage);
             errorAlert.showAndWait();
-            dao.rollbackTransaction();
 
-        }
-
-
-        if (barcode.isEmpty()){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            log.debug("Error occurred while handling addItemButton: barcode is empty");
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Empty barcode");
-            errorAlert.setContentText("The barcode field can not be empty!");
-            errorAlert.showAndWait();
-            dao.rollbackTransaction();
-
-        }
-
-        else if (dao.findStockItem(Long.parseLong(barcode)) == null){
-            int amount = Integer.parseInt(quantityField.getText());
-            String name = nameField.getText();
-            double price = Double.parseDouble(priceField.getText());
-
-            log.info(name);
-            StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, amount);
-            dao.saveStockItem(addedItem);
-            dao.commitTransaction();
+        } else {
             barCodeField.clear();
             quantityField.clear();
             nameField.clear();
             priceField.clear();
-            log.debug("Successfully adde new item to the stock");
-        }
-
-        else{
-            log.error("barcode already exists");
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            log.debug("Error occurred while handling addItemButton: barcode already exists");
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Barcode already exists");
-            errorAlert.setContentText("The barcode you entered already exists in the database. Please enter a new barcode.");
-            errorAlert.showAndWait();
-            dao.rollbackTransaction();
-
+            log.debug("Successfully added a new item to the stock");
         }
     }
-
 
 }
