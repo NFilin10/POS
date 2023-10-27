@@ -13,22 +13,22 @@ public class Warehouse {
     }
 
 
-    public String addNewProductToWarehouse(String barcode, int quantity, String name, double price) {
+    public void addNewProductToWarehouse(String barcode, int quantity, String name, double price)
+            throws ApplicationException {
         dao.beginTransaction();
         if (barcode.isEmpty()) {
             dao.rollbackTransaction();
-            return "Barcode cannot be empty";
-        } else if (quantity <= 0){
+            throw new ApplicationException("Barcode cannot be empty");
+        } else if (quantity <= 0) {
             dao.rollbackTransaction();
-            return "Quantity cannot be zero or negative";
-        }else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
+            throw new ApplicationException("Quantity cannot be zero or negative");
+        } else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
             StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, quantity);
             dao.saveStockItem(addedItem);
             dao.commitTransaction();
-            return null;
         } else {
             dao.rollbackTransaction();
-            return "The barcode you entered already exists in the database. Please enter a new barcode.";
+            throw new ApplicationException("The barcode you entered already exists in the database. Please enter a new barcode.");
         }
     }
 
@@ -65,7 +65,4 @@ public class Warehouse {
             return "Invalid input";
         }
     }
-
-
-
 }

@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.controllers;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import javafx.beans.value.ChangeListener;
@@ -156,27 +157,22 @@ public class StockController implements Initializable {
     }
 
 
+    @FXML
     public void addNewProduct() {
         String barcode = barCodeField.getText();
         int quantity = Integer.parseInt(quantityField.getText());
         String name = nameField.getText();
         double price = Double.parseDouble(priceField.getText());
 
-        String errorMessage = warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
-
-        if (errorMessage != null) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Input Error");
-            errorAlert.setContentText(errorMessage);
-            errorAlert.showAndWait();
-
-        } else {
+        try {
+            warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
             barCodeField.clear();
             quantityField.clear();
             nameField.clear();
             priceField.clear();
             log.debug("Successfully added a new item to the stock");
+        } catch (ApplicationException e) {
+            ErrorManager.showError(e.getMessage());
         }
     }
 
