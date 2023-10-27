@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="addItem" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-27T22:34:30" hostname="MBP-Nikita" time="0.188">
+  <properties/>
+  <testcase name="testAddingItemBeginsAndCommitsTransaction" classname="addItem" time="0.188"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
