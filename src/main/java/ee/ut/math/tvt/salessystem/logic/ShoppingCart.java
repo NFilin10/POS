@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,22 +44,37 @@ public class ShoppingCart {
         log.debug("Purchase cancelled");
     }
 
-    public void submitCurrentPurchase(double cost) {
+    public void submitCurrentPurchase() {
+        Warehouse warehouse = new Warehouse(dao);
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
+
+        double cartCost = 0;
+        for (SoldItem item : items) {
+            cartCost += item.getPrice() * item.getQuantity();
+            System.out.println(item.getStockItem());
+            StockItem itemInStock = dao.findStockItem(item.getStockItem().getId());
+            int itemInStockAmount = itemInStock.getQuantity();
+
+            if (itemInStockAmount - item.getQuantity() == 0){
+                warehouse.deleteItemFromWarehouse(itemInStock.getId());
+            } else{
+                itemInStock.setQuantity(itemInStockAmount - item.getQuantity());
+            }
+
+
+        }
 
         int seconds = time.getSecond();
         String formattedSeconds = String.format("%02d", seconds);
         LocalTime roundedTime = LocalTime.of(time.getHour(), time.getMinute(), Integer.parseInt(formattedSeconds));
-
-        // TODO decrease quantities of the warehouse stock
 
         // note the use of transactions. InMemorySalesSystemDAO ignores transactions
         // but when you start using hibernate in lab5, then it will become relevant.
         // what is a transaction? https://stackoverflow.com/q/974596
         dao.beginTransaction();
         try {
-            Purchase purchase = new Purchase(cost, date, roundedTime);
+            Purchase purchase = new Purchase(cartCost, date, roundedTime);
             dao.savePurchase(purchase);
 
             dao.commitTransaction();

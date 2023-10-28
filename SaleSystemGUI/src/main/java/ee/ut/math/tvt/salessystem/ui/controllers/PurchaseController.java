@@ -78,21 +78,7 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
-        chooseItemFromList.setDisable(true);
 
-        for (String s : chooseItemFromList.getItems()) {
-            chooseItemFromList.getItems().remove(s);
-        }
-        for (StockItem stockItem : dao.findStockItems()) {
-            chooseItemFromList.getItems().add(stockItem.getName());
-        }
-
-        chooseItemFromList.setOnAction(event -> {
-            resetProductField();
-            String selectedOption = chooseItemFromList.getValue();
-//            nameField.setText(selectedOption);
-            fillInputsBySelectedStockItem();
-        });
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -102,15 +88,7 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
-        this.chooseItemFromList.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-                if (!newPropertyValue) {
-                    fillInputsBySelectedStockItem();
-                    log.debug("Registered changes in ItemList");
-                }
-            }
-        });
+
 
         this.quantityField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -126,6 +104,38 @@ public class PurchaseController implements Initializable {
     /** Event handler for the <code>new purchase</code> event. */
     @FXML
     protected void newPurchaseButtonClicked() {
+
+        chooseItemFromList.setDisable(true);
+
+
+        List<String> itemsToRemove = new ArrayList<>();
+
+        itemsToRemove.addAll(chooseItemFromList.getItems());
+
+        chooseItemFromList.getItems().removeAll(itemsToRemove);
+
+
+        for (StockItem stockItem : dao.findStockItems()) {
+            chooseItemFromList.getItems().add(stockItem.getName());
+        }
+
+        chooseItemFromList.setOnAction(event -> {
+            resetProductField();
+            String selectedOption = chooseItemFromList.getValue();
+//            nameField.setText(selectedOption);
+            fillInputsBySelectedStockItem();
+        });
+
+        this.chooseItemFromList.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (!newPropertyValue) {
+                    fillInputsBySelectedStockItem();
+                    log.debug("Registered changes in ItemList");
+                }
+            }
+        });
+
         log.info("New sale process started");
         try {
             enableInputs();
@@ -158,12 +168,8 @@ public class PurchaseController implements Initializable {
         log.info("Sale complete, have a nice day!");
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
-            double cartCost = 0;
-            for (SoldItem soldItem : shoppingCart.getAll()) {
-                cartCost += soldItem.getPrice() * soldItem.getQuantity();
-            }
 
-            shoppingCart.submitCurrentPurchase(cartCost);
+            shoppingCart.submitCurrentPurchase();
             disableInputs();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {
