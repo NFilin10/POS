@@ -15,7 +15,7 @@
 
             <Button prefWidth="170" onAction="#filterBetweenDates" text="Show between dates" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <Button prefWidth="170" onAction="#getLast10Purchases" text="Show last 10" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Button prefWidth="170" text="Show all" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Button prefWidth="170" onAction="#showAllPurchases" text="Show all" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
             <Label text="Start date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <Label text="End date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="1" />

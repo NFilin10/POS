@@ -42,7 +42,14 @@ public class ShoppingCart {
         log.debug("Purchase cancelled");
     }
 
-    public void submitCurrentPurchase(double cost, LocalDate date, LocalTime time) {
+    public void submitCurrentPurchase(double cost) {
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        int seconds = time.getSecond();
+        String formattedSeconds = String.format("%02d", seconds);
+        LocalTime roundedTime = LocalTime.of(time.getHour(), time.getMinute(), Integer.parseInt(formattedSeconds));
+
         // TODO decrease quantities of the warehouse stock
 
         // note the use of transactions. InMemorySalesSystemDAO ignores transactions
@@ -50,7 +57,7 @@ public class ShoppingCart {
         // what is a transaction? https://stackoverflow.com/q/974596
         dao.beginTransaction();
         try {
-            Purchase purchase = new Purchase(cost, date, time);
+            Purchase purchase = new Purchase(cost, date, roundedTime);
             dao.savePurchase(purchase);
 
             dao.commitTransaction();

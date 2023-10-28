@@ -81,8 +81,13 @@ public class HistoryController implements Initializable {
 
     @FXML
     private void getLast10Purchases() {
-        List<Purchase> filteredPurchases = history.getLast10Purchases(dao);
+        List<Purchase> filteredPurchases = history.getLast10(dao);
         purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
+    }
+
+    @FXML
+    private void showAllPurchases(){
+        purchaseTableView.setItems(FXCollections.observableList(history.showAll(dao)));
     }
 
 

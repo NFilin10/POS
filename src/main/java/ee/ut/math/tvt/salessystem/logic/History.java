@@ -32,7 +32,7 @@ public class History {
     }
 
 
-    public List<Purchase> getLast10Purchases(SalesSystemDAO dao) {
+    public List<Purchase> getLast10(SalesSystemDAO dao) {
 
         List<Purchase> allPurchases = dao.getPurchaseList();
         int numberOfPurchases = Math.min(10, allPurchases.size());
@@ -44,5 +44,11 @@ public class History {
 
         return last10Purchases;
     }
+
+
+    public List<Purchase> showAll(SalesSystemDAO dao) {
+        return dao.getPurchaseList();
+    }
+
 
 }

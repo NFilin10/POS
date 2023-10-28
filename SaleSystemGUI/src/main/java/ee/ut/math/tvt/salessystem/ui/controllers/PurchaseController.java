@@ -163,9 +163,7 @@ public class PurchaseController implements Initializable {
                 cartCost += soldItem.getPrice() * soldItem.getQuantity();
             }
 
-            LocalDate date = LocalDate.now();
-            LocalTime time = LocalTime.now();
-            shoppingCart.submitCurrentPurchase(cartCost, date, time);
+            shoppingCart.submitCurrentPurchase(cartCost);
             disableInputs();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {
