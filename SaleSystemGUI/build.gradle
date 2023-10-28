@@ -22,8 +22,14 @@ dependencies {
     implementation project(':')
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.20.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+<<<<<<< HEAD
     testImplementation group: 'junit', name: 'junit', version:'4.+'
     testImplementation "org.mockito:mockito-core:3.+"
+=======
+//    testImplementation group: 'junit', name: 'junit', version:'4.+'
+//    testImplementation "org.mockito:mockito-core:3.+"
+
+>>>>>>> b7ce27196211f7fa2e8a81bbafebcfc370bc1a2b
 }
 
 mainClassName = 'ee.ut.math.tvt.salessystem.ui.SalesSystemUI'

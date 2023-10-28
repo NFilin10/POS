@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testsuite name="addItem" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-27T23:49:13" hostname="MBP-Nikita" time="0.178">
   <properties/>
   <testcase name="testUpdateExistingItemByBarcode" classname="addItem" time="0.178"/>
+=======
+<testsuite name="addItem" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-26T12:36:07" hostname="MBP-Nikita" time="0.322">
+  <properties/>
+  <testcase name="testSubmitCurrentPurchase" classname="addItem" time="0.322"/>
+>>>>>>> b7ce27196211f7fa2e8a81bbafebcfc370bc1a2b
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
