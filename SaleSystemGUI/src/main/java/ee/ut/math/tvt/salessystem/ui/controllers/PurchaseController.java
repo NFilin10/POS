@@ -20,6 +20,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -156,7 +158,14 @@ public class PurchaseController implements Initializable {
         log.info("Sale complete, have a nice day!");
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
-            shoppingCart.submitCurrentPurchase();
+            double cartCost = 0;
+            for (SoldItem soldItem : shoppingCart.getAll()) {
+                cartCost += soldItem.getPrice() * soldItem.getQuantity();
+            }
+
+            LocalDate date = LocalDate.now();
+            LocalTime time = LocalTime.now();
+            shoppingCart.submitCurrentPurchase(cartCost, date, time);
             disableInputs();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {

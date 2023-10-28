@@ -1,8 +1,11 @@
 package ee.ut.math.tvt.salessystem.logic;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +42,7 @@ public class ShoppingCart {
         log.debug("Purchase cancelled");
     }
 
-    public void submitCurrentPurchase() {
+    public void submitCurrentPurchase(double cost, LocalDate date, LocalTime time) {
         // TODO decrease quantities of the warehouse stock
 
         // note the use of transactions. InMemorySalesSystemDAO ignores transactions
@@ -47,9 +50,9 @@ public class ShoppingCart {
         // what is a transaction? https://stackoverflow.com/q/974596
         dao.beginTransaction();
         try {
-            for (SoldItem item : items) {
-                dao.saveSoldItem(item);
-            }
+            Purchase purchase = new Purchase(cost, date, time);
+            dao.savePurchase(purchase);
+
             dao.commitTransaction();
             items.clear();
             log.debug("Current purchase submitted");

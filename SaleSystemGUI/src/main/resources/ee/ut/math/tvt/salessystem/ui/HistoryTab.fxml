@@ -13,14 +13,14 @@
                 <ColumnConstraints prefWidth="200" />
             </columnConstraints>
 
-            <Button prefWidth="140" text="Show between dates" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button prefWidth="140" text="Show last 10" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Button prefWidth="140" text="Show all" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Button prefWidth="170" onAction="#filterBetweenDates" text="Show between dates" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Button prefWidth="170" onAction="#getLast10Purchases" text="Show last 10" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Button prefWidth="170" text="Show all" translateX="-50" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
             <Label text="Start date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <Label text="End date" translateX="15" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <DatePicker translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-            <DatePicker translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="startDatePicker" translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <DatePicker fx:id="endDatePicker" translateX="25" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          <rowConstraints>
             <RowConstraints />
             <RowConstraints />
@@ -34,21 +34,21 @@
         <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" />
         <BorderPane>
             <center>
-                <TableView fx:id="warehouseTableView" styleClass="blue_style" prefHeight="200" BorderPane.alignment="CENTER">
+                <TableView fx:id="purchaseTableView" styleClass="blue_style" prefHeight="200" BorderPane.alignment="CENTER">
                     <columns>
-                        <TableColumn text="Id">
+                        <TableColumn text="Date">
                             <cellValueFactory>
-                                <PropertyValueFactory property="Date" />
+                                <PropertyValueFactory property="date" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Name">
+                        <TableColumn text="Time">
                             <cellValueFactory>
-                                <PropertyValueFactory property="Time" />
+                                <PropertyValueFactory property="time" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Price">
+                        <TableColumn text="Total">
                             <cellValueFactory>
-                                <PropertyValueFactory property="Total" />
+                                <PropertyValueFactory property="price" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
