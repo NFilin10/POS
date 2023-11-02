@@ -63,7 +63,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private Button minusButton;
 
-
+    @FXML TextField searchTextField;
 
 
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
@@ -78,6 +78,25 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
+
+
+        List<StockItem> allItems = dao.findStockItems();
+        ObservableList<String> itemNames = FXCollections.observableArrayList();
+        for (StockItem item : allItems) {
+            itemNames.add(item.getName());
+        }
+        chooseItemFromList.setItems(itemNames);
+
+        // Add a listener to the search TextField
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterItems(newValue);
+        });
+
+        chooseItemFromList.setOnAction(event -> {
+            resetProductField();
+            String selectedOption = chooseItemFromList.getValue();
+            fillInputsBySelectedStockItem1(selectedOption);
+        });
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -99,6 +118,17 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
+    }
+
+    private void filterItems(String keyword) {
+        ObservableList<String> filteredItems = FXCollections.observableArrayList();
+        List<StockItem> allItems = dao.findStockItems();
+        for (StockItem item : allItems) {
+            if (item.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredItems.add(item.getName());
+            }
+        }
+        chooseItemFromList.setItems(filteredItems);
     }
 
     /** Event handler for the <code>new purchase</code> event. */
@@ -221,6 +251,19 @@ public class PurchaseController implements Initializable {
                 resetProductField();
                 log.debug("fillInputsBySelectedStockItem() method interrupted");
             }
+        }
+    }
+
+
+    private void fillInputsBySelectedStockItem1(String selectedOption) {
+        StockItem stockItem = dao.findStockItem(selectedOption);
+        if (stockItem != null) {
+            barCodeField.setText(String.valueOf(stockItem.getId()));
+            priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
+            log.debug("Successfully input item using chooseItemFromList: " + selectedOption);
+        } else {
+            resetProductField();
+            log.debug("fillInputsBySelectedStockItem() method interrupted");
         }
     }
 
