@@ -76,6 +76,7 @@ public class PurchaseController implements Initializable {
         log.info("PurchaseController initialises");
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
+        disablePriceAndBarcodeInput();
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
 
@@ -118,6 +119,16 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
+    }
+
+    private void disablePriceAndBarcodeInput() {
+        barCodeField.setDisable(true);
+        priceField.setDisable(true);
+    }
+
+    private void enablePriceAndBarcodeInput() {
+        barCodeField.setDisable(false);
+        priceField.setDisable(false);
     }
 
     private void filterItems(String keyword) {
@@ -335,10 +346,8 @@ public class PurchaseController implements Initializable {
      */
     private void disableProductField(boolean disable) {
         this.addItemButton.setDisable(disable);
-        this.barCodeField.setDisable(disable);
         this.quantityField.setDisable(disable);
         this.chooseItemFromList.setDisable(disable);
-        this.priceField.setDisable(disable);
         this.plusButton.setDisable(disable);
         this.minusButton.setDisable(disable);
     }
