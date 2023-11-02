@@ -69,6 +69,7 @@ public class StockController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshButtonClicked();
+        disablePriceAndBarcodeInput();
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StockItem>() {
             public void changed(ObservableValue<? extends StockItem> observable, StockItem oldValue, StockItem newValue) {
                 if (newValue != null) {
@@ -84,6 +85,15 @@ public class StockController implements Initializable {
         log.info("StockController initialised");
     }
 
+    private void disablePriceAndBarcodeInput() {
+        barCodeField.setDisable(true);
+        priceField.setDisable(true);
+    }
+
+    private void enablePriceAndBarcodeInput() {
+        barCodeField.setDisable(false);
+        priceField.setDisable(false);
+    }
     @FXML
     public void refreshButtonClicked() {
         refresh.setOnAction(new EventHandler<ActionEvent>() {
