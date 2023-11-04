@@ -7,7 +7,9 @@ import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import org.apache.logging.log4j.LogManager;
@@ -48,10 +50,11 @@ public class ShoppingCart {
         Warehouse warehouse = new Warehouse(dao);
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
+        System.out.println(items);
 
         double cartCost = 0;
         for (SoldItem item : items) {
-            cartCost += item.getPrice() * item.getQuantity();
+            cartCost += item.getPrice();
             System.out.println(item.getStockItem());
             StockItem itemInStock = dao.findStockItem(item.getStockItem().getId());
             int itemInStockAmount = itemInStock.getQuantity();
@@ -86,4 +89,17 @@ public class ShoppingCart {
             throw e;
         }
     }
+
+    public void deleteItemFromCart(StockItem item){
+        Iterator<SoldItem> it = items.iterator();
+        while (it.hasNext()){
+            SoldItem product = it.next();
+            if (product.getName().equals(item.getName())){
+                it.remove();
+                System.out.println("Done");
+                break;
+            }
+        }
+    }
+
 }

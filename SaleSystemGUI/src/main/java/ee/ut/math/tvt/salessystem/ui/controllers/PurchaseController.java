@@ -368,6 +368,7 @@ public class PurchaseController implements Initializable {
         purchaseTableView.getItems().removeAll(selectedProducts);
         purchaseTableView.refresh();
         purchaseTableView.getSelectionModel().clearSelection();
+
     }
 
     @FXML

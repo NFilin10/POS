@@ -35,7 +35,6 @@ public class Warehouse {
     public boolean deleteItemFromWarehouse(long barcode) {
         StockItem item = dao.findStockItem(barcode);
         if (item != null) {
-            System.out.println("YES");
             dao.deleteStockItem(item);
             return true;
         } else {
