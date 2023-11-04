@@ -41,7 +41,7 @@
         </GridPane>
 
         <TitledPane alignment="CENTER" animated="false" collapsible="false" text="Warehouse status" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
-            <BorderPane>
+            <BorderPane fx:id="stock">
                 <center>
                     <TableView fx:id="warehouseTableView" styleClass="blue_style" BorderPane.alignment="CENTER">
                         <columns>
