@@ -38,10 +38,7 @@ public class addItem {
     }
 
     @Test
-    public void testAddingNewItem() throws ApplicationException {
-
-        dao1 = new InMemorySalesSystemDAO();
-        warehouse = new Warehouse(dao1);
+    public void testAddingNewItem() throws ApplicationException, NegativePriceException {
 
         String barcode = "7";
         int quantity = 10;
@@ -50,8 +47,13 @@ public class addItem {
 
         warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
 
-        StockItem addedItem = dao1.findStockItem(Long.parseLong(barcode));
+        // Verify that the mocked DAO is called correctly
+        ArgumentCaptor<StockItem> stockItemCaptor = ArgumentCaptor.forClass(StockItem.class);
+        verify(dao).saveStockItem(stockItemCaptor.capture());
+
+        StockItem addedItem = stockItemCaptor.getValue();
         System.out.println(addedItem);
+
         assertEquals(barcode, String.valueOf(addedItem.getId()));
         assertEquals(quantity, addedItem.getQuantity());
         assertEquals(name, addedItem.getName());

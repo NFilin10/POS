@@ -16,22 +16,24 @@ public class Warehouse {
     public void addNewProductToWarehouse(String barcode, int quantity, String name, double price)
             throws ApplicationException, NegativePriceException {
         dao.beginTransaction();
-        if (barcode.isEmpty()) {
+        try {
+            long barcodeValue = Long.parseLong(barcode);
+            if (barcode.isEmpty()) {
+                throw new ApplicationException("Barcode cannot be empty");
+            } else if (quantity <= 0) {
+                throw new ApplicationException("Quantity cannot be zero or negative");
+            } else if (price < 0) {
+                throw new NegativePriceException();
+            } else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
+                StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, quantity);
+                dao.saveStockItem(addedItem);
+                dao.commitTransaction();
+            } else {
+                throw new ApplicationException("The barcode you entered already exists in the database. Please enter a new barcode.");
+            }
+        } catch (NumberFormatException e){
             dao.rollbackTransaction();
-            throw new ApplicationException("Barcode cannot be empty");
-        } else if (quantity <= 0) {
-            dao.rollbackTransaction();
-            throw new ApplicationException("Quantity cannot be zero or negative");
-        } else if (price < 0) {
-            dao.rollbackTransaction();
-            throw new NegativePriceException();
-        } else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
-            StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, quantity);
-            dao.saveStockItem(addedItem);
-            dao.commitTransaction();
-        } else {
-            dao.rollbackTransaction();
-            throw new ApplicationException("The barcode you entered already exists in the database. Please enter a new barcode.");
+            throw new ApplicationException("Invalid barcode format");
         }
     }
 
