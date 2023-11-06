@@ -14,7 +14,7 @@ public class Warehouse {
 
 
     public void addNewProductToWarehouse(String barcode, int quantity, String name, double price)
-            throws ApplicationException {
+            throws ApplicationException, NegativePriceException {
         dao.beginTransaction();
         if (barcode.isEmpty()) {
             dao.rollbackTransaction();
@@ -22,6 +22,9 @@ public class Warehouse {
         } else if (quantity <= 0) {
             dao.rollbackTransaction();
             throw new ApplicationException("Quantity cannot be zero or negative");
+        } else if (price < 0) {
+            dao.rollbackTransaction();
+            throw new NegativePriceException();
         } else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
             StockItem addedItem = new StockItem(Long.parseLong(barcode), name, "", price, quantity);
             dao.saveStockItem(addedItem);
@@ -42,7 +45,7 @@ public class Warehouse {
         }
     }
 
-    public String updateItem(StockItem item, String barcodeText, String quantityText, String name, String priceText) {
+    public String updateItem(StockItem item, String barcodeText, String quantityText, String name, String priceText) throws NegativePriceException {
         try {
             long newBarcode = Long.parseLong(barcodeText);
 
@@ -53,6 +56,9 @@ public class Warehouse {
 
             int quantity = Integer.parseInt(quantityText);
             double price = Double.parseDouble(priceText);
+            if (price < 0){
+                throw new NegativePriceException();
+            }
 
             item.setId(newBarcode);
             item.setQuantity(quantity);
