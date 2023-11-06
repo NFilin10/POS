@@ -6,10 +6,7 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import ee.ut.math.tvt.salessystem.logic.ApplicationException;
-import ee.ut.math.tvt.salessystem.logic.History;
-import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
-import ee.ut.math.tvt.salessystem.logic.Warehouse;
+import ee.ut.math.tvt.salessystem.logic.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -155,15 +152,18 @@ public class ConsoleUI {
                 System.out.println("Done. ");
             } catch (SalesSystemException | NoSuchElementException e) {
                 log.error(e.getMessage(), e);
-            } catch (ApplicationException e) {
+            } catch (ApplicationException | NegativePriceException e) {
                 System.out.println(e.getMessage());;
             }
         } else if (c[0].equals("ds")){
             warehouse.deleteItemFromWarehouse(Long.parseLong(c[1]));
             System.out.println("Done");
         } else if (c[0].equals("u")) {
-            warehouse.updateItem(dao.findStockItem(Long.parseLong(c[1])), c[1], c[2], c[3], c[4]);
-            System.out.println("Done");
+            try {
+                warehouse.updateItem(dao.findStockItem(Long.parseLong(c[1])), c[1], c[2], c[3], c[4]);
+            } catch (NegativePriceException e) {
+                System.out.println(e.getMessage());;
+            }
         } else if (c[0].equals("f1") && c.length == 3) {
             try {
                 filterBetweenDates(c);

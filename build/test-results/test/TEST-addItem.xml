@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="addItem" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-30T22:27:30" hostname="MBP-Nikita" time="0.2">
+<testsuite name="addItem" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-11-06T18:29:16" hostname="MBP-Nikita" time="0.198">
   <properties/>
-  <testcase name="testAddingExistingItem" classname="addItem" time="0.197"/>
-  <testcase name="testAddingItemBeginsAndCommitsTransaction" classname="addItem" time="0.001"/>
-  <testcase name="testAddingItemWithNegativeQuantity" classname="addItem" time="0.001"/>
-  <testcase name="testAddingNewItem" classname="addItem" time="0.001"/>
+  <testcase name="testAddingExistingItem" classname="addItem" time="0.194"/>
+  <testcase name="testAddingItemBeginsAndCommitsTransaction" classname="addItem" time="0.002"/>
+  <testcase name="testAddingItemWithNegativeQuantity" classname="addItem" time="0.0"/>
+  <testcase name="testAddingNewItem" classname="addItem" time="0.002"/>
   <system-out><![CDATA[StockItem{id=7, name='New Product'}
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
