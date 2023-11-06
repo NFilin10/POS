@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -317,11 +318,16 @@ public class PurchaseController implements Initializable {
                 } catch (NumberFormatException e) {
                     quantity = 1;
                 }
-                shoppingCart.addItem(new SoldItem(stockItem, quantity));
-                dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
-                purchaseTableView.refresh();
-                log.info("Item added");
-                log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
+                try {
+                    shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                    dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
+                    purchaseTableView.refresh();
+                    log.info("Item added");
+                    log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
+                } catch (ApplicationException e){
+                    ErrorManager.showError(e.getMessage());
+                }
+
             }
         } else if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
@@ -332,11 +338,16 @@ public class PurchaseController implements Initializable {
                 } catch (NumberFormatException e) {
                     quantity = 1;
                 }
-                shoppingCart.addItem(new SoldItem(stockItem, quantity));
-                dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
-                purchaseTableView.refresh();
-                log.info("Item added");
-                log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
+                try {
+                    shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                    dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
+                    purchaseTableView.refresh();
+                    log.info("Item added");
+                    log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
+                } catch (ApplicationException e){
+                    ErrorManager.showError(e.getMessage());
+                }
+
             }
         }
     }

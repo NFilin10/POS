@@ -18,6 +18,9 @@ public class Warehouse {
         dao.beginTransaction();
         try {
             long barcodeValue = Long.parseLong(barcode);
+            if (barcodeValue < 0){
+                throw new ApplicationException("Barcode cannot be negative");
+            }
             if (barcode.isEmpty()) {
                 throw new ApplicationException("Barcode cannot be empty");
             } else if (quantity <= 0) {

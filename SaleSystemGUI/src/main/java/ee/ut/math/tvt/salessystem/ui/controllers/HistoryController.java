@@ -63,6 +63,7 @@ public class HistoryController implements Initializable {
 
     @FXML
     private void refreshCart(){
+        cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         cartTableView.refresh();
     }
 

@@ -29,10 +29,12 @@ public class ShoppingCart {
     /**
      * Add new SoldItem to table.
      */
-    public void addItem(SoldItem item) {
+    public void addItem(SoldItem item) throws ApplicationException {
         // TODO In case such stockItem already exists increase the quantity of the existing stock
         // TODO verify that warehouse items' quantity remains at least zero or throw an exception
-
+        if (item.getQuantity() > dao.findStockItem(item.getName()).getQuantity()){
+            throw new  ApplicationException("You have exceeded product amount");
+        }
         items.add(item);
         log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
     }

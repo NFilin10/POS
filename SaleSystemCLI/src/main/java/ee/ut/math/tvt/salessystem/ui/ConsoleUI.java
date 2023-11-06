@@ -143,7 +143,7 @@ public class ConsoleUI {
                     log.error("Invalid id");
                     System.out.println("no stock item with id " + idx);
                 }
-            } catch (SalesSystemException | NoSuchElementException e) {
+            } catch (SalesSystemException | ApplicationException | NoSuchElementException e) {
                 log.error(e.getMessage(), e);
             }
         } else if (c[0].equals("s") && c.length == 5) {
