@@ -162,6 +162,10 @@ public class StockController implements Initializable {
         int quantity = Integer.parseInt(quantityField.getText());
         String name = nameField.getText();
         double price = Double.parseDouble(priceField.getText());
+        if (price < 0) {
+            ErrorManager.showNegativePriceError();
+            return;
+        }
 
         try {
             warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
