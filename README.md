@@ -14,7 +14,9 @@ https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%202%20-%20Requirements%2
 https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-3
 
 ## Homework 4:
-<Links to the solution>
+https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-4
+<br>
+task 1: https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%204%20(the%20debugger)
 
 ## Homework 5:
 <Links to the solution>
