@@ -89,6 +89,7 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     @Override
     public void savePurchase(Purchase purchase) {
         purchaseList.add(purchase);
+        System.out.println("Purchase items: " + purchase.getItems());
     }
 
 
