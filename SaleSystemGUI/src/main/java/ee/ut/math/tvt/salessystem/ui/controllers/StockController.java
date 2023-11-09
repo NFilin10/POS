@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
+import ee.ut.math.tvt.salessystem.logic.NegativePriceException;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import javafx.beans.value.ChangeListener;
@@ -95,7 +96,7 @@ public class StockController implements Initializable {
         });
     }
     @FXML
-    public void updateButtonClicked() {
+    public void updateButtonClicked() throws NegativePriceException {
         int selectedIndex = warehouseTableView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             StockItem selectedItem = warehouseTableView.getItems().get(selectedIndex);
@@ -159,20 +160,31 @@ public class StockController implements Initializable {
     @FXML
     public void addNewProduct() {
         String barcode = barCodeField.getText();
-        int quantity = Integer.parseInt(quantityField.getText());
         String name = nameField.getText();
-        double price = Double.parseDouble(priceField.getText());
-
         try {
-            warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
-            barCodeField.clear();
-            quantityField.clear();
-            nameField.clear();
-            priceField.clear();
-            log.debug("Successfully added a new item to the stock");
-        } catch (ApplicationException e) {
-            ErrorManager.showError(e.getMessage());
+            int quantity = Integer.parseInt(quantityField.getText());
+            double price = Double.parseDouble(priceField.getText());
+            if (price < 0) {
+                ErrorManager.showNegativePriceError();
+                return;
+            }
+
+            try {
+                warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
+                barCodeField.clear();
+                quantityField.clear();
+                nameField.clear();
+                priceField.clear();
+                log.debug("Successfully added a new item to the stock");
+            } catch (ApplicationException | NegativePriceException e) {
+                ErrorManager.showError(e.getMessage());
+            }
+        } catch (NumberFormatException e){
+           ErrorManager.showError("Invalid input");
         }
+
+
+
     }
 
 }

@@ -7,7 +7,9 @@ import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import org.apache.logging.log4j.LogManager;
@@ -27,10 +29,12 @@ public class ShoppingCart {
     /**
      * Add new SoldItem to table.
      */
-    public void addItem(SoldItem item) {
+    public void addItem(SoldItem item) throws ApplicationException {
         // TODO In case such stockItem already exists increase the quantity of the existing stock
         // TODO verify that warehouse items' quantity remains at least zero or throw an exception
-
+        if (item.getQuantity() > dao.findStockItem(item.getId()).getQuantity()){
+            throw new  ApplicationException("You have exceeded product amount");
+        }
         items.add(item);
         log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
     }
@@ -48,10 +52,11 @@ public class ShoppingCart {
         Warehouse warehouse = new Warehouse(dao);
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
+        System.out.println(items);
 
         double cartCost = 0;
         for (SoldItem item : items) {
-            cartCost += item.getPrice() * item.getQuantity();
+            cartCost += item.getPrice();
             System.out.println(item.getStockItem());
             StockItem itemInStock = dao.findStockItem(item.getStockItem().getId());
             int itemInStockAmount = itemInStock.getQuantity();
@@ -74,7 +79,7 @@ public class ShoppingCart {
         // what is a transaction? https://stackoverflow.com/q/974596
         dao.beginTransaction();
         try {
-            Purchase purchase = new Purchase(cartCost, date, roundedTime);
+            Purchase purchase = new Purchase(cartCost, date, roundedTime, items);
             dao.savePurchase(purchase);
 
             dao.commitTransaction();
@@ -86,4 +91,17 @@ public class ShoppingCart {
             throw e;
         }
     }
+
+    public void deleteItemFromCart(StockItem item){
+        Iterator<SoldItem> it = items.iterator();
+        while (it.hasNext()){
+            SoldItem product = it.next();
+            if (product.getName().equals(item.getName())){
+                it.remove();
+                System.out.println("Done");
+                break;
+            }
+        }
+    }
+
 }

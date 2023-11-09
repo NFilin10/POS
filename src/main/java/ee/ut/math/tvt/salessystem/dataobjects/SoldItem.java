@@ -25,6 +25,7 @@ public class SoldItem {
         this.name = stockItem.getName();
         this.price = stockItem.getPrice() * quantity;
         this.quantity = quantity;
+        this.id = stockItem.getId();
     }
 
     public Long getId() {

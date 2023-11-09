@@ -8,6 +8,14 @@
 	 -fx-background-color: linear-gradient(from 25% 100% to 100% 25%, b_color, main_text_color);
 }
 
+#stock{
+    -fx-background-color: b_color;
+}
+
+SplitPane{
+    -fx-background-color: b_color;
+}
+
 #teamContainer{
     -fx-background-color: b_color;
 }

@@ -6,6 +6,7 @@ import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
+import ee.ut.math.tvt.salessystem.logic.NegativePriceException;
 import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class addItem {
     }
 
     @Test
-    public void testAddingItemBeginsAndCommitsTransaction() throws ApplicationException {
+    public void testAddingItemBeginsAndCommitsTransaction() throws ApplicationException, NegativePriceException {
         warehouse.addNewProductToWarehouse("12345", 10, "Product", 20.0);
 
         InOrder inOrder = inOrder(dao);
@@ -38,10 +39,7 @@ public class addItem {
     }
 
     @Test
-    public void testAddingNewItem() throws ApplicationException {
-
-        dao1 = new InMemorySalesSystemDAO();
-        warehouse = new Warehouse(dao1);
+    public void testAddingNewItem() throws ApplicationException, NegativePriceException {
 
         String barcode = "7";
         int quantity = 10;
@@ -50,8 +48,13 @@ public class addItem {
 
         warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
 
-        StockItem addedItem = dao1.findStockItem(Long.parseLong(barcode));
+        // Verify that the mocked DAO is called correctly
+        ArgumentCaptor<StockItem> stockItemCaptor = ArgumentCaptor.forClass(StockItem.class);
+        verify(dao).saveStockItem(stockItemCaptor.capture());
+
+        StockItem addedItem = stockItemCaptor.getValue();
         System.out.println(addedItem);
+
         assertEquals(barcode, String.valueOf(addedItem.getId()));
         assertEquals(quantity, addedItem.getQuantity());
         assertEquals(name, addedItem.getName());
@@ -60,7 +63,7 @@ public class addItem {
 
 
     @Test
-    public void testAddingExistingItem() {
+    public void testAddingExistingItem() throws NegativePriceException {
         StockItem existingItem = new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5);
         when(dao.findStockItem(existingItem.getId())).thenReturn(existingItem);
 
@@ -73,7 +76,7 @@ public class addItem {
 
 
     @Test(expected = ApplicationException.class)
-    public void testAddingItemWithNegativeQuantity() throws ApplicationException {
+    public void testAddingItemWithNegativeQuantity() throws ApplicationException, NegativePriceException {
         String barcode = "123";
         int quantity = -5;
         String name = "Test Product";

@@ -2,6 +2,8 @@ package ee.ut.math.tvt.salessystem.dataobjects;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Purchase {
     public double getPrice() {
@@ -32,10 +34,19 @@ public class Purchase {
     private LocalDate date;
     private LocalTime time;
 
-    public Purchase(double price, LocalDate date, LocalTime time) {
+    private List<SoldItem> items;
+
+
+
+    public Purchase(double price, LocalDate date, LocalTime time, List<SoldItem> items) {
         this.price = price;
         this.date = date;
         this.time = time;
+        this.items = items;
+    }
+
+    public List<SoldItem> getItems() {
+        return items;
     }
 
     @Override

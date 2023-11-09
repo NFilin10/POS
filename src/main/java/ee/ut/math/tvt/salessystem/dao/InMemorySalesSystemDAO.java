@@ -12,19 +12,19 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     private final List<StockItem> stockItemList;
     private final List<SoldItem> soldItemList;
-
     private final List<Purchase> purchaseList;
 
     public InMemorySalesSystemDAO() {
         this.purchaseList = new ArrayList<>();
         List<StockItem> items = new ArrayList<StockItem>();
+
         items.add(new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5));
         items.add(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
         items.add(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
         items.add(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
+
         this.stockItemList = items;
         this.soldItemList = new ArrayList<>();
-
     }
 
     @Override
@@ -89,6 +89,7 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     @Override
     public void savePurchase(Purchase purchase) {
         purchaseList.add(purchase);
+        System.out.println("Purchase items: " + purchase.getItems());
     }
 
 
