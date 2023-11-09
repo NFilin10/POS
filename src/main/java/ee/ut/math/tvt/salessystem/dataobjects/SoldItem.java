@@ -17,16 +17,22 @@ public class SoldItem {
     private Integer quantity;
     private double price;
 
+    private double sum;
+
     public SoldItem() {
     }
 
     public SoldItem(StockItem stockItem, int quantity) {
         this.stockItem = stockItem;
         this.name = stockItem.getName();
-        this.price = stockItem.getPrice() * quantity;
+        this.price = stockItem.getPrice();
         this.quantity = quantity;
         this.id = stockItem.getId();
+        this.sum = getSum();
+
     }
+
+
 
     public Long getId() {
         return id;
