@@ -1,10 +1,18 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+
 /**
  * Stock item.
  */
+@Entity
+@Table(name = "Stock Items")
 public class StockItem {
 
+    @Id
     private Long id;
     private String name;
     private double price;
@@ -13,7 +21,6 @@ public class StockItem {
 
     public StockItem() {
     }
-
     public StockItem(Long id, String name, String desc, double price, int quantity) {
         this.id = id;
         this.name = name;
