@@ -59,10 +59,9 @@
             </center>
         </BorderPane>
 
-        <Button onAction="#refreshCart" text="Refresh cart" />
         <TitledPane alignment="CENTER" animated="false" collapsible="true" text="Shopping Cart" >
             <content>
-                <TableView fx:id="cartTableView" styleClass="blue_style" prefHeight="150">
+                <TableView fx:id="purchaseInfo" styleClass="blue_style" prefHeight="150">
                     <columns>
                         <TableColumn text="Id">
                             <cellValueFactory>
@@ -82,6 +81,11 @@
                         <TableColumn text="Quantity">
                             <cellValueFactory>
                                 <PropertyValueFactory property="quantity" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Sum">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="sum" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

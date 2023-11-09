@@ -33,17 +33,20 @@ public class HistoryController implements Initializable {
 
     private final SalesSystemDAO dao;
 
-    @FXML
-    private TableView<SoldItem> cartTableView;
 
     @FXML
     private TableView<Purchase> purchaseTableView;
+
+    @FXML
+    private TableView<SoldItem> purchaseInfo;
 
     @FXML
     private DatePicker startDatePicker;
 
     @FXML
     private DatePicker endDatePicker;
+
+
 
     private History history;
 
@@ -54,18 +57,22 @@ public class HistoryController implements Initializable {
         this.history = new History();
     }
 
-    @Override
+    @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO: implement
         purchaseTableView.setItems(FXCollections.observableList(dao.getPurchaseList()));
-        log.debug("HistoryController initialises");
+        purchaseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                updatePurchaseInfo(newSelection);
+            }
+        });
+        log.debug("HistoryController initializes");
     }
 
-    @FXML
-    private void refreshCart(){
-        cartTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
-        cartTableView.refresh();
+    private void updatePurchaseInfo(Purchase selectedPurchase) {
+        List<SoldItem> purchaseItems = selectedPurchase.getItems();
+        purchaseInfo.setItems(FXCollections.observableList(purchaseItems));
     }
+
 
     @FXML
     private void filterBetweenDates() {

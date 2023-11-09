@@ -49,12 +49,16 @@ public class Purchase {
         return items;
     }
 
+    public void setItems(List<SoldItem> items) {
+        this.items = items;
+    }
+
     @Override
     public String toString() {
         return "Purchase{" +
                 "price=" + price +
                 ", date=" + date +
                 ", time=" + time +
-                '}';
+                '}'+ items;
     }
 }

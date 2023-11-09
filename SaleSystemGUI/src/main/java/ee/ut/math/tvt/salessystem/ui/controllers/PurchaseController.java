@@ -67,6 +67,9 @@ public class PurchaseController implements Initializable {
     @FXML TextField searchTextField;
 
 
+
+
+
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;

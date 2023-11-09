@@ -6,10 +6,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import org.apache.logging.log4j.LogManager;
@@ -52,12 +49,12 @@ public class ShoppingCart {
         Warehouse warehouse = new Warehouse(dao);
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
-        System.out.println(items);
+        List<SoldItem> purchaseItems = new ArrayList<>();
 
         double cartCost = 0;
         for (SoldItem item : items) {
-            cartCost += item.getPrice();
-            System.out.println(item.getStockItem());
+            purchaseItems.add(item);
+            cartCost += item.getSum();
             StockItem itemInStock = dao.findStockItem(item.getStockItem().getId());
             int itemInStockAmount = itemInStock.getQuantity();
 
@@ -79,7 +76,7 @@ public class ShoppingCart {
         // what is a transaction? https://stackoverflow.com/q/974596
         dao.beginTransaction();
         try {
-            Purchase purchase = new Purchase(cartCost, date, roundedTime, items);
+            Purchase purchase = new Purchase(cartCost, date, roundedTime, purchaseItems);
             dao.savePurchase(purchase);
 
             dao.commitTransaction();
@@ -98,7 +95,6 @@ public class ShoppingCart {
             SoldItem product = it.next();
             if (product.getName().equals(item.getName())){
                 it.remove();
-                System.out.println("Done");
                 break;
             }
         }
