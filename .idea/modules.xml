@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SaleSystemCLI/LG5-TEAM2.lg5-team2.SaleSystemCLI.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SaleSystemCLI/LG5-TEAM2.lg5-team2.SaleSystemCLI.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SaleSystemGUI/LG5-TEAM2.lg5-team2.SaleSystemGUI.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SaleSystemGUI/LG5-TEAM2.lg5-team2.SaleSystemGUI.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SaleSystemGUI/LG5-TEAM2.lg5-team2.SaleSystemGUI.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SaleSystemGUI/LG5-TEAM2.lg5-team2.SaleSystemGUI.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LG5-TEAM2.lg5-team2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LG5-TEAM2.lg5-team2.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lg5-team2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/lg5-team2.main.iml" />
     </modules>

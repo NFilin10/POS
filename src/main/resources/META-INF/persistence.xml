@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
-    <persistence-unit name="pos">
+    <persistence-unit name="pos" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- list all the classes that have @Entity annotation -->
         <class>ee.ut.math.tvt.salessystem.dataobjects.SoldItem</class>
         <class>ee.ut.math.tvt.salessystem.dataobjects.StockItem</class>
@@ -13,13 +15,13 @@
 
             <!-- make sure the HSQL database is started before starting the
            application -->
-            <property name="javax.persistence.jdbc.driver"
-                      value="org.hsqldb.jdbcDriver"/>
-            <property name="javax.persistence.jdbc.url"
-                      value="jdbc:hsqldb:hsql://localhost/pos"/>
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost/pos"/>
             <!-- configure hibernate to print out all the SQL commands that
            it is executing -->
             <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
             <!-- drop-and-create tells hibernate to create database tables
            based on the @Entity classes -->
 
@@ -28,7 +30,7 @@
             <!-- feel free to set it to 'none' to keep existing tables and
            data -->
             <!-- https://docs.oracle.com/javaee/7/tutorial/persistenceintro005.htm -->
-            <property name="javax.persistence.schemageneration.database.action" value="none"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

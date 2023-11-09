@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class SoldItem {
 
     @Id
+    @GeneratedValue
     private Long id;
     @ManyToOne
     private StockItem stockItem;
