@@ -18,9 +18,6 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         // probably forgot to start the database before starting the application
         emf = Persistence.createEntityManagerFactory ("pos");
         em = emf.createEntityManager ();
-
-        saveStockItem(new StockItem(46456646L, "gugi", "fefwewrw", 3.87, 5));
-        saveStockItem(new StockItem(64564645L, "fgfd", "rftrjry", 7.54, 8));
     }
     // TODO implement missing methods
     public void close () {
@@ -87,11 +84,14 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void savePurchase(Purchase purchase) {
-
+        beginTransaction();
+        em.persist(purchase);
+        commitTransaction();
+        close();
     }
 
     @Override
     public List<Purchase> getPurchaseList() {
-        return null;
+        return em.createQuery("from Purchase", Purchase.class).getResultList();
     }
 }

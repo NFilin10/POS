@@ -1,0 +1,43 @@
+/*C3*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C4*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C5*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C6*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C7*/SET SCHEMA PUBLIC
+drop table if exists Purchase CASCADE 
+drop table if exists Purchase_SoldItem CASCADE 
+drop table if exists SoldItem CASCADE 
+drop table if exists StockItem CASCADE 
+drop sequence hibernate_sequence if exists
+create sequence hibernate_sequence start with 1 increment by 1
+create table Purchase (id bigint not null, price double, primary key (id))
+create table Purchase_SoldItem (Purchase_id bigint not null, items_id bigint not null)
+create table SoldItem (id bigint not null, name varchar(255), stockItem_id bigint, primary key (id))
+create table StockItem (id bigint not null, name varchar(255), primary key (id))
+alter table Purchase_SoldItem add constraint UK_2mxstqfvnsb6v16dympr5bosq unique (items_id)
+alter table Purchase_SoldItem add constraint FKdtoutrs1wavgi7mwe5xl7raeh foreign key (items_id) references SoldItem
+alter table Purchase_SoldItem add constraint FKadopm5srj6jsfmcgfgh5ba5sl foreign key (Purchase_id) references Purchase
+alter table SoldItem add constraint FK30u1km29fqccfnlvigl1kjjrq foreign key (stockItem_id) references StockItem
+/*C8*/SET SCHEMA PUBLIC
+DROP TABLE BAB
+DISCONNECT
+/*C7*/DISCONNECT
+/*C9*/SET SCHEMA PUBLIC
+drop table if exists Purchase CASCADE 
+drop table if exists Purchase_SoldItem CASCADE 
+drop table if exists SoldItem CASCADE 
+drop table if exists StockItem CASCADE 
+drop sequence hibernate_sequence if exists
+create sequence hibernate_sequence start with 1 increment by 1
+create table Purchase (id bigint not null, price double, primary key (id))
+create table Purchase_SoldItem (Purchase_id bigint not null, items_id bigint not null)
+create table SoldItem (id bigint not null, name varchar(255), stockItem_id bigint, primary key (id))
+create table StockItem (id bigint not null, name varchar(255), primary key (id))
+alter table Purchase_SoldItem add constraint UK_2mxstqfvnsb6v16dympr5bosq unique (items_id)
+alter table Purchase_SoldItem add constraint FKdtoutrs1wavgi7mwe5xl7raeh foreign key (items_id) references SoldItem
+alter table Purchase_SoldItem add constraint FKadopm5srj6jsfmcgfgh5ba5sl foreign key (Purchase_id) references Purchase
+alter table SoldItem add constraint FK30u1km29fqccfnlvigl1kjjrq foreign key (stockItem_id) references StockItem
+DISCONNECT

@@ -1,11 +1,22 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table
 public class Purchase {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Purchase() {
+
+    }
+
     public double getPrice() {
         return price;
     }
@@ -30,10 +41,13 @@ public class Purchase {
         this.time = time;
     }
 
+    @Column
     private double price;
+    @Transient
     private LocalDate date;
+    @Transient
     private LocalTime time;
-
+    @OneToMany
     private List<SoldItem> items;
 
 
@@ -60,5 +74,13 @@ public class Purchase {
                 ", date=" + date +
                 ", time=" + time +
                 '}'+ items;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

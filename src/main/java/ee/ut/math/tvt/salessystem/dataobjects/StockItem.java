@@ -1,23 +1,24 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Stock item.
  */
 @Entity
-@Table(name = "Stock Items")
+@Table
 public class StockItem {
 
     @Id
     @GeneratedValue
     private Long id;
+    @Column
     private String name;
+    @Transient
     private double price;
+    @Transient
     private String description;
+    @Transient
     private int quantity;
 
     public StockItem() {

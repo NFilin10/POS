@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Already bought StockItem. SoldItem duplicates name and price for preserving history.
  */
 @Entity
-@Table(name = "Sold Items")
+@Table
 public class SoldItem {
 
     @Id
@@ -14,10 +14,13 @@ public class SoldItem {
     private Long id;
     @ManyToOne
     private StockItem stockItem;
+    @Column
     private String name;
+    @Transient
     private Integer quantity;
+    @Transient
     private double price;
-
+    @Transient
     private double sum;
 
     public SoldItem() {

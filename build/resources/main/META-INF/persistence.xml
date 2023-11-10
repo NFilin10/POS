@@ -24,13 +24,14 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <!-- drop-and-create tells hibernate to create database tables
            based on the @Entity classes -->
-
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.transaction.coordinator_class" value="jdbc"/>
             <!-- the tables are created at application startup. all existing
            tables and data are deleted -->
             <!-- feel free to set it to 'none' to keep existing tables and
            data -->
             <!-- https://docs.oracle.com/javaee/7/tutorial/persistenceintro005.htm -->
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
     </persistence-unit>
 </persistence>
