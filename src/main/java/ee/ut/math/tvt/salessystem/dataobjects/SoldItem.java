@@ -16,9 +16,9 @@ public class SoldItem {
     private StockItem stockItem;
     @Column
     private String name;
-    @Transient
+    @Column
     private Integer quantity;
-    @Transient
+    @Column
     private double price;
     @Transient
     private double sum;

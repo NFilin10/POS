@@ -7,6 +7,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.List;
 
 public class HibernateSalesSystemDAO implements SalesSystemDAO {
@@ -18,6 +19,11 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         // probably forgot to start the database before starting the application
         emf = Persistence.createEntityManagerFactory ("pos");
         em = emf.createEntityManager ();
+
+        saveStockItem(new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5));
+        saveStockItem(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
+        saveStockItem(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
+        saveStockItem(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
     }
     // TODO implement missing methods
     public void close () {
@@ -37,7 +43,10 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public StockItem findStockItem(String name) {
-        return em.find(StockItem.class, name);
+        String hql = "FROM StockItem WHERE name = :itemName";
+        Query query = em.createQuery(hql, StockItem.class);
+        query.setParameter("itemName", name);
+        return (StockItem) query.getSingleResult();
     }
 
     @Override
@@ -48,9 +57,9 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public void saveStockItem(StockItem stockItem) {
         beginTransaction();
-        em.persist(stockItem);
+        StockItem merge = em.merge(stockItem);
+        em.persist(merge);
         commitTransaction();
-        close();
     }
 
     @Override
@@ -58,15 +67,14 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         beginTransaction();
         em.remove(stockItem);
         commitTransaction();
-        close();
     }
 
     @Override
     public void saveSoldItem(SoldItem item) {
         beginTransaction();
-        em.persist(item);
+        SoldItem merge = em.merge(item);
+        em.persist(merge);
         commitTransaction();
-        close();
     }
 
     @Override
@@ -85,9 +93,9 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public void savePurchase(Purchase purchase) {
         beginTransaction();
-        em.persist(purchase);
+        Purchase merge = em.merge(purchase);
+        em.persist(merge);
         commitTransaction();
-        close();
     }
 
     @Override

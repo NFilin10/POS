@@ -14,11 +14,11 @@ public class StockItem {
     private Long id;
     @Column
     private String name;
-    @Transient
+    @Column
     private double price;
     @Transient
     private String description;
-    @Transient
+    @Column
     private int quantity;
 
     public StockItem() {
