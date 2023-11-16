@@ -55,7 +55,7 @@ public class addItem {
         StockItem addedItem = stockItemCaptor.getValue();
         System.out.println(addedItem);
 
-        assertEquals(barcode, String.valueOf(addedItem.getId()));
+        assertEquals(barcode, String.valueOf(addedItem.getBarcode()));
         assertEquals(quantity, addedItem.getQuantity());
         assertEquals(name, addedItem.getName());
         assertEquals(price, addedItem.getPrice(), 0.001);
@@ -65,7 +65,7 @@ public class addItem {
     @Test
     public void testAddingExistingItem() throws NegativePriceException {
         StockItem existingItem = new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5);
-        when(dao.findStockItem(existingItem.getId())).thenReturn(existingItem);
+        when(dao.findStockItem(existingItem.getBarcode())).thenReturn(existingItem);
 
         warehouse.updateItem(existingItem, "1", "8", "Lays chips", "11.0");
 

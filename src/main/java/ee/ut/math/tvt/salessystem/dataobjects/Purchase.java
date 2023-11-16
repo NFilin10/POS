@@ -43,9 +43,9 @@ public class Purchase {
 
     @Column
     private double price;
-    @Transient
+    @Column
     private LocalDate date;
-    @Transient
+    @Column
     private LocalTime time;
     @OneToMany
     private List<SoldItem> items;
