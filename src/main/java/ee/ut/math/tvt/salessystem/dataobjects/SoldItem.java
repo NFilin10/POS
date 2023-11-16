@@ -12,7 +12,10 @@ public class SoldItem {
     @Id
     @GeneratedValue
     private Long id;
+    @Column
+    private long barcode;
     @ManyToOne
+    @Transient
     private StockItem stockItem;
     @Column
     private String name;
@@ -20,6 +23,7 @@ public class SoldItem {
     private Integer quantity;
     @Column
     private double price;
+    @Column
     @Transient
     private double sum;
 
@@ -31,12 +35,20 @@ public class SoldItem {
         this.name = stockItem.getName();
         this.price = stockItem.getPrice();
         this.quantity = quantity;
-        this.id = stockItem.getId();
+        this.barcode = stockItem.getBarcode();
         this.sum = getSum();
 
     }
 
 
+
+    public Long getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(long barcode) {
+        this.barcode = barcode;
+    }
 
     public Long getId() {
         return id;
@@ -69,6 +81,7 @@ public class SoldItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
 
     public double getSum() {
         return price * ((double) quantity);

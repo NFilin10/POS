@@ -1,20 +1,21 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
-import javafx.fxml.Initializable;
+import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class TeamTabController implements Initializable {
     private static final Logger log = LogManager.getLogger(TeamTabController.class);
@@ -34,6 +35,8 @@ public class TeamTabController implements Initializable {
     @FXML
     private ImageView logo;
 
+    private SalesSystemDAO dao;
+
     private List<String> membersList = new ArrayList<>();
 
 
@@ -42,19 +45,34 @@ public class TeamTabController implements Initializable {
         setTeamInfo();
     }
 
+    public TeamTabController(SalesSystemDAO dao) {
+        this.dao = dao;
+    }
+
     public void setTeamInfo() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
             Properties properties = new Properties();
             properties.load(input);
 
-            String members = properties.getProperty("members");
-            String[] memberArray = members.split(", ");
+            //String members = properties.getProperty("members");
+            String[] memberArray = new String[dao.getListOfTeamMembers().size()];
+            for (int i = 0; i < dao.getListOfTeamMembers().size(); i++) {
+                memberArray[i] = dao.getListOfTeamMembers().get(i).getFirstname() +  " " + dao.getListOfTeamMembers().get(i).getLastname();
+            }
             membersList.addAll(Arrays.asList(memberArray));
 
             teamName.setText(properties.getProperty("name"));
             teamLeader.setText(properties.getProperty("contactPerson"));
             teamLeaderMail.setText(properties.getProperty("contact"));
-            teamMembers.setText(properties.getProperty("members"));
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < memberArray.length; i++) {
+                builder.append(memberArray[i]);
+                if (i + 1 == memberArray.length) {
+                    continue;
+                } else builder.append(", ");
+            }
+            teamMembers.setText(String.valueOf(builder));
+            //teamMembers.setText(properties.getProperty("members"));
 
 
             String logoPath = properties.getProperty("logo");

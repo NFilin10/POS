@@ -12,6 +12,9 @@ public class StockItem {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column
+    private long barcode;
     @Column
     private String name;
     @Column
@@ -23,8 +26,8 @@ public class StockItem {
 
     public StockItem() {
     }
-    public StockItem(Long id, String name, String desc, double price, int quantity) {
-        this.id = id;
+    public StockItem(Long barcode, String name, String desc, double price, int quantity) {
+        this.barcode = barcode;
         this.name = name;
         this.description = desc;
         this.price = price;
@@ -38,6 +41,7 @@ public class StockItem {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public String getName() {
         return name;
@@ -55,16 +59,24 @@ public class StockItem {
         this.price = price;
     }
 
-    public Long getId() {
-        return id;
+    public long getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(long barcode) {
+        this.barcode = barcode;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public Long getId() {
+        return id;
     }
 
     public void setQuantity(int quantity) {

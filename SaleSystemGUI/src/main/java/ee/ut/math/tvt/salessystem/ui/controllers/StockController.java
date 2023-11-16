@@ -1,7 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.NegativePriceException;
@@ -14,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -73,7 +71,7 @@ public class StockController implements Initializable {
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StockItem>() {
             public void changed(ObservableValue<? extends StockItem> observable, StockItem oldValue, StockItem newValue) {
                 if (newValue != null) {
-                    barCodeField.setText(String.valueOf(newValue.getId()));
+                    barCodeField.setText(String.valueOf(newValue.getBarcode()));
                     quantityField.setText(String.valueOf(newValue.getQuantity()));
                     nameField.setText(newValue.getName());
                     priceField.setText(String.valueOf(newValue.getPrice()));
@@ -121,7 +119,7 @@ public class StockController implements Initializable {
 
     private boolean isBarcodeUnique(StockItem selectedItem, String newBarcodeText) {
         long newBarcode = Long.parseLong(newBarcodeText);
-        if (selectedItem.getId() == newBarcode) {
+        if (selectedItem.getBarcode() == newBarcode) {
             return true; // The new barcode matches the selected item's barcode
         }
 

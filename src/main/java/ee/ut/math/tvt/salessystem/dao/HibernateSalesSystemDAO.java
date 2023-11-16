@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.dao;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,11 +25,57 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         saveStockItem(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
         saveStockItem(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
         saveStockItem(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
+
+
+        addTeamMember(new TeamMember("Artjom", "Shishkov", "artjom.siskov@ut.ee"));
+        addTeamMember(new TeamMember("Nikita", "Filin", "nikita.filin@ut.ee"));
+        addTeamMember(new TeamMember("Kaisa", "Kumpas", "kaisa.kumpas@ut.ee"));
+        addTeamMember(new TeamMember("Alina", "Gudkova", "alina.gudkova@ut.ee"));
     }
-    // TODO implement missing methods
     public void close () {
         em.close ();
         emf.close ();
+    }
+    @Override
+    public List<TeamMember> getListOfTeamMembers() {
+        return em.createQuery("from TeamMember", TeamMember.class).getResultList();
+    }
+
+    @Override
+    public TeamMember getTeamMember(String name) {
+        String hql = "FROM TeamMember WHERE firstname = :firstName";
+        Query query = em.createQuery(hql, StockItem.class);
+        query.setParameter("firstName", name);
+        return (TeamMember) query.getSingleResult();
+    }
+
+    @Override
+    public void removeTeamMember(TeamMember member) {
+        try {
+            beginTransaction();
+            em.remove(member);
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addTeamMember(TeamMember member) {
+        try {
+            beginTransaction();
+            TeamMember merge = em.merge(member);
+            em.persist(merge);
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -56,25 +103,46 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void saveStockItem(StockItem stockItem) {
-        beginTransaction();
-        StockItem merge = em.merge(stockItem);
-        em.persist(merge);
-        commitTransaction();
+        try {
+            beginTransaction();
+            StockItem merge = em.merge(stockItem);
+            em.persist(merge);
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+            rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteStockItem(StockItem stockItem) {
-        beginTransaction();
-        em.remove(stockItem);
-        commitTransaction();
+        try {
+            beginTransaction();
+            em.remove(stockItem);
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void saveSoldItem(SoldItem item) {
-        beginTransaction();
-        SoldItem merge = em.merge(item);
-        em.persist(merge);
-        commitTransaction();
+        try {
+            beginTransaction();
+            SoldItem merge = em.merge(item);
+            em.persist(merge);
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -92,11 +160,25 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void savePurchase(Purchase purchase) {
-        beginTransaction();
-        Purchase merge = em.merge(purchase);
-        em.persist(merge);
-        commitTransaction();
+        try {
+            beginTransaction();
+
+            for (SoldItem soldItem : purchase.getItems()) {
+                em.persist(soldItem);
+            }
+
+            Purchase merge = em.merge(purchase);
+            em.persist(merge);
+
+            commitTransaction();
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public List<Purchase> getPurchaseList() {

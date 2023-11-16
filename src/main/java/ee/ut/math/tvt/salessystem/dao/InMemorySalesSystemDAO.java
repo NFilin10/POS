@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.dao;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     @Override
     public StockItem findStockItem(long id) {
         for (StockItem item : stockItemList) {
-            if (item.getId() == id)
+            if (item.getBarcode() == id)
                 return item;
         }
         return null;
@@ -84,6 +85,26 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     @Override
     public List<Purchase> getPurchaseList() {
         return purchaseList;
+    }
+
+    @Override
+    public List<TeamMember> getListOfTeamMembers() {
+        return null;
+    }
+
+    @Override
+    public TeamMember getTeamMember(String name) {
+        return null;
+    }
+
+    @Override
+    public void removeTeamMember(TeamMember member) {
+
+    }
+
+    @Override
+    public void addTeamMember(TeamMember member) {
+
     }
 
     @Override

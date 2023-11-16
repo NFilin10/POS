@@ -65,7 +65,7 @@ public class Warehouse {
                 throw new NegativePriceException();
             }
 
-            item.setId(newBarcode);
+            item.setBarcode(newBarcode);
             item.setQuantity(quantity);
             item.setName(name);
             item.setPrice(price);

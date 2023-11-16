@@ -19,10 +19,7 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -259,7 +256,7 @@ public class PurchaseController implements Initializable {
         if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
-                barCodeField.setText(String.valueOf(stockItem.getId()));
+                barCodeField.setText(String.valueOf(stockItem.getBarcode()));
                 priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
                 log.debug("Successfully input item using chooseItemFromList: " + chooseItemFromList.getValue());
             } else {
@@ -273,7 +270,7 @@ public class PurchaseController implements Initializable {
     private void fillInputsBySelectedStockItem1(String selectedOption) {
         StockItem stockItem = dao.findStockItem(selectedOption);
         if (stockItem != null) {
-            barCodeField.setText(String.valueOf(stockItem.getId()));
+            barCodeField.setText(String.valueOf(stockItem.getBarcode()));
             priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
             log.debug("Successfully input item using chooseItemFromList: " + selectedOption);
         } else {
