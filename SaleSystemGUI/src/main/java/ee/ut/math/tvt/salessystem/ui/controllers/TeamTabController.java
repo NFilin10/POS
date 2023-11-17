@@ -90,7 +90,7 @@ public class TeamTabController implements Initializable {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add Member");
         dialog.setHeaderText("Enter the member's name:");
-        dialog.setContentText("Name:");
+        dialog.setContentText("Firstname:");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
@@ -110,6 +110,7 @@ public class TeamTabController implements Initializable {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(member -> {
             membersList.remove(member);
+            dao.removeTeamMember(dao.getTeamMember(member.split(" ")[0]));
             updateTeamMembers();
         });
         log.debug("Member is removed");
