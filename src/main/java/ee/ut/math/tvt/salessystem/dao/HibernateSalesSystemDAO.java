@@ -5,10 +5,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 public class HibernateSalesSystemDAO implements SalesSystemDAO {
@@ -90,10 +87,15 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public StockItem findStockItem(String name) {
-        String hql = "FROM StockItem WHERE name = :itemName";
-        Query query = em.createQuery(hql, StockItem.class);
-        query.setParameter("itemName", name);
-        return (StockItem) query.getSingleResult();
+        try {
+            String hql = "FROM StockItem WHERE name = :itemName";
+            Query query = em.createQuery(hql, StockItem.class);
+            query.setParameter("itemName", name);
+            return (StockItem) query.getSingleResult();
+        } catch (NoResultException e){
+            return null;
+        }
+
     }
 
     @Override
@@ -110,7 +112,8 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
             commitTransaction();
         } catch (Exception e) {
             if (em.getTransaction() != null && em.getTransaction().isActive()) {
-            rollbackTransaction();
+                System.out.println("IF");
+                rollbackTransaction();
             }
             e.printStackTrace();
         }

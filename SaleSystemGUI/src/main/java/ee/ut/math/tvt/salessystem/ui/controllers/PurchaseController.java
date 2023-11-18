@@ -147,6 +147,7 @@ public class PurchaseController implements Initializable {
     @FXML
     protected void newPurchaseButtonClicked() {
 
+
         chooseItemFromList.setDisable(true);
 
 
@@ -167,6 +168,7 @@ public class PurchaseController implements Initializable {
 //            nameField.setText(selectedOption);
             fillInputsBySelectedStockItem();
         });
+
 
         this.chooseItemFromList.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -213,6 +215,7 @@ public class PurchaseController implements Initializable {
 
             shoppingCart.submitCurrentPurchase();
             disableInputs();
+            shoppingCart.cancelCurrentPurchase();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {
             log.error(e.getMessage(), e);
@@ -236,6 +239,9 @@ public class PurchaseController implements Initializable {
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
         newPurchase.setDisable(false);
+        chooseItemFromList.setDisable(true);
+
+
         disableProductField(true);
         log.debug("Inputs are now disabled");
     }
@@ -371,6 +377,9 @@ public class PurchaseController implements Initializable {
         quantityField.setText("1");
 //        nameField.setText("");
         priceField.setText("");
+
+        ;
+
     }
 
     @FXML

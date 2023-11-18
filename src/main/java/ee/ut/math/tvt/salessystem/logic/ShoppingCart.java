@@ -69,6 +69,7 @@ public class ShoppingCart {
                 warehouse.deleteItemFromWarehouse(itemInStock.getBarcode());
             } else {
                 itemInStock.setQuantity(itemInStockAmount - item.getQuantity());
+
             }
 
 
