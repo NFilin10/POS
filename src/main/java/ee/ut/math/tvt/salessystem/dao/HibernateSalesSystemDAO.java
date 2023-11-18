@@ -23,7 +23,6 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         saveStockItem(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
         saveStockItem(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
 
-
         addTeamMember(new TeamMember("Artjom", "Shishkov", "artjom.siskov@ut.ee"));
         addTeamMember(new TeamMember("Nikita", "Filin", "nikita.filin@ut.ee"));
         addTeamMember(new TeamMember("Kaisa", "Kumpas", "kaisa.kumpas@ut.ee"));
@@ -41,7 +40,7 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public TeamMember getTeamMember(String name) {
         String hql = "FROM TeamMember WHERE firstname = :firstName";
-        Query query = em.createQuery(hql, StockItem.class);
+        Query query = em.createQuery(hql, TeamMember.class);
         query.setParameter("firstName", name);
         return (TeamMember) query.getSingleResult();
     }
