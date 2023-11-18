@@ -113,10 +113,10 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public void saveStockItem(StockItem stockItem) {
         try {
-            beginTransaction();
+//            beginTransaction();
             StockItem merge = em.merge(stockItem);
             em.persist(merge);
-            commitTransaction();
+//            commitTransaction();
         } catch (Exception e) {
             if (em.getTransaction() != null && em.getTransaction().isActive()) {
                 rollbackTransaction();

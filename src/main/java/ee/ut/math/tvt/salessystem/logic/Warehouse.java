@@ -15,7 +15,7 @@ public class Warehouse {
 
     public void addNewProductToWarehouse(String barcode, int quantity, String name, double price)
             throws ApplicationException, NegativePriceException {
-//        dao.beginTransaction();
+        dao.beginTransaction();
         try {
             long barcodeValue = Long.parseLong(barcode);
             if (barcodeValue < 0){
@@ -32,12 +32,12 @@ public class Warehouse {
                 dao.saveStockItem(addedItem);
                 System.out.println(dao.findStockItems());
 
-//                dao.commitTransaction();
+                dao.commitTransaction();
             } else {
                 throw new ApplicationException("The barcode you entered already exists in the database. Please enter a new barcode.");
             }
         } catch (NumberFormatException e){
-//            dao.rollbackTransaction();
+            dao.rollbackTransaction();
             throw new ApplicationException("Invalid barcode format");
         }
     }
