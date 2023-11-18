@@ -44,10 +44,12 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public StockItem findStockItem(String name) {
+        System.out.println("ITEMS " + stockItemList);
         for (StockItem item : stockItemList) {
             if (Objects.equals(item.getName(), name))
                 return item;
         }
+
         return null;
     }
 
@@ -113,5 +115,9 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
         System.out.println("Purchase items: " + purchase.getItems());
     }
 
+    @Override
+    public boolean isTransactionActive(){
+        return false;
+    }
 
 }

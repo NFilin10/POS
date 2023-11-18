@@ -80,8 +80,16 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
-    public StockItem findStockItem(long id) {
-        return em.find(StockItem.class, id);
+    public StockItem findStockItem(long barcode) {
+        try {
+            String hql = "FROM StockItem WHERE barcode = :barcode";
+            Query query = em.createQuery(hql, StockItem.class);
+            query.setParameter("barcode", barcode);
+            return (StockItem) query.getSingleResult();
+        } catch (NoResultException e){
+            return null;
+        }
+
     }
 
     @Override
@@ -111,8 +119,8 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
             commitTransaction();
         } catch (Exception e) {
             if (em.getTransaction() != null && em.getTransaction().isActive()) {
-                System.out.println("IF");
                 rollbackTransaction();
+
             }
             e.printStackTrace();
         }
@@ -181,9 +189,16 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         }
     }
 
+    public boolean isTransactionActive() {
+        return em.getTransaction().isActive();
+    }
+
+
 
     @Override
     public List<Purchase> getPurchaseList() {
         return em.createQuery("from Purchase", Purchase.class).getResultList();
     }
 }
+
+

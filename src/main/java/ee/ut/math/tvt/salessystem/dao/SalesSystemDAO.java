@@ -58,4 +58,6 @@ public interface SalesSystemDAO {
     TeamMember getTeamMember(String name);
     void removeTeamMember(TeamMember member);
     void addTeamMember(TeamMember member);
+
+    public boolean isTransactionActive();
 }
