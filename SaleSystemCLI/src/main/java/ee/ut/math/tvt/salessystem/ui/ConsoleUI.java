@@ -6,6 +6,7 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,8 @@ public class ConsoleUI {
 
     private final Warehouse warehouse;
 
+    private static User loggedInUser;
+
     private final History history;
 
     public ConsoleUI(SalesSystemDAO dao) {
@@ -52,13 +55,13 @@ public class ConsoleUI {
         System.out.println("===========================");
         System.out.println("=       Sales System      =");
         System.out.println("===========================");
-        printUsage();
+
         log.info("Session started");
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            System.out.print("> ");
-            processCommand(in.readLine().trim().toLowerCase());
-        }
+
+        authentication();
+        BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
+        processCommand(auth.readLine().trim().toLowerCase());
+
     }
 
     private void showStock() {
@@ -104,10 +107,16 @@ public class ConsoleUI {
         System.out.println("-------------------------");
     }
 
-    private void processCommand(String command) {
+    private void processCommand(String command) throws IOException {
         String[] c = command.split(" ");
+        if (c[0].equals("l")){
+            login();
+        }
+        else if(c[0].equals("s")){
+            signUp();
+        }
 
-        if (c[0].equals("h"))
+        else if (c[0].equals("h"))
             printUsage();
         else if (c[0].equals("q")) {
             log.info("Session ended");
@@ -118,7 +127,7 @@ public class ConsoleUI {
         else if (c[0].equals("c"))
             showCart();
         else if (c[0].equals("p")) {
-            cart.submitCurrentPurchase();
+//            cart.submitCurrentPurchase();
             System.out.println("Done. ");
             log.debug("Purchase submitted");
         }
@@ -181,6 +190,8 @@ public class ConsoleUI {
         }
     }
 
+
+
     private void printTeamInfo(){
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
             Properties properties = new Properties();
@@ -200,26 +211,26 @@ public class ConsoleUI {
         LocalDate startDate = LocalDate.parse(command[1]);
         LocalDate endDate = LocalDate.parse(command[2]);
 
-        List<Purchase> filteredPurchases = history.filterBetweenTwoDates(dao, startDate, endDate);
+        List<Purchase> filteredPurchases = history.filterBetweenTwoDates(dao, startDate, endDate, loggedInUser);
 
         printFiltered(filteredPurchases);
 
     }
 
     private void getLast10Purchases() {
-        List<Purchase> filteredPurchases = history.getLast10(dao);
+        List<Purchase> filteredPurchases = history.getLast10(dao, loggedInUser);
         printFiltered(filteredPurchases);
 
     }
 
 
     private void showAllPurchases(){
-        List<Purchase> filteredPurchases = history.showAll(dao);
+        List<Purchase> filteredPurchases = history.showAll(dao, loggedInUser);
         printFiltered(filteredPurchases);
     }
 
     private void printFiltered(List<Purchase> filteredPurchases){
-        if (filteredPurchases != null){
+        if (filteredPurchases.size() != 0){
             for (Purchase filteredPurchase : filteredPurchases) {
                 System.out.println(filteredPurchase.getDate() + " " + filteredPurchase.getTime() + " " + filteredPurchase.getPrice() + " Euro");
             }
@@ -228,6 +239,81 @@ public class ConsoleUI {
             System.out.println("No purchases in that interval");
         }
     }
+
+
+    public void authentication(){
+        System.out.println("-------------------------");
+        System.out.println("l\t\tLogin");
+        System.out.println("s\t\tSign up");
+        System.out.println("-------------------------");
+    }
+
+    private void login() throws IOException {
+        BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Login: ");
+        String login  = auth.readLine().trim().toLowerCase();
+        System.out.print("\nPassword: ");
+        String password  = auth.readLine().trim().toLowerCase();
+
+        User user = AuthenticationService.authenticateUser(login, password);
+
+        if (user != null) {
+            setLoggedInUser(user);
+            printUsage();
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            while (true) {
+                System.out.print("> ");
+                processCommand(in.readLine().trim().toLowerCase());
+            }
+
+        } else {
+            System.out.println("Incorrect username or password");
+            authentication();
+        }
+
+    }
+
+    private void signUp() throws IOException {
+        BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Name: ");
+        String name = auth.readLine().trim().toLowerCase();
+        System.out.println("Choose role:");
+        System.out.println("1. Warehouse manager\n2. Cashier\n3. Customer");
+        String role =  auth.readLine().trim().toLowerCase();
+        if (role.equals("1")){
+            role = "Warehouse manager";
+        } else if (role.equals("2")) {
+            role = "Cashier";
+        } else if (role.equals("3")) {
+            role = "Customer";
+        }
+
+        System.out.print("Login: ");
+        String login  = auth.readLine().trim().toLowerCase();
+        System.out.print("\nPassword: ");
+        String password  = auth.readLine().trim().toLowerCase();
+
+        User user = AuthenticationService.registerUser(name, role, login, password);
+
+        if (user != null) {
+            setLoggedInUser(user);
+            printUsage();
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            while (true) {
+                System.out.print("> ");
+                processCommand(in.readLine().trim().toLowerCase());
+            }
+        } else {
+            System.out.println("User already exists");
+            authentication();
+        }
+
+    }
+
+    private void setLoggedInUser(User user) {
+        loggedInUser = user;
+    }
+
 
 }
 

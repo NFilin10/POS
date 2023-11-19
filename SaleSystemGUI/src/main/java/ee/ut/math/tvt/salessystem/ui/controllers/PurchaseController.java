@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
@@ -63,6 +64,7 @@ public class PurchaseController implements Initializable {
 
     @FXML TextField searchTextField;
 
+    User loggedInUser = LoginController.getLoggedInUser();
 
 
 
@@ -213,7 +215,7 @@ public class PurchaseController implements Initializable {
         try {
             log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
 
-            shoppingCart.submitCurrentPurchase();
+            shoppingCart.submitCurrentPurchase(loggedInUser);
             disableInputs();
             shoppingCart.cancelCurrentPurchase();
             purchaseTableView.refresh();

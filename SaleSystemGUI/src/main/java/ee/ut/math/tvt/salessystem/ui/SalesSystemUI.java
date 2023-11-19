@@ -2,12 +2,11 @@ package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
-import ee.ut.math.tvt.salessystem.ui.controllers.HistoryController;
-import ee.ut.math.tvt.salessystem.ui.controllers.PurchaseController;
-import ee.ut.math.tvt.salessystem.ui.controllers.StockController;
-import ee.ut.math.tvt.salessystem.ui.controllers.TeamTabController;
+import ee.ut.math.tvt.salessystem.ui.controllers.*;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -15,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -35,6 +35,14 @@ public class SalesSystemUI extends Application {
     private final SalesSystemDAO dao;
     private final ShoppingCart shoppingCart;
 
+    private Tab loginTab;
+    private TabPane tabPane;
+
+    private User user;
+
+    Tab registrationPane = new Tab();
+
+
     public SalesSystemUI() {
         dao = new HibernateSalesSystemDAO();
         shoppingCart = new ShoppingCart(dao);
@@ -44,6 +52,34 @@ public class SalesSystemUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         log.info("javafx version: " + System.getProperty("javafx.runtime.version"));
 
+        Group root = new Group();
+        Scene scene = new Scene(root, 700, 600, Color.WHITE);
+
+        loginTab = new Tab();
+        loginTab.setText("Login");
+        loginTab.setClosable(false);
+        loginTab.setContent(loadControls("LoginForm.fxml",  new LoginController(dao, this)));
+
+        tabPane = new TabPane();
+        tabPane.prefHeightProperty().bind(scene.heightProperty());
+        tabPane.prefWidthProperty().bind(scene.widthProperty());
+        tabPane.getTabs().add(loginTab);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.prefHeightProperty().bind(scene.heightProperty());
+        borderPane.prefWidthProperty().bind(scene.widthProperty());
+        borderPane.setCenter(tabPane);
+        root.getChildren().add(borderPane);
+
+        primaryStage.setTitle("Sales system");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        log.info("Salesystem GUI started");
+    }
+
+    // Add this method to dynamically add tabs after successful login
+    public void showMainTabs(User user) throws IOException {
         Tab purchaseTab = new Tab();
         purchaseTab.setText("Point-of-sale");
         purchaseTab.setClosable(false);
@@ -57,31 +93,14 @@ public class SalesSystemUI extends Application {
         Tab historyTab = new Tab();
         historyTab.setText("History");
         historyTab.setClosable(false);
-        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController(dao, shoppingCart)));
+        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController(shoppingCart, user)));
 
         Tab teamTab = new Tab();
         teamTab.setText("Team");
         teamTab.setClosable(false);
         teamTab.setContent(loadControls("TeamTab.fxml", new TeamTabController(dao)));
 
-
-        Group root = new Group();
-        Scene scene = new Scene(root, 700, 600, Color.WHITE);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("DefaultTheme.css")).toExternalForm());
-
-        scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.prefHeightProperty().bind(scene.heightProperty());
-        borderPane.prefWidthProperty().bind(scene.widthProperty());
-        borderPane.setCenter(new TabPane(purchaseTab, stockTab, historyTab, teamTab));
-        root.getChildren().add(borderPane);
-
-        primaryStage.setTitle("Sales system");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        log.info("Salesystem GUI started");
+        tabPane.getTabs().addAll(purchaseTab, stockTab, historyTab, teamTab);
     }
 
     private Node loadControls(String fxml, Initializable controller) throws IOException {
@@ -96,6 +115,34 @@ public class SalesSystemUI extends Application {
         log.info("Controller successfully loaded");
         return fxmlLoader.load();
     }
+
+    public void successfulLogin(User user) throws IOException {
+        showMainTabs(user);
+        tabPane.getTabs().remove(loginTab);
+        tabPane.getSelectionModel().select(0);
+    }
+
+
+    public TabPane getTabPane() {
+        return tabPane;
+    }
+
+    public void showRegistrationForm() throws IOException {
+        registrationPane.setClosable(false);
+        registrationPane.setText("Register");
+        registrationPane.setContent(loadControls("RegistrationForm.fxml", new RegistrationController(dao, this)));
+        tabPane.getTabs().add(registrationPane);
+
+        tabPane.getSelectionModel().select(registrationPane);
+        tabPane.getTabs().remove(loginTab);
+
+    }
+
+    public void removeRegistrationForm(){
+        tabPane.getTabs().remove(registrationPane);
+
+    }
+
 }
 
 

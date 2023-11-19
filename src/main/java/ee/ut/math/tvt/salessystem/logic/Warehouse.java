@@ -71,6 +71,7 @@ public class Warehouse {
             item.setQuantity(quantity);
             item.setName(name);
             item.setPrice(price);
+            dao.updateStockItem(item);
 
             return null;
         } catch (NumberFormatException e) {

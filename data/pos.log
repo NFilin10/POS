@@ -1,42 +1,54 @@
-/*C42*/SET SCHEMA PUBLIC
+/*C174*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C173*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C175*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C177*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C176*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C178*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C179*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C181*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C180*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C183*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C182*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C184*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C186*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C185*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C189*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C188*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C187*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C190*/SET SCHEMA PUBLIC
 drop table if exists Purchase CASCADE 
 drop table if exists Purchase_SoldItem CASCADE 
 drop table if exists SoldItem CASCADE 
 drop table if exists StockItem CASCADE 
 drop table if exists TeamMember CASCADE 
+drop table if exists users CASCADE 
 drop sequence hibernate_sequence if exists
 create sequence hibernate_sequence start with 1 increment by 1
-create table Purchase (id bigint not null, date date, price double, time time, primary key (id))
+create table Purchase (id bigint not null, date date, price double, time time, user_id bigint, primary key (id))
 create table Purchase_SoldItem (Purchase_id bigint not null, items_id bigint not null)
 create table SoldItem (id bigint not null, barcode bigint, name varchar(255), price double, quantity integer, primary key (id))
 create table StockItem (id bigint not null, barcode bigint, name varchar(255), price double, quantity integer, primary key (id))
 create table TeamMember (id bigint not null, email varchar(255), firstname varchar(255), lastname varchar(255), primary key (id))
+create table users (id bigint not null, name varchar(255), password varchar(255) not null, role varchar(255), username varchar(255), primary key (id))
 alter table Purchase_SoldItem add constraint UK_2mxstqfvnsb6v16dympr5bosq unique (items_id)
+alter table Purchase add constraint FKc5pxmo7k6amr75sc6lb8cs46e foreign key (user_id) references users
 alter table Purchase_SoldItem add constraint FKdtoutrs1wavgi7mwe5xl7raeh foreign key (items_id) references SoldItem
 alter table Purchase_SoldItem add constraint FKadopm5srj6jsfmcgfgh5ba5sl foreign key (Purchase_id) references Purchase
-INSERT INTO STOCKITEM VALUES(1,1,'Lays chips',11.0E0,5)
-INSERT INTO STOCKITEM VALUES(2,2,'Chupa-chups',8.0E0,8)
-INSERT INTO STOCKITEM VALUES(3,3,'Frankfurters',15.0E0,12)
-INSERT INTO STOCKITEM VALUES(4,4,'Free Beer',0.0E0,100)
-INSERT INTO TEAMMEMBER VALUES(5,'artjom.siskov@ut.ee','Artjom','Shishkov')
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 6
-COMMIT
-INSERT INTO TEAMMEMBER VALUES(6,'nikita.filin@ut.ee','Nikita','Filin')
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 7
-COMMIT
-INSERT INTO TEAMMEMBER VALUES(7,'kaisa.kumpas@ut.ee','Kaisa','Kumpas')
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 8
-COMMIT
-INSERT INTO TEAMMEMBER VALUES(8,'alina.gudkova@ut.ee','Alina','Gudkova')
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 9
-COMMIT
-INSERT INTO STOCKITEM VALUES(9,234,'vld;',34.0E0,4)
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 10
-COMMIT
-INSERT INTO SOLDITEM VALUES(10,234,'vld;',34.0E0,2)
-INSERT INTO PURCHASE VALUES(11,'2023-11-18',68.0E0,'18:03:32')
-DELETE FROM STOCKITEM WHERE ID=9
-INSERT INTO STOCKITEM VALUES(9,234,'vld;',34.0E0,2)
-INSERT INTO PURCHASE_SOLDITEM VALUES(11,10)
-ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 12
-COMMIT
+DISCONNECT

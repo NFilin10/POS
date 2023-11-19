@@ -163,7 +163,7 @@
               <columns>
                 <TableColumn text="Id">
                   <cellValueFactory>
-                    <PropertyValueFactory property="id" />
+                    <PropertyValueFactory property="barcode" />
                   </cellValueFactory>
                 </TableColumn>
                 <TableColumn text="Name">

@@ -1,21 +1,20 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
+import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.History;
-import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import org.apache.logging.log4j.LogManager;
@@ -31,9 +30,6 @@ public class HistoryController implements Initializable {
 
     private final ShoppingCart shoppingCart;
 
-    private final SalesSystemDAO dao;
-
-
     @FXML
     private TableView<Purchase> purchaseTableView;
 
@@ -46,25 +42,23 @@ public class HistoryController implements Initializable {
     @FXML
     private DatePicker endDatePicker;
 
+    private User user;
 
 
     private History history;
 
+    private static SalesSystemDAO dao = new HibernateSalesSystemDAO();
 
-    public HistoryController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
-        this.dao = dao;
+
+    public HistoryController(ShoppingCart shoppingCart, User user) {
         this.shoppingCart = shoppingCart;
         this.history = new History();
+        this.user = user;
     }
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        purchaseTableView.setItems(FXCollections.observableList(dao.getPurchaseList()));
-        purchaseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                updatePurchaseInfo(newSelection);
-            }
-        });
+
         log.debug("HistoryController initializes");
     }
 
@@ -79,23 +73,36 @@ public class HistoryController implements Initializable {
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
 
-        List<Purchase> filteredPurchases = history.filterBetweenTwoDates(dao, startDate, endDate);
+        List<Purchase> filteredPurchases = history.filterBetweenTwoDates(dao, startDate, endDate, user);
 
         if (filteredPurchases != null){
             purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
+            setItems();
         }
 
     }
 
     @FXML
     private void getLast10Purchases() {
-        List<Purchase> filteredPurchases = history.getLast10(dao);
+        List<Purchase> filteredPurchases = history.getLast10(dao, user);
         purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
+        setItems();
+
     }
 
     @FXML
     private void showAllPurchases(){
-        purchaseTableView.setItems(FXCollections.observableList(history.showAll(dao)));
+        purchaseTableView.setItems(FXCollections.observableList(history.showAll(dao, user)));
+        setItems();
+    }
+
+
+    private void setItems(){
+        purchaseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                updatePurchaseInfo(newSelection);
+            }
+        });
     }
 
 

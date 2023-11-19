@@ -1,11 +1,9 @@
 package ee.ut.math.tvt.salessystem.dao;
 
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
-import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
+import ee.ut.math.tvt.salessystem.dataobjects.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 public class HibernateSalesSystemDAO implements SalesSystemDAO {
@@ -18,15 +16,20 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
         emf = Persistence.createEntityManagerFactory ("pos");
         em = emf.createEntityManager ();
 
-        saveStockItem(new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5));
-        saveStockItem(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
-        saveStockItem(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
-        saveStockItem(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
+//        saveStockItem(new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5));
+//        saveStockItem(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
+//        saveStockItem(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
+//        saveStockItem(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
+//
+//        addTeamMember(new TeamMember("Artjom", "Shishkov", "artjom.siskov@ut.ee"));
+//        addTeamMember(new TeamMember("Nikita", "Filin", "nikita.filin@ut.ee"));
+//        addTeamMember(new TeamMember("Kaisa", "Kumpas", "kaisa.kumpas@ut.ee"));
+//        addTeamMember(new TeamMember("Alina", "Gudkova", "alina.gudkova@ut.ee"));
 
-        addTeamMember(new TeamMember("Artjom", "Shishkov", "artjom.siskov@ut.ee"));
-        addTeamMember(new TeamMember("Nikita", "Filin", "nikita.filin@ut.ee"));
-        addTeamMember(new TeamMember("Kaisa", "Kumpas", "kaisa.kumpas@ut.ee"));
-        addTeamMember(new TeamMember("Alina", "Gudkova", "alina.gudkova@ut.ee"));
+//        addUser(new User("John Doe", "john.doe@example.com", "password123"));
+//        addUser(new User("Jane Smith", "jane.smith@example.com", "securepass"));
+//        addUser(new User("Admin", "admin@example.com", "adminpassword"));
+
     }
     public void close () {
         em.close ();
@@ -177,6 +180,7 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
                 em.persist(soldItem);
             }
 
+
             Purchase merge = em.merge(purchase);
             em.persist(merge);
 
@@ -195,10 +199,91 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
 
 
+//    @Override
+//    public List<Purchase> getPurchaseList() {
+//        return em.createQuery("from Purchase", Purchase.class).getResultList();
+//    }
+
     @Override
-    public List<Purchase> getPurchaseList() {
-        return em.createQuery("from Purchase", Purchase.class).getResultList();
+    public List<Purchase> getPurchaseList(User user) {
+        try {
+            String hql = "FROM Purchase WHERE user = :user";
+            Query query = em.createQuery(hql, Purchase.class);
+            query.setParameter("user", user);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList(); // Return an empty list if no purchases are found
+        }
     }
+
+
+    @Override
+    public User getUserByUsername(String username) {
+        try {
+            String hql = "FROM User WHERE username = :username";
+            Query query = em.createQuery(hql, User.class);
+            query.setParameter("username", username);
+            return (User) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null; // User with the specified username not found
+        }
+    }
+
+
+    @Override
+    public void addUser(User user) {
+        try {
+            System.out.println("addUser try");
+            beginTransaction();
+            em.persist(user);
+            commitTransaction();
+        } catch (Exception e) {
+            System.out.println("assUser catch");
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<User> getUsers(){
+        return em.createQuery("from User", User.class).getResultList();
+    }
+
+
+    public void updateStockItem(StockItem stockItem) {
+        try {
+            beginTransaction();
+
+            // Check if the stock item already exists in the database
+            StockItem existingItem = em.find(StockItem.class, stockItem.getId());
+
+            if (existingItem != null) {
+                // Update the fields of the existing item with the new values
+                existingItem.setBarcode(stockItem.getBarcode());
+                existingItem.setName(stockItem.getName());
+                existingItem.setDescription(stockItem.getDescription());
+                existingItem.setPrice(stockItem.getPrice());
+                existingItem.setQuantity(stockItem.getQuantity());
+
+                // Merge and persist the updated item
+                em.merge(existingItem);
+                commitTransaction();
+            } else {
+                // Handle the case where the stock item is not found
+                System.err.println("StockItem with ID " + stockItem.getId() + " not found.");
+            }
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+                rollbackTransaction();
+            }
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
 
 

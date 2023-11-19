@@ -13,6 +13,17 @@ public class Purchase {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Purchase() {
 
     }

@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.salessystem.dao;
 
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
-import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
+import ee.ut.math.tvt.salessystem.dataobjects.*;
 
 import java.util.List;
 
@@ -52,7 +49,8 @@ public interface SalesSystemDAO {
 
     void savePurchase(Purchase purchase);
 
-    List<Purchase> getPurchaseList();
+    List<Purchase> getPurchaseList(User user);
+
 
     List<TeamMember> getListOfTeamMembers();
     TeamMember getTeamMember(String name);
@@ -60,4 +58,10 @@ public interface SalesSystemDAO {
     void addTeamMember(TeamMember member);
 
     public boolean isTransactionActive();
+
+    public User getUserByUsername(String username);
+    public void addUser(User user);
+    public List<User> getUsers();
+
+    void updateStockItem(StockItem item);
 }

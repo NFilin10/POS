@@ -12,5 +12,6 @@
 
     <logger name="Ratpack" level="info">
     </logger>
+    <logger name="org.hibernate" level="OFF"/>
   </Loggers>
 </Configuration>

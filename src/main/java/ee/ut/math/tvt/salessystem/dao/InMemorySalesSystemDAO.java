@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.salessystem.dao;
 
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
-import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
+import ee.ut.math.tvt.salessystem.dataobjects.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,11 +82,6 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
-    public List<Purchase> getPurchaseList() {
-        return purchaseList;
-    }
-
-    @Override
     public List<TeamMember> getListOfTeamMembers() {
         return null;
     }
@@ -119,5 +111,31 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     public boolean isTransactionActive(){
         return false;
     }
+
+    @Override
+    public List<Purchase> getPurchaseList(User user) {
+        return null;
+    }
+
+    @Override
+    public User getUserByUsername(String username){
+        return null;
+    }
+
+    @Override
+    public void addUser(User user){
+
+    }
+
+    @Override
+    public List<User> getUsers(){
+        return null;
+    }
+
+    @Override
+    public void updateStockItem(StockItem item) {
+        return;
+    }
+
 
 }

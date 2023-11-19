@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.logic;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class History {
 
 
-    public List<Purchase> filterBetweenTwoDates(SalesSystemDAO dao, LocalDate startDate, LocalDate endDate){
+    public List<Purchase> filterBetweenTwoDates(SalesSystemDAO dao, LocalDate startDate, LocalDate endDate, User user){
 
         if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
             // Handle invalid date range or missing dates, display a message, etc.
@@ -18,7 +19,7 @@ public class History {
         }
 
         List<Purchase> filteredPurchases = new ArrayList<>();
-        List<Purchase> allPurchases = dao.getPurchaseList();
+        List<Purchase> allPurchases = dao.getPurchaseList(user);
 
         for (Purchase purchase : allPurchases) {
             LocalDate purchaseDate = purchase.getDate();
@@ -32,9 +33,9 @@ public class History {
     }
 
 
-    public List<Purchase> getLast10(SalesSystemDAO dao) {
+    public List<Purchase> getLast10(SalesSystemDAO dao, User user) {
 
-        List<Purchase> allPurchases = dao.getPurchaseList();
+        List<Purchase> allPurchases = dao.getPurchaseList(user);
         int numberOfPurchases = Math.min(10, allPurchases.size());
 
         List<Purchase> last10Purchases = new ArrayList<>();
@@ -46,8 +47,8 @@ public class History {
     }
 
 
-    public List<Purchase> showAll(SalesSystemDAO dao) {
-        return dao.getPurchaseList();
+    public List<Purchase> showAll(SalesSystemDAO dao, User user) {
+        return dao.getPurchaseList(user);
     }
 
 

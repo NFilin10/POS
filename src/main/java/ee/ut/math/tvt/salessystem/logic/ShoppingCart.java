@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +53,7 @@ public class ShoppingCart {
         log.debug("Purchase cancelled");
     }
 
-    public void submitCurrentPurchase() {
+    public void submitCurrentPurchase(User loggedInUser) {
         Warehouse warehouse = new Warehouse(dao);
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
@@ -83,6 +84,8 @@ public class ShoppingCart {
         // but when you start using hibernate in lab5, then it will become relevant.
         // what is a transaction? https://stackoverflow.com/q/974596
         Purchase purchase = new Purchase(cartCost, date, roundedTime, purchaseItems);
+        purchase.setUser(loggedInUser);
+
         dao.savePurchase(purchase);
     }
 
@@ -96,5 +99,6 @@ public class ShoppingCart {
             }
         }
     }
+
 
 }
