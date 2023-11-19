@@ -55,6 +55,10 @@ public class SalesSystemUI extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, 700, 600, Color.WHITE);
 
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("DefaultTheme.css")).toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
+
+
         loginTab = new Tab();
         loginTab.setText("Login");
         loginTab.setClosable(false);
