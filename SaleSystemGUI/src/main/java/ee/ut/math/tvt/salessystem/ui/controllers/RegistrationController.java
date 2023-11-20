@@ -42,7 +42,11 @@ public class RegistrationController implements Initializable {
 
 
         User user = AuthenticationService.registerUser(name.getText(), role.getValue(),  username.getText(), password.getText());
-        salesSystemUI.removeRegistrationForm();
+        if (user != null) {
+            salesSystemUI.removeRegistrationForm();
+        } else {
+            ErrorManager.showError("User already exists");
+        }
     }
 
 
