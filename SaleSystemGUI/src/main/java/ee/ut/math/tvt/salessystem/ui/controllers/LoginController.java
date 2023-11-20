@@ -27,7 +27,7 @@ public class LoginController implements Initializable {
 
     private static User loggedInUser;
 
-    private SalesSystemDAO dao;
+    private SalesSystemDAO dao =  new HibernateSalesSystemDAO();
 
     private SalesSystemUI salesSystemUI;
 
@@ -46,6 +46,8 @@ public class LoginController implements Initializable {
         String passwordInput = password.getText();
 
         User user = AuthenticationService.authenticateUser(usernameInput, passwordInput);
+
+
 
         if (user != null) {
             setLoggedInUser(user);

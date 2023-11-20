@@ -26,9 +26,7 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 //        addTeamMember(new TeamMember("Kaisa", "Kumpas", "kaisa.kumpas@ut.ee"));
 //        addTeamMember(new TeamMember("Alina", "Gudkova", "alina.gudkova@ut.ee"));
 
-//        addUser(new User("John Doe", "john.doe@example.com", "password123"));
-//        addUser(new User("Jane Smith", "jane.smith@example.com", "securepass"));
-//        addUser(new User("Admin", "admin@example.com", "adminpassword"));
+
 
     }
     public void close () {
@@ -233,12 +231,10 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public void addUser(User user) {
         try {
-            System.out.println("addUser try");
             beginTransaction();
             em.persist(user);
             commitTransaction();
         } catch (Exception e) {
-            System.out.println("assUser catch");
             if (em.getTransaction() != null && em.getTransaction().isActive()) {
                 rollbackTransaction();
             }

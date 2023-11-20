@@ -1,4 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
+import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.AuthenticationService;
@@ -27,10 +28,9 @@ public class RegistrationController implements Initializable {
     @FXML
     private ChoiceBox<String> role;
 
-    private SalesSystemDAO dao;
+    private SalesSystemDAO dao =  new HibernateSalesSystemDAO();
     private SalesSystemUI salesSystemUI;
 
-    private static User loggedInUser;
 
 
     public RegistrationController(SalesSystemDAO dao, SalesSystemUI salesSystemUI) {
@@ -40,15 +40,9 @@ public class RegistrationController implements Initializable {
     @FXML
     private void registerButtonAction() throws IOException {
 
-        User user = AuthenticationService.registerUser(name.getText(), role.getValue(),  username.getText(), password.getText());
 
-        if (user != null) {
-            setLoggedInUser(user);
-            salesSystemUI.successfulLogin(user);
-            salesSystemUI.removeRegistrationForm();
-        } else {
-            ErrorManager.showError("User already exists");
-        }
+        User user = AuthenticationService.registerUser(name.getText(), role.getValue(),  username.getText(), password.getText());
+        salesSystemUI.removeRegistrationForm();
     }
 
 
@@ -57,8 +51,6 @@ public class RegistrationController implements Initializable {
         // Initialization logic, if needed
     }
 
-    private void setLoggedInUser(User user) {
-        loggedInUser = user;
-    }
+
 }
 
