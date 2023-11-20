@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.TeamMember;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceDialog;
@@ -95,6 +96,7 @@ public class TeamTabController implements Initializable {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
             membersList.add(name);
+            dao.addTeamMember(new TeamMember(name.split(" ")[0], name.split(" ")[1], ""));
             updateTeamMembers();
         });
         log.debug("New member is added");
