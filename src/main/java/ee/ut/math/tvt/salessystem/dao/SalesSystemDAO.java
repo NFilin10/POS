@@ -69,4 +69,6 @@ public interface SalesSystemDAO {
     public List<User> getUsers();
 
     void updateStockItem(StockItem item);
+
+    public List<Purchase> findPurchase(SoldItem item, User user);
 }

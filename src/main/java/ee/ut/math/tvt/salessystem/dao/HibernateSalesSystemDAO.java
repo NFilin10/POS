@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -299,6 +300,17 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
             }
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Purchase> findPurchase(SoldItem item, User user) {
+        List<Purchase> list = new ArrayList<>();
+        for (Purchase purchase : getPurchaseList(user)) {
+            if (purchase.getItems().contains(item)) {
+                list.add(purchase);
+            }
+        }
+        return list;
     }
 }
 

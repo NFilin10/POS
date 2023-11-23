@@ -146,5 +146,14 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     public void updateStockItem(StockItem item) {
     }
 
-
+    @Override
+    public List<Purchase> findPurchase(SoldItem item, User user) {
+        List<Purchase> list = new ArrayList<>();
+        for (Purchase purchase : getPurchaseList(user)) {
+            if (purchase.getItems().contains(item)) {
+                list.add(purchase);
+            }
+        }
+        return list;
+    }
 }
