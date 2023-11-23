@@ -13,37 +13,16 @@ public class History {
 
     public List<Purchase> filterBetweenTwoDates(SalesSystemDAO dao, LocalDate startDate, LocalDate endDate, User user){
 
-        if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
-            // Handle invalid date range or missing dates, display a message, etc.
-            return null;
-        }
-
-        List<Purchase> filteredPurchases = new ArrayList<>();
-        List<Purchase> allPurchases = dao.getPurchaseList(user);
-
-        for (Purchase purchase : allPurchases) {
-            LocalDate purchaseDate = purchase.getDate();
-
-            if (purchaseDate.isEqual(startDate) || purchaseDate.isEqual(endDate) ||
-                    (purchaseDate.isAfter(startDate) && purchaseDate.isBefore(endDate))) {
-                filteredPurchases.add(purchase);
-            }
-        }
+        List<Purchase> filteredPurchases = dao.getPurchaseListBetweenDates(user, startDate, endDate);
         return filteredPurchases;
     }
 
 
     public List<Purchase> getLast10(SalesSystemDAO dao, User user) {
 
-        List<Purchase> allPurchases = dao.getPurchaseList(user);
-        int numberOfPurchases = Math.min(10, allPurchases.size());
+        List<Purchase> filteredPurchases = dao.getLast10Purchases(user);
 
-        List<Purchase> last10Purchases = new ArrayList<>();
-        for (int i = allPurchases.size() - 1; i >= allPurchases.size() - numberOfPurchases; i--) {
-            last10Purchases.add(allPurchases.get(i));
-        }
-
-        return last10Purchases;
+        return filteredPurchases;
     }
 
 

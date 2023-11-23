@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.dao;
 
 import ee.ut.math.tvt.salessystem.dataobjects.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -58,6 +59,10 @@ public interface SalesSystemDAO {
     void addTeamMember(TeamMember member);
 
     public boolean isTransactionActive();
+
+    List<Purchase> getPurchaseListBetweenDates(User user, LocalDate startDate, LocalDate endDate);
+
+    List<Purchase> getLast10Purchases(User user);
 
     public User getUserByUsername(String username);
     public void addUser(User user);

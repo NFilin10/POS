@@ -4,7 +4,6 @@ import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
 
-import java.lang.ref.SoftReference;
 
 public class AuthenticationService {
 
@@ -21,9 +20,7 @@ public class AuthenticationService {
         }
     }
 
-    public static User checkIfUserExists(SalesSystemDAO dao, String username){
-        return dao.getUserByUsername(username);
-    }
+
 
     public static User registerUser(String name, String role, String username, String password){
         if (dao.getUserByUsername(username) == null){
@@ -34,9 +31,5 @@ public class AuthenticationService {
             return null;
         }
     }
-
-
-
-
 }
 

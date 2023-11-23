@@ -91,7 +91,6 @@ public class User {
     }
 
     public boolean verifyPassword(String enteredPassword) {
-        // Compare the entered password with the stored password
         return this.password.equals(enteredPassword);
     }
 

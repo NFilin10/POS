@@ -37,9 +37,7 @@ public class SoldItem {
         this.quantity = quantity;
         this.barcode = stockItem.getBarcode();
         this.sum = getSum();
-
     }
-
 
 
     public Long getBarcode() {

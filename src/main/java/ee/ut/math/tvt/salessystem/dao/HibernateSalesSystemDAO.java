@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.dao;
 import ee.ut.math.tvt.salessystem.dataobjects.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,10 +115,8 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
     @Override
     public void saveStockItem(StockItem stockItem) {
         try {
-//            beginTransaction();
             StockItem merge = em.merge(stockItem);
             em.persist(merge);
-//            commitTransaction();
         } catch (Exception e) {
             if (em.getTransaction() != null && em.getTransaction().isActive()) {
                 rollbackTransaction();
@@ -197,11 +196,6 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
 
 
-//    @Override
-//    public List<Purchase> getPurchaseList() {
-//        return em.createQuery("from Purchase", Purchase.class).getResultList();
-//    }
-
     @Override
     public List<Purchase> getPurchaseList(User user) {
         try {
@@ -213,6 +207,35 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
             return Collections.emptyList(); // Return an empty list if no purchases are found
         }
     }
+
+    @Override
+    public List<Purchase> getPurchaseListBetweenDates(User user, LocalDate startDate, LocalDate endDate) {
+        try {
+            String hql = "FROM Purchase WHERE user = :user AND date BETWEEN :startDate AND :endDate";
+            Query query = em.createQuery(hql, Purchase.class);
+            query.setParameter("user", user);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList(); // Return an empty list if no purchases are found
+        }
+    }
+
+
+    @Override
+    public List<Purchase> getLast10Purchases(User user) {
+        try {
+            String hql = "FROM Purchase WHERE user = :user ORDER BY date DESC";
+            Query query = em.createQuery(hql, Purchase.class);
+            query.setParameter("user", user);
+            query.setMaxResults(10);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
 
 
     @Override
@@ -277,9 +300,6 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
             e.printStackTrace();
         }
     }
-
-
-
 }
 
 

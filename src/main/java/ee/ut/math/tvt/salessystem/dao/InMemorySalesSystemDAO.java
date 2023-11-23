@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.dao;
 
 import ee.ut.math.tvt.salessystem.dataobjects.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -113,6 +114,16 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
+    public List<Purchase> getPurchaseListBetweenDates(User user, LocalDate startDate, LocalDate endDate) {
+        return null;
+    }
+
+    @Override
+    public List<Purchase> getLast10Purchases(User user) {
+        return null;
+    }
+
+    @Override
     public List<Purchase> getPurchaseList(User user) {
         return null;
     }
@@ -124,7 +135,6 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void addUser(User user){
-
     }
 
     @Override
@@ -134,7 +144,6 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void updateStockItem(StockItem item) {
-        return;
     }
 
 

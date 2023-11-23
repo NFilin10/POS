@@ -35,8 +35,6 @@ public class ShoppingCart {
 
 
     public void addItem(SoldItem item) throws ApplicationException {
-        // TODO In case such stockItem already exists increase the quantity of the existing stock
-        // TODO verify that warehouse items' quantity remains at least zero or throw an exception
         if (item.getQuantity() > dao.findStockItem(item.getBarcode()).getQuantity()) {
             throw new ApplicationException("You have exceeded product amount");
         }
@@ -88,6 +86,7 @@ public class ShoppingCart {
 
         dao.savePurchase(purchase);
     }
+
 
     public void deleteItemFromCart(StockItem item){
         Iterator<SoldItem> it = items.iterator();

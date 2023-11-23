@@ -26,6 +26,7 @@ public class StockItem {
 
     public StockItem() {
     }
+
     public StockItem(Long barcode, String name, String desc, double price, int quantity) {
         this.barcode = barcode;
         this.name = name;
