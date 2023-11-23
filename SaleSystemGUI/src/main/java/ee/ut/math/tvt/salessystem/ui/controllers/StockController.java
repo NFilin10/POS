@@ -26,43 +26,31 @@ import java.util.ResourceBundle;
 public class StockController implements Initializable {
 
     private static final Logger log = LogManager.getLogger(StockController.class);
-
     private final ShoppingCart shoppingCart;
-
     private final SalesSystemDAO dao;
-
     @FXML
     private Button addItemButton;
-
     @FXML
     public TextField barCodeField;
-
     @FXML
     public TextField quantityField;
-
     @FXML
     public TextField nameField;
-
     @FXML
     public TextField priceField;
-
     @FXML
     private TableView<StockItem> warehouseTableView;
-
     @FXML
     private Button refresh;
-
     @FXML
     private Button delete;
-
     private Warehouse warehouse;
+
 
     public StockController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
         this.dao = dao;
         this.warehouse = new Warehouse(dao);
-
-
     }
 
     @Override
@@ -79,9 +67,10 @@ public class StockController implements Initializable {
                 }
             }
         });
-        // TODO refresh view after adding new items
         log.info("StockController initialised");
     }
+
+
     @FXML
     public void refreshButtonClicked() {
         refresh.setOnAction(new EventHandler<ActionEvent>() {
@@ -90,9 +79,10 @@ public class StockController implements Initializable {
                 refreshStockItems();
                 log.debug("Refresh button clicked");
             }
-
         });
     }
+
+
     @FXML
     public void updateButtonClicked() throws NegativePriceException {
         int selectedIndex = warehouseTableView.getSelectionModel().getSelectedIndex();
@@ -127,7 +117,6 @@ public class StockController implements Initializable {
         StockItem existingItem = dao.findStockItem(newBarcode);
         return existingItem == null;
     }
-
 
 
     public void deleteButtonClicked() {
@@ -180,9 +169,6 @@ public class StockController implements Initializable {
         } catch (NumberFormatException e){
            ErrorManager.showError("Invalid input");
         }
-
-
-
     }
 
 }

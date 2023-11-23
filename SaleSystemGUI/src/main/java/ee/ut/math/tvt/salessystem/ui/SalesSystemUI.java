@@ -6,19 +6,14 @@ import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import ee.ut.math.tvt.salessystem.ui.controllers.*;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -34,32 +29,18 @@ import java.util.Objects;
 public class SalesSystemUI extends Application {
 
     private static final Logger log = LogManager.getLogger(SalesSystemUI.class);
-
-    private static User loggedInUser;
-
     private final SalesSystemDAO dao;
     private final ShoppingCart shoppingCart;
-
     private static Tab loginTab;
     private static TabPane tabPane;
-
-    private User user;
-
     Tab registrationPane = new Tab();
-
-    private Tab logoutTab;
-
-    private Tab purchaseTab;
-    private Tab teamTab;
-    private Tab stockTab;
-    private Tab historyTab;
-
 
 
     public SalesSystemUI() {
         dao = new HibernateSalesSystemDAO();
         shoppingCart = new ShoppingCart(dao);
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,8 +51,6 @@ public class SalesSystemUI extends Application {
 
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("DefaultTheme.css")).toExternalForm());
         scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
-
-
 
         loginTab = new Tab();
         loginTab.setText("Login");
@@ -96,13 +75,11 @@ public class SalesSystemUI extends Application {
         log.info("Salesystem GUI started");
     }
 
-    // Add this method to dynamically add tabs after successful login
     public void showMainTabs(User user) throws IOException {
         Tab logoutTab = new Tab();
         logoutTab.setText("Logout");
         logoutTab.setClosable(false);
-        logoutTab.setContent(loadControls("LogoutTab.fxml", new LogoutController(this)));
-
+        logoutTab.setContent(loadControls("LogoutTab.fxml", new LogoutController(this, dao)));
 
         tabPane.getTabs().clear();
         tabPane.getTabs().add(logoutTab);
@@ -143,7 +120,6 @@ public class SalesSystemUI extends Application {
 
 
 
-
     private Node loadControls(String fxml, Initializable controller) throws IOException {
         URL resource = getClass().getResource(fxml);
         if (resource == null) {
@@ -163,10 +139,6 @@ public class SalesSystemUI extends Application {
         tabPane.getSelectionModel().select(0);
     }
 
-
-    public TabPane getTabPane() {
-        return tabPane;
-    }
 
     public void showRegistrationForm() throws IOException {
         registrationPane.setClosable(false);

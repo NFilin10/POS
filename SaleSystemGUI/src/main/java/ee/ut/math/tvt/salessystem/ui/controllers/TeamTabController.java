@@ -23,21 +23,15 @@ public class TeamTabController implements Initializable {
 
     @FXML
     private Label teamName;
-
     @FXML
     private Label teamLeader;
-
     @FXML
     private Label teamLeaderMail;
-
     @FXML
     private Text teamMembers;
-
     @FXML
     private ImageView logo;
-
     private SalesSystemDAO dao;
-
     private List<String> membersList = new ArrayList<>();
 
 
@@ -54,8 +48,6 @@ public class TeamTabController implements Initializable {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
             Properties properties = new Properties();
             properties.load(input);
-
-            //String members = properties.getProperty("members");
             String[] memberArray = new String[dao.getListOfTeamMembers().size()];
             for (int i = 0; i < dao.getListOfTeamMembers().size(); i++) {
                 memberArray[i] = dao.getListOfTeamMembers().get(i).getFirstname() +  " " + dao.getListOfTeamMembers().get(i).getLastname();
@@ -73,7 +65,6 @@ public class TeamTabController implements Initializable {
                 } else builder.append(", ");
             }
             teamMembers.setText(String.valueOf(builder));
-            //teamMembers.setText(properties.getProperty("members"));
 
 
             String logoPath = properties.getProperty("logo");
@@ -102,6 +93,7 @@ public class TeamTabController implements Initializable {
         log.debug("New member is added");
     }
 
+
     @FXML
     private void removeMember() {
         ChoiceDialog<String> dialog = new ChoiceDialog<>(membersList.get(0), membersList);
@@ -123,7 +115,5 @@ public class TeamTabController implements Initializable {
         teamMembers.setText(members);
         log.debug("Team member tab is updated");
     }
-
-
 }
 

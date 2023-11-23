@@ -1,17 +1,12 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
-import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
-import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.AuthenticationService;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,17 +19,16 @@ public class LoginController implements Initializable {
     private PasswordField password;
     @FXML
     private Button login;
-
     private static User loggedInUser;
-
-    private SalesSystemDAO dao =  new HibernateSalesSystemDAO();
-
+    private SalesSystemDAO dao;
     private SalesSystemUI salesSystemUI;
 
 
     public LoginController(SalesSystemDAO dao, SalesSystemUI salesSystemUI) {
+        this.dao = dao;
         this.salesSystemUI = salesSystemUI;
     }
+
 
     public static User getLoggedInUser() {
         return loggedInUser;
@@ -47,8 +41,6 @@ public class LoginController implements Initializable {
 
         User user = AuthenticationService.authenticateUser(usernameInput, passwordInput);
 
-
-
         if (user != null) {
             setLoggedInUser(user);
             salesSystemUI.successfulLogin(user);
@@ -56,6 +48,7 @@ public class LoginController implements Initializable {
             ErrorManager.showError("Incorrect username or password");
         }
     }
+
 
     private void setLoggedInUser(User user) {
         loggedInUser = user;

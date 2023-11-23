@@ -13,14 +13,15 @@ import java.util.ResourceBundle;
 public class LogoutController implements Initializable {
     @FXML
     private Button logout;
-
     private SalesSystemUI salesSystemUI;
+    private SalesSystemDAO dao;
 
-    private SalesSystemDAO dao = new HibernateSalesSystemDAO();
 
-    public LogoutController(SalesSystemUI salesSystemUI) {
+    public LogoutController(SalesSystemUI salesSystemUI, SalesSystemDAO dao) {
         this.salesSystemUI = salesSystemUI;
+        this.dao = dao;
     }
+
 
     @FXML
     private void handleLogout() {
@@ -29,6 +30,7 @@ public class LogoutController implements Initializable {
         SalesSystemUI.logout();
 
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

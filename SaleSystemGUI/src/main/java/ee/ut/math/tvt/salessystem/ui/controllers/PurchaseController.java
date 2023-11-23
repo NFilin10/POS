@@ -19,7 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.net.URL;
 import java.util.*;
 
@@ -45,8 +44,6 @@ public class PurchaseController implements Initializable {
     private TextField barCodeField;
     @FXML
     private TextField quantityField;
-//    @FXML
-//    private TextField nameField;
     @FXML
     private TextField priceField;
     @FXML
@@ -61,12 +58,8 @@ public class PurchaseController implements Initializable {
     private Button plusButton;
     @FXML
     private Button minusButton;
-
     @FXML TextField searchTextField;
-
     User loggedInUser = LoginController.getLoggedInUser();
-
-
 
 
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
@@ -91,7 +84,6 @@ public class PurchaseController implements Initializable {
         }
         chooseItemFromList.setItems(itemNames);
 
-        // Add a listener to the search TextField
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterItems(newValue);
         });
@@ -99,7 +91,7 @@ public class PurchaseController implements Initializable {
         chooseItemFromList.setOnAction(event -> {
             resetProductField();
             String selectedOption = chooseItemFromList.getValue();
-            fillInputsBySelectedStockItem1(selectedOption);
+            fillInputsBySelectedStockItem();
         });
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -148,10 +140,7 @@ public class PurchaseController implements Initializable {
     /** Event handler for the <code>new purchase</code> event. */
     @FXML
     protected void newPurchaseButtonClicked() {
-
-
         chooseItemFromList.setDisable(true);
-
 
         List<String> itemsToRemove = new ArrayList<>();
 
@@ -159,15 +148,12 @@ public class PurchaseController implements Initializable {
 
         chooseItemFromList.getItems().removeAll(itemsToRemove);
 
-
         for (StockItem stockItem : dao.findStockItems()) {
             chooseItemFromList.getItems().add(stockItem.getName());
         }
 
         chooseItemFromList.setOnAction(event -> {
             resetProductField();
-            String selectedOption = chooseItemFromList.getValue();
-//            nameField.setText(selectedOption);
             fillInputsBySelectedStockItem();
         });
 
@@ -224,7 +210,6 @@ public class PurchaseController implements Initializable {
         }
     }
 
-    // switch UI to the state that allows to proceed with the purchase
     private void enableInputs() {
         resetProductField();
         disableProductField(false);
@@ -235,32 +220,20 @@ public class PurchaseController implements Initializable {
         log.debug("Inputs are now enabled");
     }
 
-    // switch UI to the state that allows to initiate new purchase
+
     private void disableInputs() {
         resetProductField();
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
         newPurchase.setDisable(false);
         chooseItemFromList.setDisable(true);
-
-
         disableProductField(true);
         log.debug("Inputs are now disabled");
     }
 
+
     private void fillInputsBySelectedStockItem() {
 
-        if (!Objects.equals(barCodeField.getText(), "")) {
-            StockItem stockItem = getStockItemByBarcode();
-            if (stockItem != null) {
-//                nameField.setText(stockItem.getName());
-                priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
-                log.debug("Successfully input item using chooseItemFromList (barcode): " + barCodeField.getText());
-            } else {
-                resetProductField();
-                log.debug("fillInputsBySelectedStockItem() method interrupted");
-            }
-        }
         if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
@@ -275,20 +248,6 @@ public class PurchaseController implements Initializable {
     }
 
 
-    private void fillInputsBySelectedStockItem1(String selectedOption) {
-        StockItem stockItem = dao.findStockItem(selectedOption);
-        if (stockItem != null) {
-            barCodeField.setText(String.valueOf(stockItem.getBarcode()));
-            priceField.setText(String.valueOf(stockItem.getPrice() * Double.parseDouble(quantityField.getText())));
-            log.debug("Successfully input item using chooseItemFromList: " + selectedOption);
-        } else {
-            resetProductField();
-            log.debug("fillInputsBySelectedStockItem() method interrupted");
-        }
-    }
-
-    // Search the warehouse for a StockItem with the bar code entered
-    // to the barCode textfield.
     private StockItem getStockItemByBarcode() {
         try {
             long code = Long.parseLong(barCodeField.getText());
@@ -316,36 +275,11 @@ public class PurchaseController implements Initializable {
      */
     @FXML
     public void addItemEventHandler() {
-        // add chosen item to the shopping cart
-        if (!Objects.equals(barCodeField.getText(), "")) {
-            StockItem stockItem = getStockItemByBarcode();
-            if (stockItem != null) {
-                int quantity;
-                try {
-                    quantity = Integer.parseInt(quantityField.getText());
-                } catch (NumberFormatException e) {
-                    quantity = 1;
-                }
-                try {
-                    shoppingCart.addItem(new SoldItem(stockItem, quantity));
-                    dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
-                    purchaseTableView.refresh();
-                    log.info("Item added");
-                    log.debug("Added item name: " + chooseItemFromList.getValue() + " quantity: " + quantityField.getText() + " price: " + priceField.getText());
-                } catch (ApplicationException e){
-                    ErrorManager.showError(e.getMessage());
-                }
 
-            }
-        } else if (!Objects.equals(chooseItemFromList.getValue(), "")) {
+         if (!Objects.equals(chooseItemFromList.getValue(), "")) {
             StockItem stockItem = getStockItemByName();
             if (stockItem != null) {
-                int quantity;
-                try {
-                    quantity = Integer.parseInt(quantityField.getText());
-                } catch (NumberFormatException e) {
-                    quantity = 1;
-                }
+                int quantity = Integer.parseInt(quantityField.getText());
                 try {
                     shoppingCart.addItem(new SoldItem(stockItem, quantity));
                     dao.getSoldItemList().add(new SoldItem(stockItem, quantity));
@@ -355,7 +289,6 @@ public class PurchaseController implements Initializable {
                 } catch (ApplicationException e){
                     ErrorManager.showError(e.getMessage());
                 }
-
             }
         }
     }
@@ -377,11 +310,7 @@ public class PurchaseController implements Initializable {
     private void resetProductField() {
         barCodeField.setText("");
         quantityField.setText("1");
-//        nameField.setText("");
         priceField.setText("");
-
-        ;
-
     }
 
     @FXML
@@ -390,7 +319,6 @@ public class PurchaseController implements Initializable {
         purchaseTableView.getItems().removeAll(selectedProducts);
         purchaseTableView.refresh();
         purchaseTableView.getSelectionModel().clearSelection();
-
     }
 
     @FXML

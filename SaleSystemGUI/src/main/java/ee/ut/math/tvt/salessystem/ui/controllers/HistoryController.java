@@ -9,7 +9,6 @@ import ee.ut.math.tvt.salessystem.logic.History;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,26 +26,17 @@ import org.apache.logging.log4j.Logger;
 public class HistoryController implements Initializable {
 
     private static final Logger log = LogManager.getLogger(HistoryController.class);
-
     private final ShoppingCart shoppingCart;
-
     @FXML
     private TableView<Purchase> purchaseTableView;
-
     @FXML
     private TableView<SoldItem> purchaseInfo;
-
     @FXML
     private DatePicker startDatePicker;
-
     @FXML
     private DatePicker endDatePicker;
-
     private User user;
-
-
     private History history;
-
     private static SalesSystemDAO dao = new HibernateSalesSystemDAO();
 
 
@@ -58,7 +48,6 @@ public class HistoryController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
         log.debug("HistoryController initializes");
     }
 
@@ -79,16 +68,18 @@ public class HistoryController implements Initializable {
             purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
             setItems();
         }
-
     }
+
 
     @FXML
     private void getLast10Purchases() {
         List<Purchase> filteredPurchases = history.getLast10(dao, user);
-        purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
-        setItems();
-
+        if (filteredPurchases != null){
+            purchaseTableView.setItems(FXCollections.observableList(filteredPurchases));
+            setItems();
+        }
     }
+
 
     @FXML
     private void showAllPurchases(){
@@ -104,8 +95,4 @@ public class HistoryController implements Initializable {
             }
         });
     }
-
-
-
-
 }
