@@ -25,15 +25,12 @@ import java.util.Properties;
  */
 public class ConsoleUI {
     private static final Logger log = LogManager.getLogger(ConsoleUI.class);
-
     private final SalesSystemDAO dao;
     private final ShoppingCart cart;
-
     private final Warehouse warehouse;
-
     private static User loggedInUser;
-
     private final History history;
+
 
     public ConsoleUI(SalesSystemDAO dao) {
         this.dao = dao;
@@ -42,50 +39,43 @@ public class ConsoleUI {
         this.history = new History();
     }
 
+
     public static void main(String[] args) throws Exception {
         SalesSystemDAO dao = new HibernateSalesSystemDAO();
         ConsoleUI console = new ConsoleUI(dao);
         console.run();
     }
 
+
     /**
      * Run the sales system CLI.
      */
-    public void run() throws IOException {
+    public void run() {
+        printWelcomeMessage();
+        authentication();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            processCommands(reader);
+        } catch (IOException e) {
+            log.error("Error reading user input: " + e.getMessage(), e);
+        }
+    }
+
+
+    private void printWelcomeMessage() {
         System.out.println("===========================");
         System.out.println("=       Sales System      =");
         System.out.println("===========================");
-
         log.info("Session started");
-
-        authentication();
-        BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
-        processCommand(auth.readLine().trim().toLowerCase());
-
     }
 
-    private void showStock() {
-        List<StockItem> stockItems = dao.findStockItems();
+
+    private void authentication() {
         System.out.println("-------------------------");
-        for (StockItem si : stockItems) {
-            System.out.println(si.getBarcode() + " " + si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)");
-        }
-        if (stockItems.size() == 0) {
-            System.out.println("\tNothing");
-        }
+        System.out.println("l\t\tLogin");
+        System.out.println("su\t\tSign up");
         System.out.println("-------------------------");
     }
 
-    private void showCart() {
-        System.out.println("-------------------------");
-        for (SoldItem si : cart.getAll()) {
-            System.out.println(si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)");
-        }
-        if (cart.getAll().size() == 0) {
-            System.out.println("\tNothing");
-        }
-        System.out.println("-------------------------");
-    }
 
     private void printUsage() {
         System.out.println("-------------------------");
@@ -107,89 +97,134 @@ public class ConsoleUI {
         System.out.println("-------------------------");
     }
 
-    private void processCommand(String command) throws IOException {
-        String[] c = command.split(" ");
-        if (c[0].equals("l")){
-            login();
-        }
-        else if(c[0].equals("s")){
-            signUp();
-        }
 
-        else if (c[0].equals("h"))
-            printUsage();
-        else if (c[0].equals("q")) {
-            log.info("Session ended");
-            System.exit(0);
-        }
-        else if (c[0].equals("w"))
-            showStock();
-        else if (c[0].equals("c"))
-            showCart();
-        else if (c[0].equals("p")) {
-//            cart.submitCurrentPurchase();
-            System.out.println("Done. ");
-            log.debug("Purchase submitted");
-        }
-        else if (c[0].equals("d")) {
-            cart.deleteItemFromCart(dao.findStockItem(Long.parseLong(c[1])));
-        } else if (c[0].equals("r")) {
-            cart.cancelCurrentPurchase();
-            System.out.println("Done. ");
-            log.debug("Purchase cancelled");
-        } else if (c[0].equals("t"))
-            printTeamInfo();
-        else if (c[0].equals("a") && c.length == 3) {
-            try {
-                long idx = Long.parseLong(c[1]);
-                int amount = Integer.parseInt(c[2]);
-                StockItem item = dao.findStockItem(idx);
-                if (item != null) {
-                    cart.addItem(new SoldItem(item, Math.min(amount, item.getQuantity())));
-                    log.info("Item added to the cart");
-                    System.out.println("Done. ");
-                } else {
-                    log.error("Invalid id");
-                    System.out.println("no stock item with id " + idx);
-                }
-            } catch (SalesSystemException | ApplicationException | NoSuchElementException e) {
-                log.error(e.getMessage(), e);
+    private void processCommands(BufferedReader reader) throws IOException {
+        while (true) {
+            System.out.print("> ");
+            String command = reader.readLine().trim().toLowerCase();
+            if (command.equals("q")) {
+                log.info("Session ended");
+                System.exit(0);
             }
-        } else if (c[0].equals("s") && c.length == 5) {
-            try {
-                warehouse.addNewProductToWarehouse(c[1], Integer.parseInt(c[3]), c[2], Double.parseDouble(c[4]));
-                System.out.println("Done. ");
-            } catch (SalesSystemException | NoSuchElementException e) {
-                log.error(e.getMessage(), e);
-            } catch (ApplicationException | NegativePriceException e) {
-                System.out.println(e.getMessage());;
-            }
-        } else if (c[0].equals("ds")){
-            warehouse.deleteItemFromWarehouse(Long.parseLong(c[1]));
-            System.out.println("Done");
-        } else if (c[0].equals("u")) {
-            try {
-                warehouse.updateItem(dao.findStockItem(Long.parseLong(c[1])), c[1], c[2], c[3], c[4]);
-            } catch (NegativePriceException e) {
-                System.out.println(e.getMessage());;
-            }
-        } else if (c[0].equals("f1") && c.length == 3) {
-            try {
-                filterBetweenDates(c);
-            } catch (Exception e) {
-                System.out.println("Wrong format");
-            }
-
-        } else if (c[0].equals("f2")) {
-            getLast10Purchases();
-        } else if (c[0].equals("f3")) {
-            showAllPurchases();
-        } else {
-            log.error("Unidentifiable command");
-            System.out.println("unknown command");
+            processCommand(command.split(" "));
         }
     }
 
+
+    private void processCommand(String[] command) throws IOException {
+        switch (command[0]) {
+            case "l" -> login();
+            case "su" -> signUp();
+            case "h" -> printUsage();
+            case "w" -> showStock();
+            case "c" -> showCart();
+            case "p" -> purchaseCart();
+            case "d" -> deleteItemFromCart(command);
+            case "r" -> cancelPurchase();
+            case "t" -> printTeamInfo();
+            case "a" -> addItemToCart(command);
+            case "s" -> addNewProductToWarehouse(command);
+            case "ds" -> deleteItemFromWarehouse(command);
+            case "u" -> updateItemInWarehouse(command);
+            case "f1" -> filterBetweenDates(command);
+            case "f2" -> getLast10Purchases();
+            case "f3" -> showAllPurchases();
+            default -> {
+                log.error("Unidentifiable command");
+                System.out.println("unknown command");
+            }
+        }
+    }
+
+
+    private void showStock() {
+        List<StockItem> stockItems = dao.findStockItems();
+        System.out.println("-------------------------");
+        for (StockItem si : stockItems) {
+            System.out.println(si.getBarcode() + " " + si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)");
+        }
+        if (stockItems.size() == 0) {
+            System.out.println("\tNothing");
+        }
+        System.out.println("-------------------------");
+    }
+
+
+    private void showCart() {
+        System.out.println("-------------------------");
+        for (SoldItem si : cart.getAll()) {
+            System.out.println(si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)");
+        }
+        if (cart.getAll().size() == 0) {
+            System.out.println("\tNothing");
+        }
+        System.out.println("-------------------------");
+    }
+
+
+    private void updateItemInWarehouse(String[] command) {
+        try {
+            warehouse.updateItem(dao.findStockItem(Long.parseLong(command[1])), command[1], command[2], command[3], command[4]);
+        } catch (NegativePriceException e) {
+            System.out.println(e.getMessage());;
+        }
+    }
+
+
+    private void deleteItemFromWarehouse(String[] command) {
+        warehouse.deleteItemFromWarehouse(Long.parseLong(command[1]));
+        System.out.println("Done");
+    }
+
+
+    private void addNewProductToWarehouse(String[] command) {
+        try {
+            warehouse.addNewProductToWarehouse(command[1], Integer.parseInt(command[3]), command[2], Double.parseDouble(command[4]));
+            System.out.println("Done. ");
+        } catch (SalesSystemException | NoSuchElementException e) {
+            log.error(e.getMessage(), e);
+        } catch (ApplicationException | NegativePriceException e) {
+            System.out.println(e.getMessage());;
+        }
+    }
+
+
+    private void addItemToCart(String[] command) {
+        try {
+            long idx = Long.parseLong(command[1]);
+            int amount = Integer.parseInt(command[2]);
+            StockItem item = dao.findStockItem(idx);
+            if (item != null) {
+                cart.addItem(new SoldItem(item, Math.min(amount, item.getQuantity())));
+                log.info("Item added to the cart");
+                System.out.println("Done. ");
+            } else {
+                log.error("Invalid id");
+                System.out.println("no stock item with id " + idx);
+            }
+        } catch (SalesSystemException | ApplicationException | NoSuchElementException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+
+    private void cancelPurchase() {
+        cart.cancelCurrentPurchase();
+        System.out.println("Done. ");
+        log.debug("Purchase cancelled");
+    }
+
+
+    private void deleteItemFromCart(String[] command) {
+        cart.deleteItemFromCart(dao.findStockItem(Long.parseLong(command[1])));
+    }
+
+
+    private void purchaseCart() {
+        cart.submitCurrentPurchase(loggedInUser);
+        System.out.println("Done. ");
+        log.debug("Purchase submitted");
+    }
 
 
     private void printTeamInfo(){
@@ -207,6 +242,7 @@ public class ConsoleUI {
         }
     }
 
+
     private void filterBetweenDates(String[] command) {
         LocalDate startDate = LocalDate.parse(command[1]);
         LocalDate endDate = LocalDate.parse(command[2]);
@@ -216,6 +252,7 @@ public class ConsoleUI {
         printFiltered(filteredPurchases);
 
     }
+
 
     private void getLast10Purchases() {
         List<Purchase> filteredPurchases = history.getLast10(dao, loggedInUser);
@@ -229,6 +266,7 @@ public class ConsoleUI {
         printFiltered(filteredPurchases);
     }
 
+
     private void printFiltered(List<Purchase> filteredPurchases){
         if (filteredPurchases.size() != 0){
             for (Purchase filteredPurchase : filteredPurchases) {
@@ -240,13 +278,6 @@ public class ConsoleUI {
         }
     }
 
-
-    public void authentication(){
-        System.out.println("-------------------------");
-        System.out.println("l\t\tLogin");
-        System.out.println("s\t\tSign up");
-        System.out.println("-------------------------");
-    }
 
     private void login() throws IOException {
         BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
@@ -263,15 +294,15 @@ public class ConsoleUI {
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 System.out.print("> ");
-                processCommand(in.readLine().trim().toLowerCase());
+                processCommand(in.readLine().trim().toLowerCase().split(" "));
             }
 
         } else {
             System.out.println("Incorrect username or password");
             authentication();
         }
-
     }
+
 
     private void signUp() throws IOException {
         BufferedReader auth = new BufferedReader(new InputStreamReader(System.in));
@@ -301,7 +332,7 @@ public class ConsoleUI {
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 System.out.print("> ");
-                processCommand(in.readLine().trim().toLowerCase());
+                processCommand(in.readLine().trim().toLowerCase().split(" "));
             }
         } else {
             System.out.println("User already exists");
@@ -310,10 +341,10 @@ public class ConsoleUI {
 
     }
 
+
     private void setLoggedInUser(User user) {
         loggedInUser = user;
     }
-
 
 }
 
