@@ -83,8 +83,13 @@ public class ShoppingCart {
         // what is a transaction? https://stackoverflow.com/q/974596
         Purchase purchase = new Purchase(cartCost, date, roundedTime, purchaseItems);
         purchase.setUser(loggedInUser);
-
-        dao.savePurchase(purchase);
+        try {
+            dao.beginTransaction();
+            dao.savePurchase(purchase);
+            dao.commitTransaction();
+        } catch (Exception e){
+            dao.rollbackTransaction();
+        }
     }
 
 

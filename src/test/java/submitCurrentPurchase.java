@@ -1,7 +1,6 @@
-import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
+import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.NegativePriceException;
@@ -9,58 +8,60 @@ import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.InOrder;
 
 import java.time.LocalTime;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class submitCurrentPurchase {
+
     private ShoppingCart cart;
-    private Warehouse warehouse;
     private SalesSystemDAO dao;
+
+    private Warehouse warehouse;
 
     @Before
     public void setUp() {
-        dao = mock(SalesSystemDAO.class);
-        warehouse = new Warehouse(dao);
+        dao = Mockito.mock(SalesSystemDAO.class);
         cart = new ShoppingCart(dao);
+        warehouse = new Warehouse(dao);
     }
 
     @Test
-    public void testSubmittingCurrentPurchaseDecreasesStockItemQuantity() throws NegativePriceException, ApplicationException {
-        int quantity = 40;
+    public void testSubmittingCurrentPurchaseDecreasesStockItemQuantity() {
+        // Create a stock item and add it to the DAO's database
+        StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
+        when(dao.findStockItem(1L)).thenReturn(stockItem);
 
-        StockItem stockItem = new StockItem(5L, "Burger", "fmefoaenwoinawi",  15.00, quantity);
-        warehouse.addNewProductToWarehouse("5", quantity, "Burger", 15.0);
-        SoldItem soldItem = new SoldItem(stockItem, 3);
+        // Create a sold item based on the stock item and add it to the shopping cart
+        SoldItem soldItem = new SoldItem(stockItem, 2);
         cart.addSoldItem(soldItem);
-        User user = new User("User", "Customer", "user", "123" );
-        cart.submitCurrentPurchase(user);
-        //List<SoldItem> list = new ArrayList<>();
-        //list.add(soldItem);
-        //Purchase purchase = new Purchase(45.0, LocalDate.now(), LocalTime.now(), list);
-        ArgumentCaptor<Purchase> purchaseArgumentCaptor = ArgumentCaptor.forClass(Purchase.class);
-        verify(dao).savePurchase(purchaseArgumentCaptor.capture());
 
-        Purchase purchase1 = purchaseArgumentCaptor.getValue();
-        System.out.println(purchase1);
+        // Submit the current purchase
+        User dummyUser = new User(); // Assuming you have a User class
+        cart.submitCurrentPurchase(dummyUser);
 
-        assertEquals(quantity - 3, dao.findStockItem("Burger").getQuantity());
+        // Verify that the stock item quantity has decreased
+        assertEquals(3, stockItem.getQuantity());
     }
 
+
+
     @Test
-    public void testSubmittingCurrentPurchaseBeginsAndCommitsTransaction() throws NegativePriceException, ApplicationException {
-        StockItem stockItem = new StockItem(5L, "Burger", "fmefoaenwoinawi",  15.00, 1);
-        warehouse.addNewProductToWarehouse("5", 1, "Burger", 15.0);
-        SoldItem soldItem = new SoldItem(stockItem, 3);
-        cart.addSoldItem(soldItem);
-        User user = new User("User", "Customer", "user", "123" );
-        cart.submitCurrentPurchase(user);
-        verify(dao).beginTransaction();
-        verify(dao).commitTransaction();
+    public void testSubmittingCurrentPurchaseBeginsAndCommitsTransaction() {
+        // Arrange
+        User dummyUser = new User(); // Assuming you have a User class
+
+        // Act
+        cart.submitCurrentPurchase(dummyUser);
+
+        // Assert
+        InOrder inOrder = inOrder(dao);
+        inOrder.verify(dao, times(1)).beginTransaction();
+        inOrder.verify(dao, times(1)).commitTransaction();
     }
 
     @Test

@@ -171,24 +171,19 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void savePurchase(Purchase purchase) {
-        try {
-            beginTransaction();
 
-            for (SoldItem soldItem : purchase.getItems()) {
-                em.persist(soldItem);
-            }
+        beginTransaction();
 
-
-            Purchase merge = em.merge(purchase);
-            em.persist(merge);
-
-            commitTransaction();
-        } catch (Exception e) {
-            if (em.getTransaction() != null && em.getTransaction().isActive()) {
-                rollbackTransaction();
-            }
-            e.printStackTrace();
+        for (SoldItem soldItem : purchase.getItems()) {
+            em.persist(soldItem);
         }
+
+
+        Purchase merge = em.merge(purchase);
+        em.persist(merge);
+
+        commitTransaction();
+
     }
 
     public boolean isTransactionActive() {
