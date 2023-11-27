@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="submitCurrentPurchase" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-26T17:36:42" hostname="MBP-Nikita" time="0.336">
+  <properties/>
+  <testcase name="testSubmittingCurrentOrderCreatesHistoryItem" classname="submitCurrentPurchase" time="0.336"/>
+  <system-out><![CDATA[19:36:42.670 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
