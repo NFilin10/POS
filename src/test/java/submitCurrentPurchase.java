@@ -64,27 +64,35 @@ public class submitCurrentPurchase {
     }
 
     @Test
-    public void testSubmittingCurrentOrderCreatesPurchase() {
+    public void testSubmittingCurrentOrderCreatesPurchase() throws ApplicationException {
        User dummyUser = new User();
+       StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
+       SoldItem soldItem = new SoldItem(stockItem, 2);
+       cart.addItem(soldItem);
        cart.submitCurrentPurchase(dummyUser);
        InOrder inOrder = inOrder(dao);
        inOrder.verify(dao, times(1)).getPurchaseList(dummyUser);
+       assertEquals(soldItem, dummyUser.getPurchases().get(0).getItems().get(0));
     }
 
     @Test
-    public void testSubmittingCurrentOrderSavesCorrectTime() {
+    public void testSubmittingCurrentOrderSavesCorrectTime() throws ApplicationException {
         User dummyUser = new User();
+        StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
+        SoldItem soldItem = new SoldItem(stockItem, 2);
+        cart.addItem(soldItem);
         cart.submitCurrentPurchase(dummyUser);
-        assertEquals(LocalTime.now(),  dao.getLast10Purchases(dummyUser).get(0).getTime());
+        assertEquals(LocalTime.now(),  dummyUser.getPurchases().get(0).getTime());
     }
 
     @Test
     public void testCancellingOrder() throws ApplicationException {
         User dummyUser = new User();
-        SoldItem nullItem = new SoldItem();
+        StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
+        SoldItem nullItem = new SoldItem(stockItem, 2);
         cart.addItem(nullItem);
         cart.cancelCurrentPurchase();
-        SoldItem otherNullItem = new SoldItem();
+        SoldItem otherNullItem = new SoldItem(stockItem, 3);
         cart.addItem(otherNullItem);
         cart.submitCurrentPurchase(dummyUser);
         assertEquals(otherNullItem, dummyUser.getPurchases().get(0).getItems().get(0));
@@ -92,11 +100,10 @@ public class submitCurrentPurchase {
 
     @Test
     public void testCancellingOrderQuanititiesUnchanged() throws ApplicationException {
-        StockItem nullItem = new StockItem();
-        nullItem.setQuantity(1);
-        SoldItem soldItem = new SoldItem(nullItem, 1);
+        StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
+        SoldItem soldItem = new SoldItem(stockItem, 1);
         cart.addItem(soldItem);
         cart.cancelCurrentPurchase();
-        assertEquals(1, nullItem.getQuantity());
+        assertEquals(5, stockItem.getQuantity());
     }
 }
