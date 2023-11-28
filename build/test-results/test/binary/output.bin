@@ -1,1 +1,11 @@
-o00:27:35.895 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+p12:56:41.387 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+e12:56:41.390 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Purchase cancelled
+p12:56:41.392 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+p12:56:41.401 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+p12:56:41.409 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+e12:56:41.409 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Purchase cancelled
+p12:56:41.410 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 3
+p12:56:41.411 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+	[]
+	[]
+	'StockItem{id=null, name='New Product}

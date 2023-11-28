@@ -1,22 +1,25 @@
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static org.mockito.Mockito.*;
-
 import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ApplicationException;
 import ee.ut.math.tvt.salessystem.logic.NegativePriceException;
+import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-public class addItem {
+import static junit.framework.TestCase.assertEquals;
+import static org.mockito.Mockito.*;
+
+public class AddItem {
 
     private Warehouse warehouse;
     private SalesSystemDAO dao;
+
+    private ShoppingCart cart;
 
 //    private Warehouse warehouse1;
 
@@ -25,6 +28,7 @@ public class addItem {
     @Before
     public void setUp() {
         dao = mock(SalesSystemDAO.class);
+        cart = new ShoppingCart(dao);
         warehouse = new Warehouse(dao);
     }
 
@@ -83,6 +87,16 @@ public class addItem {
         double price = 10.0;
 
         warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testAddingItemWithQuantitySumTooLarge() throws NegativePriceException, ApplicationException {
+        StockItem stockItem = new StockItem(7L, "new product", "dwdd", 20, 10);
+        dao.saveStockItem(stockItem);
+        when(dao.findStockItem(7L)).thenReturn(stockItem);
+
+        SoldItem soldItem = new SoldItem(stockItem, 15);
+        cart.addItem(soldItem);
     }
 }
 
