@@ -1,7 +1,5 @@
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
-import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
@@ -11,11 +9,9 @@ import ee.ut.math.tvt.salessystem.logic.Warehouse;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -101,24 +97,48 @@ public class submitCurrentPurchase {
 
     @Test
     public void testCancellingOrder() throws ApplicationException {
-        User dummyUser = new User();
         StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
-        SoldItem nullItem = new SoldItem(stockItem, 2);
-        cart.addItem(nullItem);
+        when(dao.findStockItem(1L)).thenReturn(stockItem);
+
+        SoldItem soldItem = new SoldItem(stockItem, 2);
+        SoldItem soldItem1 = new SoldItem(stockItem, 3);
+        cart.addItem(soldItem);
+
         cart.cancelCurrentPurchase();
-        SoldItem otherNullItem = new SoldItem(stockItem, 3);
-        cart.addItem(otherNullItem);
+        cart.addItem(soldItem1);
+
+        User dummyUser = new User();
         cart.submitCurrentPurchase(dummyUser);
-        assertEquals(otherNullItem, dummyUser.getPurchases().get(0).getItems().get(0));
+
+        ArgumentCaptor<Purchase> purchaseCaptor = ArgumentCaptor.forClass(Purchase.class);
+        verify(dao).savePurchase(purchaseCaptor.capture());
+
+        Purchase savedPurchase = purchaseCaptor.getValue();
+
+        List<SoldItem> savedItems = savedPurchase.getItems();
+        assertTrue("Saved items should contain soldItem1", savedItems.contains(soldItem1));
+        assertFalse("Purchase should not contain soldItem", savedItems.contains(soldItem));
     }
 
     @Test
     public void testCancellingOrderQuanititiesUnchanged() throws ApplicationException {
         StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
-        SoldItem soldItem = new SoldItem(stockItem, 1);
+        when(dao.findStockItem(1L)).thenReturn(stockItem);
+
+        SoldItem soldItem = new SoldItem(stockItem, 2);
         cart.addItem(soldItem);
+
         cart.cancelCurrentPurchase();
-        assertEquals(5, stockItem.getQuantity());
+
+        ArgumentCaptor<Purchase> purchaseCaptor = ArgumentCaptor.forClass(Purchase.class);
+        verify(dao).savePurchase(purchaseCaptor.capture());
+
+        Purchase savedPurchase = purchaseCaptor.getValue();
+
+        List<SoldItem> savedItems = savedPurchase.getItems();
+        assertTrue("Saved items should be empty", savedItems.isEmpty());
+        int quantity = stockItem.getQuantity();
+        assertEquals(5, quantity);
     }
 
 }
