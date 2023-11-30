@@ -34,12 +34,29 @@ public class ShoppingCart {
      */
 
 
-    public void addItem(SoldItem item) throws ApplicationException {
-        if (item.getQuantity() > dao.findStockItem(item.getBarcode()).getQuantity()) {
-            throw new ApplicationException("You have exceeded product amount");
+    public void addItem(SoldItem newItem) throws ApplicationException {
+        StockItem stockItem = dao.findStockItem(newItem.getBarcode());
+
+        if (stockItem == null) {
+            throw new ApplicationException("Item not found in warehouse");
         }
-        addSoldItem(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
+
+        int totalQuantityInCart = newItem.getQuantity();
+        if (newItem.getQuantity() <= 0){
+            throw new ApplicationException("Quantity can not be zero or negative");
+        }
+        for (SoldItem item : items) {
+            if (item.getBarcode() == newItem.getBarcode()) {
+                totalQuantityInCart += item.getQuantity();
+            }
+        }
+
+        if (totalQuantityInCart > stockItem.getQuantity()) {
+            throw new ApplicationException("Total quantity exceeds available stock");
+        }
+
+        addSoldItem(newItem);
+        log.debug("Added " + newItem.getName() + " quantity of " + newItem.getQuantity());
     }
 
     public List<SoldItem> getAll() {
@@ -84,9 +101,7 @@ public class ShoppingCart {
         Purchase purchase = new Purchase(cartCost, date, roundedTime, purchaseItems);
         purchase.setUser(loggedInUser);
         try {
-            dao.beginTransaction();
             dao.savePurchase(purchase);
-            dao.commitTransaction();
         } catch (Exception e){
             dao.rollbackTransaction();
         }

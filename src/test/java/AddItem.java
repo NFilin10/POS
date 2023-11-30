@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class AddItem {
@@ -20,10 +21,6 @@ public class AddItem {
     private SalesSystemDAO dao;
 
     private ShoppingCart cart;
-
-//    private Warehouse warehouse1;
-
-    private InMemorySalesSystemDAO dao1;
 
     @Before
     public void setUp() {
@@ -43,26 +40,20 @@ public class AddItem {
     }
 
     @Test
-    public void testAddingNewItem() throws ApplicationException, NegativePriceException {
+    public void testAddingNewItem() {
+        StockItem stockItem = new StockItem(123L, "Test Product", "Description", 10.0, 5);
+        SoldItem soldItem = new SoldItem(stockItem, 4);
 
-        String barcode = "7";
-        int quantity = 10;
-        String name = "New Product";
-        double price = 20;
+        when(dao.findStockItem(soldItem.getBarcode())).thenReturn(stockItem);
 
-        warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
+        try {
+            cart.addItem(soldItem);
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
 
-        // Verify that the mocked DAO is called correctly
-        ArgumentCaptor<StockItem> stockItemCaptor = ArgumentCaptor.forClass(StockItem.class);
-        verify(dao).saveStockItem(stockItemCaptor.capture());
-
-        StockItem addedItem = stockItemCaptor.getValue();
-        System.out.println(addedItem);
-
-        assertEquals(barcode, String.valueOf(addedItem.getBarcode()));
-        assertEquals(quantity, addedItem.getQuantity());
-        assertEquals(name, addedItem.getName());
-        assertEquals(price, addedItem.getPrice(), 0.001);
+        assertTrue("The item should be added to the cart", cart.getAll().contains(soldItem));
+        assertEquals("The quantity of the item in the cart should be 4", 4, soldItem.getQuantity().intValue());
     }
 
 
@@ -80,23 +71,36 @@ public class AddItem {
 
 
     @Test(expected = ApplicationException.class)
-    public void testAddingItemWithNegativeQuantity() throws ApplicationException, NegativePriceException {
-        String barcode = "123";
-        int quantity = -5;
-        String name = "Test Product";
-        double price = 10.0;
-
-        warehouse.addNewProductToWarehouse(barcode, quantity, name, price);
+    public void testAddingItemWithNegativeQuantity() throws ApplicationException {
+        StockItem stockItem = new StockItem(123L, "Test Product", "", 5, 7);
+        when(dao.findStockItem(123L)).thenReturn(stockItem);
+        SoldItem  soldItem = new SoldItem(stockItem, -4);
+        cart.addItem(soldItem);
     }
 
-    @Test(expected = ApplicationException.class)
-    public void testAddingItemWithQuantitySumTooLarge() throws NegativePriceException, ApplicationException {
-        StockItem stockItem = new StockItem(7L, "new product", "dwdd", 20, 10);
-        dao.saveStockItem(stockItem);
-        when(dao.findStockItem(7L)).thenReturn(stockItem);
 
-        SoldItem soldItem = new SoldItem(stockItem, 15);
+    @Test(expected = ApplicationException.class)
+    public void testAddingItemWithQuantityTooLarge() throws ApplicationException {
+        StockItem stockItem = new StockItem(123L, "Test Product", "Description", 23.0, 3);
+        when(dao.findStockItem(123L)).thenReturn(stockItem);
+
+        SoldItem soldItem = new SoldItem(stockItem, 4);
+
         cart.addItem(soldItem);
+    }
+
+
+    @Test(expected = ApplicationException.class)
+    public void testAddingItemWithQuantitySumTooLarge() throws ApplicationException {
+        StockItem stockItem = new StockItem(123L, "Test Product", "Description", 20.0, 5);
+        when(dao.findStockItem(123L)).thenReturn(stockItem);
+
+        SoldItem firstSoldItem = new SoldItem(stockItem, 3);
+        cart.addItem(firstSoldItem);
+
+        SoldItem secondSoldItem = new SoldItem(stockItem, 3);
+
+        cart.addItem(secondSoldItem);
     }
 }
 

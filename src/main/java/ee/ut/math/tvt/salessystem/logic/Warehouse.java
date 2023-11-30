@@ -25,6 +25,8 @@ public class Warehouse {
                 throw new ApplicationException("Barcode cannot be empty");
             } else if (quantity <= 0) {
                 throw new ApplicationException("Quantity cannot be zero or negative");
+            } else if (quantity >= 999) {
+                throw new ApplicationException("Max quantity reached");
             } else if (price < 0) {
                 throw new NegativePriceException();
             } else if (dao.findStockItem(Long.parseLong(barcode)) == null) {
