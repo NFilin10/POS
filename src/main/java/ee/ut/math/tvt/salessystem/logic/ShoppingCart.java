@@ -101,7 +101,9 @@ public class ShoppingCart {
         Purchase purchase = new Purchase(cartCost, date, roundedTime, purchaseItems);
         purchase.setUser(loggedInUser);
         try {
+            dao.beginTransaction();
             dao.savePurchase(purchase);
+            dao.commitTransaction();
         } catch (Exception e){
             dao.rollbackTransaction();
         }
