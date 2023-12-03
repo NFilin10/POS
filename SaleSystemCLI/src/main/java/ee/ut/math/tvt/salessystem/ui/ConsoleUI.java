@@ -204,6 +204,7 @@ public class ConsoleUI {
             }
         } catch (SalesSystemException | ApplicationException | NoSuchElementException e) {
             log.error(e.getMessage(), e);
+            System.out.println(e.getMessage());
         }
     }
 
