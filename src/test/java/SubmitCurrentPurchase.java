@@ -47,8 +47,7 @@ public class SubmitCurrentPurchase {
         SoldItem soldItem = new SoldItem(stockItem, 2);
         cart.addItem(soldItem);
 
-        User dummyUser = new User();
-        cart.submitCurrentPurchase(dummyUser);
+        cart.submitCurrentPurchase(loggedInUser);
 
         assertEquals(3, stockItem.getQuantity());
     }
@@ -57,9 +56,7 @@ public class SubmitCurrentPurchase {
 
     @Test
     public void testSubmittingCurrentPurchaseBeginsAndCommitsTransaction() {
-        User dummyUser = new User();
-
-        cart.submitCurrentPurchase(dummyUser);
+        cart.submitCurrentPurchase(loggedInUser);
 
         InOrder inOrder = inOrder(dao);
         inOrder.verify(dao, times(1)).beginTransaction();
@@ -74,8 +71,7 @@ public class SubmitCurrentPurchase {
         SoldItem soldItem = new SoldItem(stockItem, 2);
         cart.addItem(soldItem);
 
-        User dummyUser = new User();
-        cart.submitCurrentPurchase(dummyUser);
+        cart.submitCurrentPurchase(loggedInUser);
 
         ArgumentCaptor<Purchase> purchaseCaptor = ArgumentCaptor.forClass(Purchase.class);
         verify(dao).savePurchase(purchaseCaptor.capture());
@@ -84,11 +80,10 @@ public class SubmitCurrentPurchase {
         assertNotNull("Purchase should not be null", savedPurchase);
 
         List<SoldItem> savedItems = savedPurchase.getItems();
-        assertTrue("Saved items should contain soldItem1", savedItems.contains(soldItem));
+        assertTrue("Saved items should contain soldItem", savedItems.contains(soldItem));
     }
 
     @Test
-    //FAILED
     public void testSubmittingCurrentOrderSavesCorrectTime() throws ApplicationException {
         StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
         when(dao.findStockItem(1L)).thenReturn(stockItem);
@@ -96,34 +91,25 @@ public class SubmitCurrentPurchase {
         SoldItem soldItem = new SoldItem(stockItem, 2);
         cart.addItem(soldItem);
 
-        // Create a User with an empty purchase list
-        User dummyUser = new User();
-        dummyUser.setPurchases(new ArrayList<>());
+        loggedInUser.setPurchases(new ArrayList<>());
 
-        // Set up behavior for the dao to save the purchase
         doAnswer(invocation -> {
             Purchase purchase = invocation.getArgument(0);
-            // Add the purchase to the user's purchase list
-            dummyUser.getPurchases().add(purchase);
+            loggedInUser.getPurchases().add(purchase);
             return null;
         }).when(dao).savePurchase(any(Purchase.class));
 
-        cart.submitCurrentPurchase(dummyUser);
+        cart.submitCurrentPurchase(loggedInUser);
 
-        // Check if the user has purchases
-        assertNotNull(dummyUser.getPurchases());
-        assertFalse(dummyUser.getPurchases().isEmpty());
+        assertNotNull(loggedInUser.getPurchases());
+        assertFalse(loggedInUser.getPurchases().isEmpty());
 
-        // Get the saved purchase time
-        LocalTime savedTime = dummyUser.getPurchases().get(0).getTime();
+        LocalTime savedTime = loggedInUser.getPurchases().get(0).getTime();
 
-        // Get the current time
         LocalTime currentTime = LocalTime.now();
 
-        // Define an acceptable time window (for example, within 1 second)
         Duration acceptableTimeWindow = Duration.ofSeconds(1);
 
-        // Check if the saved time is within the acceptable time window of the current time
         assertTrue(savedTime.isAfter(currentTime.minus(acceptableTimeWindow)) &&
                 savedTime.isBefore(currentTime.plus(acceptableTimeWindow)));
     }
@@ -140,8 +126,7 @@ public class SubmitCurrentPurchase {
         cart.cancelCurrentPurchase();
         cart.addItem(soldItem1);
 
-        User dummyUser = new User();
-        cart.submitCurrentPurchase(dummyUser);
+        cart.submitCurrentPurchase(loggedInUser);
 
         ArgumentCaptor<Purchase> purchaseCaptor = ArgumentCaptor.forClass(Purchase.class);
         verify(dao).savePurchase(purchaseCaptor.capture());
@@ -154,7 +139,6 @@ public class SubmitCurrentPurchase {
     }
 
     @Test
-    //FAILED
     public void testCancellingOrderQuanititiesUnchanged() throws ApplicationException {
         StockItem stockItem = new StockItem(1L, "Test Item", "Description", 10.0, 5);
         when(dao.findStockItem(1L)).thenReturn(stockItem);
