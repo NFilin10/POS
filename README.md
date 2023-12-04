@@ -23,6 +23,7 @@ https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-5
 
 ## Homework 6:
 https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-6
+<br>
 Task 3: https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%206
 
 ## Homework 7:
