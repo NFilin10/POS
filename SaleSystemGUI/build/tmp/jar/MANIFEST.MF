@@ -1,5 +1,75 @@
 Manifest-Version: 1.0
 Implementation-Title: Gradle Quickstart
 Implementation-Version: 1.0
-Main-Class: ee.ut.math.tvt.salessystem.ui.SalesSystemUI
+Main-Class: ee.ut.math.tvt.salessystem.ui.Launcher
+Class-Path: file:/Users/nikita_filin/Desktop/TU/SE/homework/lg5-team2/bu
+ ild/libs/lg5-team2-1.0.jar file:/Users/nikita_filin/.gradle/caches/modu
+ les-2/files-2.1/org.apache.logging.log4j/log4j-core/2.20.0/eb2a9a47b139
+ 6e00b5eee1264296729a70565cc0/log4j-core-2.20.0.jar file:/Users/nikita_f
+ ilin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-
+ api/2.20.0/1fe6082e660daf07c689a89c94dc0f49c26b44bb/log4j-api-2.20.0.ja
+ r file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.openj
+ fx/javafx-fxml/17/9ba33b0d9c19e9dcfd76fe7d95748a933e09b3b/javafx-fxml-1
+ 7-mac-aarch64.jar file:/Users/nikita_filin/.gradle/caches/modules-2/fil
+ es-2.1/org.openjfx/javafx-controls/17/2254b351c1e6ce2ac9adcd3480fed883c
+ ebbb08b/javafx-controls-17-mac-aarch64.jar file:/Users/nikita_filin/.gr
+ adle/caches/modules-2/files-2.1/org.hsqldb/hsqldb/2.7.1/9ffb61712537153
+ 8a32eb9ba1cb2fa743b2c993b/hsqldb-2.7.1.jar file:/Users/nikita_filin/.gr
+ adle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/5
+ .2.1.Final/5c11f69632bf6cc1d4dfbe6b67f72b0c8073ad5f/hibernate-entityman
+ ager-5.2.1.Final.jar file:/Users/nikita_filin/.gradle/caches/modules-2/
+ files-2.1/org.hibernate/hibernate-java8/5.2.1.Final/dcc6a36814ccd4a40ed
+ 0df575681dfb2d6848701/hibernate-java8-5.2.1.Final.jar file:/Users/nikit
+ a_filin/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core
+ /5.6.0.Final/e699c34bdbadc909f1a4850e459903708cfbd959/hibernate-core-5.
+ 6.0.Final.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2
+ .1/org.glassfish.jaxb/jaxb-runtime/2.3.1/dd6dda9da676a54c5b36ca2806ff95
+ ee017d8738/jaxb-runtime-2.3.1.jar file:/Users/nikita_filin/.gradle/cach
+ es/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.3.1/8531ad5ac454cc2deb
+ 9d4d32c40c4d7451939b5d/jaxb-api-2.3.1.jar file:/Users/nikita_filin/.gra
+ dle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17/b6326f61f
+ 7e0effbf733d62e83b8317eb8e768b4/javafx-graphics-17-mac-aarch64.jar file
+ :/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.hibernate.c
+ ommon/hibernate-commons-annotations/5.1.2.Final/e59ffdbc6ad09eeb33507b3
+ 9ffcf287679a498c8/hibernate-commons-annotations-5.1.2.Final.jar file:/U
+ sers/nikita_filin/.gradle/caches/modules-2/files-2.1/org.jboss.logging/
+ jboss-logging/3.4.2.Final/e517b8a93dd9962ed5481345e4d262fdd47c4217/jbos
+ s-logging-3.4.2.Final.jar file:/Users/nikita_filin/.gradle/caches/modul
+ es-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f
+ 94/dom4j-1.6.1.jar file:/Users/nikita_filin/.gradle/caches/modules-2/fi
+ les-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Fin
+ al/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0
+ .Final.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/
+ org.javassist/javassist/3.20.0-GA/a9cbcdfb7e9f86fbc74d3afae65f2248bfbf8
+ 2a0/javassist-3.20.0-GA.jar file:/Users/nikita_filin/.gradle/caches/mod
+ ules-2/files-2.1/org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/
+ aabab3165b8ea936b9360abbf448459c0d04a5a4/geronimo-jta_1.1_spec-1.1.1.ja
+ r file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/javax.per
+ sistence/javax.persistence-api/2.2/25665ac8c0b62f50e6488173233239120fc5
+ 2c96/javax.persistence-api-2.2.jar file:/Users/nikita_filin/.gradle/cac
+ hes/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.11.20/340ea62787abad
+ 5682f17058e7c8928605e116d5/byte-buddy-1.11.20.jar file:/Users/nikita_fi
+ lin/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217
+ ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar file:/Users/nikita_filin/.gr
+ adle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-
+ transaction-api_1.2_spec/1.1.1.Final/a8485cab9484dda36e9a8c319e76b5cc18
+ 797b58/jboss-transaction-api_1.2_spec-1.1.1.Final.jar file:/Users/nikit
+ a_filin/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.2.3.Final
+ /d3865101f0666b63586683bd811d754517f331ab/jandex-2.2.3.Final.jar file:/
+ Users/nikita_filin/.gradle/caches/modules-2/files-2.1/com.fasterxml/cla
+ ssmate/1.5.1/3fe0bed568c62df5e89f4f174c101eab25345b6c/classmate-1.5.1.j
+ ar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/javax.ac
+ tivation/javax.activation-api/1.2.0/85262acf3ca9816f9537ca47d5adeabaead
+ 7cb16/javax.activation-api-1.2.0.jar file:/Users/nikita_filin/.gradle/c
+ aches/modules-2/files-2.1/org.openjfx/javafx-base/17/d77b645fa3e1a62707
+ 83178541944e4b4a457cd2/javafx-base-17-mac-aarch64.jar file:/Users/nikit
+ a_filin/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/2.3.
+ 1/a09d2c48d3285f206fafbffe0e50619284e92126/txw2-2.3.1.jar file:/Users/n
+ ikita_filin/.gradle/caches/modules-2/files-2.1/com.sun.istack/istack-co
+ mmons-runtime/3.0.7/c197c86ceec7318b1284bffb49b54226ca774003/istack-com
+ mons-runtime-3.0.7.jar file:/Users/nikita_filin/.gradle/caches/modules-
+ 2/files-2.1/org.jvnet.staxex/stax-ex/1.8/8cc35f73da321c29973191f2cf143d
+ 29d26a1df7/stax-ex-1.8.jar file:/Users/nikita_filin/.gradle/caches/modu
+ les-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.15/bb7b7ec03799
+ 82b97c62cd17465cb6d9155f68e8/FastInfoset-1.2.15.jar
 

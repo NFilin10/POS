@@ -2,4 +2,65 @@ Manifest-Version: 1.0
 Implementation-Title: Gradle Quickstart
 Implementation-Version: 1.0
 Main-Class: ee.ut.math.tvt.salessystem.ui.ConsoleUI
+Class-Path: file:/Users/nikita_filin/Desktop/TU/SE/homework/lg5-team2/bu
+ ild/libs/lg5-team2-1.0.jar file:/Users/nikita_filin/.gradle/caches/modu
+ les-2/files-2.1/org.apache.logging.log4j/log4j-core/2.20.0/eb2a9a47b139
+ 6e00b5eee1264296729a70565cc0/log4j-core-2.20.0.jar file:/Users/nikita_f
+ ilin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-
+ api/2.20.0/1fe6082e660daf07c689a89c94dc0f49c26b44bb/log4j-api-2.20.0.ja
+ r file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.hsqld
+ b/hsqldb/2.7.1/9ffb617125371538a32eb9ba1cb2fa743b2c993b/hsqldb-2.7.1.ja
+ r file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.hiber
+ nate/hibernate-entitymanager/5.2.1.Final/5c11f69632bf6cc1d4dfbe6b67f72b
+ 0c8073ad5f/hibernate-entitymanager-5.2.1.Final.jar file:/Users/nikita_f
+ ilin/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-java8/5
+ .2.1.Final/dcc6a36814ccd4a40ed0df575681dfb2d6848701/hibernate-java8-5.2
+ .1.Final.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.
+ 1/org.hibernate/hibernate-core/5.6.0.Final/e699c34bdbadc909f1a4850e4599
+ 03708cfbd959/hibernate-core-5.6.0.Final.jar file:/Users/nikita_filin/.g
+ radle/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/2.3.1/
+ dd6dda9da676a54c5b36ca2806ff95ee017d8738/jaxb-runtime-2.3.1.jar file:/U
+ sers/nikita_filin/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jax
+ b-api/2.3.1/8531ad5ac454cc2deb9d4d32c40c4d7451939b5d/jaxb-api-2.3.1.jar
+  file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.hibern
+ ate.common/hibernate-commons-annotations/5.1.2.Final/e59ffdbc6ad09eeb33
+ 507b39ffcf287679a498c8/hibernate-commons-annotations-5.1.2.Final.jar fi
+ le:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/org.jboss.log
+ ging/jboss-logging/3.4.2.Final/e517b8a93dd9962ed5481345e4d262fdd47c4217
+ /jboss-logging-3.4.2.Final.jar file:/Users/nikita_filin/.gradle/caches/
+ modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b90
+ 65a8f94/dom4j-1.6.1.jar file:/Users/nikita_filin/.gradle/caches/modules
+ -2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.
+ 0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-
+ 1.0.0.Final.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files
+ -2.1/org.javassist/javassist/3.20.0-GA/a9cbcdfb7e9f86fbc74d3afae65f2248
+ bfbf82a0/javassist-3.20.0-GA.jar file:/Users/nikita_filin/.gradle/cache
+ s/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jta_1.1_spec/1
+ .1.1/aabab3165b8ea936b9360abbf448459c0d04a5a4/geronimo-jta_1.1_spec-1.1
+ .1.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/java
+ x.persistence/javax.persistence-api/2.2/25665ac8c0b62f50e64881732332391
+ 20fc52c96/javax.persistence-api-2.2.jar file:/Users/nikita_filin/.gradl
+ e/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.11.20/340ea6278
+ 7abad5682f17058e7c8928605e116d5/byte-buddy-1.11.20.jar file:/Users/niki
+ ta_filin/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd67
+ 4a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar file:/Users/nikita_fili
+ n/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/j
+ boss-transaction-api_1.2_spec/1.1.1.Final/a8485cab9484dda36e9a8c319e76b
+ 5cc18797b58/jboss-transaction-api_1.2_spec-1.1.1.Final.jar file:/Users/
+ nikita_filin/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.2.3.
+ Final/d3865101f0666b63586683bd811d754517f331ab/jandex-2.2.3.Final.jar f
+ ile:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/com.fasterxm
+ l/classmate/1.5.1/3fe0bed568c62df5e89f4f174c101eab25345b6c/classmate-1.
+ 5.1.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/jav
+ ax.activation/javax.activation-api/1.2.0/85262acf3ca9816f9537ca47d5adea
+ baead7cb16/javax.activation-api-1.2.0.jar file:/Users/nikita_filin/.gra
+ dle/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/2.3.1/a09d2c48d3
+ 285f206fafbffe0e50619284e92126/txw2-2.3.1.jar file:/Users/nikita_filin/
+ .gradle/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtim
+ e/3.0.7/c197c86ceec7318b1284bffb49b54226ca774003/istack-commons-runtime
+ -3.0.7.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-2.1/
+ org.jvnet.staxex/stax-ex/1.8/8cc35f73da321c29973191f2cf143d29d26a1df7/s
+ tax-ex-1.8.jar file:/Users/nikita_filin/.gradle/caches/modules-2/files-
+ 2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.15/bb7b7ec0379982b97c62cd17
+ 465cb6d9155f68e8/FastInfoset-1.2.15.jar
 
