@@ -1,3 +1,8 @@
-r14:20:44.153 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Product quantity of 3
-[]
-r14:20:44.159 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Product quantity of 4
+o14:22:34.828 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+d14:22:34.831 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Purchase cancelled
+o14:22:34.832 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+o14:22:34.838 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+o14:22:34.843 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2
+d14:22:34.843 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Purchase cancelled
+o14:22:34.843 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 3
+o14:22:34.845 [Test worker] DEBUG ee.ut.math.tvt.salessystem.logic.ShoppingCart - Added Test Item quantity of 2

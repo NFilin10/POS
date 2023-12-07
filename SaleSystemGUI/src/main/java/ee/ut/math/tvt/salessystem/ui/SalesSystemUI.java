@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
@@ -37,7 +38,7 @@ public class SalesSystemUI extends Application {
 
 
     public SalesSystemUI() {
-        dao = new HibernateSalesSystemDAO();
+        dao = new InMemorySalesSystemDAO();
         shoppingCart = new ShoppingCart(dao);
     }
 
@@ -99,7 +100,7 @@ public class SalesSystemUI extends Application {
         Tab historyTab = new Tab();
         historyTab.setText("History");
         historyTab.setClosable(false);
-        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController(shoppingCart, user)));
+        historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController(shoppingCart, user, dao)));
         tabPane.getTabs().add(historyTab);
 
         Tab teamTab = new Tab();

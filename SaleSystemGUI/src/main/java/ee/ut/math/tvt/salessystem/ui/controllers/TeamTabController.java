@@ -81,7 +81,7 @@ public class TeamTabController implements Initializable {
     private void addMember() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add Member");
-        dialog.setHeaderText("Enter the member's name:");
+        dialog.setHeaderText("Enter the member's First name and last name:");
         dialog.setContentText("Firstname:");
 
         Optional<String> result = dialog.showAndWait();

@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
@@ -37,13 +38,14 @@ public class HistoryController implements Initializable {
     private DatePicker endDatePicker;
     private User user;
     private History history;
-    private static SalesSystemDAO dao = new HibernateSalesSystemDAO();
+    private static SalesSystemDAO dao;
 
 
-    public HistoryController(ShoppingCart shoppingCart, User user) {
+    public HistoryController(ShoppingCart shoppingCart, User user, SalesSystemDAO dao) {
         this.shoppingCart = shoppingCart;
         this.history = new History();
         this.user = user;
+        this.dao = dao;
     }
 
     @FXML

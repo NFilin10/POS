@@ -1,13 +1,14 @@
 package ee.ut.math.tvt.salessystem.logic;
 
 import ee.ut.math.tvt.salessystem.dao.HibernateSalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.User;
 
 
 public class AuthenticationService {
 
-    private static SalesSystemDAO dao = new HibernateSalesSystemDAO();
+    private static SalesSystemDAO dao = new InMemorySalesSystemDAO();
 
 
     public static User authenticateUser(String username, String password) {
