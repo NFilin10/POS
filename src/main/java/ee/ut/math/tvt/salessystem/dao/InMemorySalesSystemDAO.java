@@ -21,8 +21,7 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
         this.teamMemberList = new ArrayList<>();
         this.userList = new ArrayList<>();
 
-        // Initialize with some dummy data
-        // Add more initialization data as needed
+
     }
 
     @Override
@@ -82,9 +81,7 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
         return res;
     }
 
-    // Add other methods from the interface and implement them accordingly
 
-    // Transaction-related methods can remain empty as they are not applicable
     @Override
     public void beginTransaction() {
     }
@@ -189,5 +186,4 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
                 .collect(Collectors.toList());
     }
 
-    // ... Implement other methods as required
 }
