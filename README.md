@@ -22,7 +22,9 @@ task 1: https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%204%20(the%20deb
 https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-5
 
 ## Homework 6:
-<Links to the solution>
+https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-6
+<br>
+Task 3: https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%206
 
 ## Homework 7:
 <Links to the solution>
