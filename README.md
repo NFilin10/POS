@@ -27,6 +27,6 @@ https://bitbucket.org/team2-lg5/lg5-team2/commits/tag/homework-6
 Task 3: https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%206
 
 ## Homework 7:
-<Links to the solution>
+https://bitbucket.org/team2-lg5/lg5-team2/wiki/Homework%207%20-%20Functional%20and%20Non-Functional%20System%20Testing
 
 We encourage you to use [markdown syntax](https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html)
